@@ -15,6 +15,49 @@ from image_generator.create_post import create_post_image
 from publisher.instagram import publish_post, build_caption
 from publisher.linkinbio import generate_linkinbio
 
+import re
+from difflib import SequenceMatcher
+
+
+def _normalize_title(title: str) -> str:
+    """Normalize a title for fuzzy comparison — strip times, years, filler."""
+    t = title.lower()
+    # Remove time references like (3:30pm), (7:00 pm)
+    t = re.sub(r'\(?\d{1,2}:\d{2}\s*(?:am|pm)\)?', '', t)
+    # Remove years
+    t = re.sub(r'\b20\d{2}\b', '', t)
+    # Remove common filler
+    for filler in ['live in toronto', 'live in brampton', 'live in mississauga',
+                   'toronto', 'brampton', 'mississauga', 'live', 'in', 'on']:
+        t = re.sub(rf'\b{filler}\b', '', t)
+    # Collapse whitespace and strip punctuation
+    t = re.sub(r'[^a-z0-9 ]', '', t)
+    return ' '.join(t.split())
+
+
+def dedup_events(events: list) -> list:
+    """Remove near-duplicate events (same date + similar title).
+
+    Keeps the first occurrence. Events on different dates are never deduped.
+    """
+    kept = []
+    for event in events:
+        dominated = False
+        norm = _normalize_title(event.title)
+        for prev in kept:
+            if event.date.date() != prev.date.date():
+                continue
+            prev_norm = _normalize_title(prev.title)
+            similarity = SequenceMatcher(None, norm, prev_norm).ratio()
+            if similarity > 0.7:
+                print(f"  Dedup: skipping \"{event.title[:50]}\" (similar to \"{prev.title[:50]}\")")
+                dominated = True
+                break
+        if not dominated:
+            kept.append(event)
+    return kept
+
+
 # Toronto / GTA cities — events outside this area are skipped
 GTA_CITIES = {
     "toronto", "mississauga", "brampton", "markham", "vaughan",
@@ -61,7 +104,11 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
             print(f"  Skipping (not GTA): {e.title[:50]} [{e.city or 'no city'}]")
             continue
         new_events.append(e)
-    print(f"{len(new_events)} new GTA events ({skipped_location} skipped for location)\n")
+    print(f"{len(new_events)} new GTA events ({skipped_location} skipped for location)")
+
+    # Deduplicate (same date + similar title = same event, different showtime)
+    new_events = dedup_events(new_events)
+    print(f"{len(new_events)} after dedup\n")
 
     if not new_events:
         print("No new events to process. Done!")
