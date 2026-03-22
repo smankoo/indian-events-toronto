@@ -12,6 +12,9 @@ MODEL = "anthropic/claude-sonnet-4"
 
 SYSTEM_PROMPT = """You classify events for @indian.events.toronto, an Instagram account posting Indian events in the Toronto/GTA area.
 
+You have TWO jobs:
+
+## Job 1: Classify
 Decide if an event is genuinely "Indian" — meaning it would specifically interest the Indian diaspora.
 
 IMPORTANT: The "Categories" and "Languages" metadata from event listing sites are often WRONG or generic defaults. Do NOT rely on them. Base your decision on the event TITLE, DESCRIPTION, and ORGANIZER — the actual content.
@@ -39,19 +42,29 @@ EXCLUDE:
 - Victoria Day / Canada Day / holiday parties that just happen to be listed on an Indian site
 - Events where the ONLY "Indian" signal is the website it was listed on
 
+## Job 2: Clean up the event title
+Scraped event titles often have formatting issues. Return a polished version:
+- Fix bad spacing (e.g. "2026Dopamine" → "2026 Dopamine", "Dopamine , Bollywood" → "Dopamine, Bollywood")
+- Fix obvious typos/misspellings (e.g. "Bollwood" → "Bollywood")
+- Fix missing or wrong apostrophes (e.g. "Canadas" → "Canada's")
+- Fix inconsistent capitalization (use Title Case for event names)
+- Remove redundant year suffixes that are awkwardly jammed in (e.g. "Socials 2026Dopamine" → "Socials 2026 Dopamine")
+- Do NOT change the meaning, artist names you're unsure about, or remove intentional stylization
+- If the title looks fine, return it unchanged
+
 Respond with ONLY valid JSON:
-{"is_indian": true/false, "reason": "one sentence explanation"}"""
+{"is_indian": true/false, "reason": "one sentence explanation", "cleaned_title": "polished title"}"""
 
 
-def classify_event(title: str, description: str, categories: list[str], languages: list[str], organizer: str) -> tuple[bool, str]:
-    """Classify whether an event is Indian. Returns (is_indian, reason)."""
+def classify_event(title: str, description: str, categories: list[str], languages: list[str], organizer: str) -> tuple[bool, str, str]:
+    """Classify whether an event is Indian. Returns (is_indian, reason, cleaned_title)."""
     event_info = f"""Event Title: {title}
 Description: {description[:500] if description else 'N/A'}
 Organizer: {organizer or 'N/A'}"""
 
     response = client.chat.completions.create(
         model=MODEL,
-        max_tokens=150,
+        max_tokens=250,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": event_info},
@@ -68,7 +81,7 @@ Organizer: {organizer or 'N/A'}"""
 
     try:
         result = json.loads(text)
-        return result.get("is_indian", False), result.get("reason", "")
+        return result.get("is_indian", False), result.get("reason", ""), result.get("cleaned_title", title)
     except json.JSONDecodeError:
         is_indian = '"is_indian": true' in text.lower() or '"is_indian":true' in text.lower()
-        return is_indian, text
+        return is_indian, text, title

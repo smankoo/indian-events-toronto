@@ -74,16 +74,19 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
     classified = 0
     for i, event in enumerate(new_events):
         print(f"  [{i+1}/{len(new_events)}] Classifying: {event.title[:60]}...")
-        is_indian, reason = classify_event(
+        is_indian, reason, cleaned_title = classify_event(
             title=event.title,
             description=event.description,
             categories=event.categories,
             languages=event.languages,
             organizer=event.organizer,
         )
+        if cleaned_title != event.title:
+            print(f"    -> Title cleaned: {event.title!r} → {cleaned_title!r}")
+            event.title = cleaned_title
         print(f"    -> {'INDIAN' if is_indian else 'NOT INDIAN'}: {reason}")
 
-        # Save to DB regardless
+        # Save to DB regardless (with cleaned title)
         save_event(event, is_indian, reason)
         classified += 1
 
