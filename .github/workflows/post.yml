@@ -54,6 +54,24 @@ jobs:
           uv pip install -r requirements.txt
           .venv/bin/playwright install chromium --with-deps
 
+      - name: Refresh Instagram token
+        if: inputs.publish != false
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo "Refreshing Instagram access token..."
+          RESPONSE=$(curl -s "https://graph.instagram.com/v21.0/refresh_access_token?grant_type=ig_refresh_token&access_token=$INSTAGRAM_ACCESS_TOKEN")
+          NEW_TOKEN=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])" 2>/dev/null)
+          if [ -n "$NEW_TOKEN" ]; then
+            EXPIRES=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('expires_in','?'))" 2>/dev/null)
+            echo "Token refreshed (expires in ${EXPIRES}s)"
+            echo "INSTAGRAM_ACCESS_TOKEN=$NEW_TOKEN" >> "$GITHUB_ENV"
+            echo "$NEW_TOKEN" | gh secret set INSTAGRAM_ACCESS_TOKEN
+            echo "Secret updated for future runs"
+          else
+            echo "::warning::Token refresh failed: $RESPONSE (continuing with current token)"
+          fi
+
       - name: Run pipeline
         run: |
           if [ "${{ inputs.publish_only }}" = "true" ]; then
