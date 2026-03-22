@@ -35,12 +35,14 @@ INCLUDE (borderline but yes):
 - Pakistani artists performing for a broadly South Asian audience (e.g., Ali Soomro, Atif Aslam)
 - Mixed genre events with a strong Bollywood/Indian component (e.g., "Bollywood x Latin")
 
-EXCLUDE:
-- Afghan events (Afghan party nights, Afghan music) — different diaspora
+EXCLUDE (these are HARD rules — never classify as Indian):
+- Afghan events (Afghan party nights, Afghan music, Afghan Eid parties) — ALWAYS exclude, even if Eid is shared across cultures. Afghan ≠ Indian.
+- Sri Lankan, Nepali, or Bangladeshi community-specific events — unless they have explicit Indian/Bollywood content
 - Caribbean / Caribana events — not Indian unless explicitly Indo-Caribbean
 - Generic boat parties, club nights, fashion events with NO Indian connection in the title/description
 - Victoria Day / Canada Day / holiday parties that just happen to be listed on an Indian site
 - Events where the ONLY "Indian" signal is the website it was listed on
+- Do NOT rationalize inclusion by saying "appeals to South Asian diaspora" — this account is specifically for INDIAN events, not broadly South Asian
 
 ## Job 2: Clean up the event title
 Scraped event titles often have formatting issues. Return a polished version:
