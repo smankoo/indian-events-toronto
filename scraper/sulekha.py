@@ -10,14 +10,39 @@ from models import Event
 
 BASE_URL = "https://events.sulekha.com"
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
 }
 
 
 def scrape_listing_page() -> list[dict]:
     """Fetch the main listing page and extract JSON-LD event data."""
-    resp = requests.get(BASE_URL, headers=HEADERS, timeout=30)
-    resp.raise_for_status()
+    session = requests.Session()
+    session.headers.update(HEADERS)
+
+    # Retry up to 3 times with backoff
+    resp = None
+    for attempt in range(3):
+        try:
+            resp = session.get(BASE_URL, timeout=30)
+            resp.raise_for_status()
+            break
+        except requests.RequestException as e:
+            if attempt < 2:
+                wait = 5 * (attempt + 1)
+                print(f"  Retry {attempt + 1}/3 after {wait}s: {e}")
+                time.sleep(wait)
+            else:
+                raise
+
     soup = BeautifulSoup(resp.text, "html.parser")
 
     events = []
