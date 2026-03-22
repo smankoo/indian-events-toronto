@@ -364,10 +364,10 @@ def _search_with_retry(search_query: str, max_results: int, size: str | None = "
         delay = 4 + attempt * 6
         time.sleep(delay)
         try:
-            kwargs = dict(keywords=search_query, max_results=max_results)
+            kwargs = dict(query=search_query, max_results=max_results)
             if size:
                 kwargs["size"] = size
-            return DDGS().images(**kwargs)
+            return list(DDGS().images(**kwargs))
         except Exception as e:
             if "Ratelimit" in str(e) and attempt < 2:
                 print(f"    Rate limited, retrying in {delay + 8}s...")
