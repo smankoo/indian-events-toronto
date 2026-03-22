@@ -121,8 +121,8 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
             print(f"  [{i+1}/{len(to_post)}] Posting: {event.title[:60]}...")
             try:
                 caption = build_caption(event)
-                media_id = publish_post(path, caption)
-                mark_posted(event.source, event.source_id)
+                media_id, posted_image_url = publish_post(path, caption)
+                mark_posted(event.source, event.source_id, posted_image_url)
                 print(f"    -> Published (media_id: {media_id})")
             except Exception as e:
                 print(f"    -> PUBLISH ERROR: {e}")
@@ -159,8 +159,8 @@ def publish_unposted(post_limit: int = 2):
         print(f"  Posting: {event.title[:60]}...")
         try:
             caption = build_caption(event)
-            media_id = publish_post(image_path, caption)
-            mark_posted(event.source, event.source_id)
+            media_id, posted_image_url = publish_post(image_path, caption)
+            mark_posted(event.source, event.source_id, posted_image_url)
             posted += 1
             print(f"    -> Published (media_id: {media_id})")
         except Exception as e:

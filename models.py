@@ -19,3 +19,4 @@ class Event:
     categories: list[str] = field(default_factory=list)
     languages: list[str] = field(default_factory=list)
     organizer: str = ""
+    posted_image_url: str = ""
