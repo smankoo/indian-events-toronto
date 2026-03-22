@@ -114,9 +114,14 @@ def create_post_image(event: Event, style: str = "A") -> Path:
     if bg_img:
         print(f"    Found web image: {bg_img.size[0]}x{bg_img.size[1]}")
     else:
-        bg_img = download_image(event.image_url) if event.image_url else None
-        if bg_img:
+        # Fallback to Sulekha image — but reject posters with text overlay
+        from image_generator.image_search import has_significant_text, is_placeholder
+        raw = download_image(event.image_url) if event.image_url else None
+        if raw and not is_placeholder(raw) and not has_significant_text(raw):
+            bg_img = raw
             print(f"    Using Sulekha image: {bg_img.size[0]}x{bg_img.size[1]}")
+        elif raw:
+            print(f"    Sulekha image rejected (has text overlay or is placeholder)")
 
     # Save raw image to temp file — CSS does all the fitting/cropping
     bg_path = None
