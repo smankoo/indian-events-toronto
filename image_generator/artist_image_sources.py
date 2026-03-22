@@ -35,6 +35,23 @@ def _download(url: str) -> Image.Image | None:
 # 1. WIKIPEDIA
 # ─────────────────────────────────────────────────────────────
 
+def _wikipedia_article_extract(article_title: str) -> str:
+    """Fetch the first paragraph of a Wikipedia article for profession checking."""
+    url = (
+        "https://en.wikipedia.org/w/api.php"
+        f"?action=query&titles={urllib.parse.quote(article_title)}"
+        "&prop=extracts&exintro=1&explaintext=1&format=json"
+    )
+    try:
+        r = requests.get(url, timeout=10, headers=HEADERS)
+        pages = r.json().get("query", {}).get("pages", {})
+        for page in pages.values():
+            return page.get("extract", "")
+    except Exception:
+        pass
+    return ""
+
+
 def _wikipedia_article_image(article_title: str) -> Image.Image | None:
     """Fetch the main image for a specific Wikipedia article title."""
     url = (
@@ -49,7 +66,6 @@ def _wikipedia_article_image(article_title: str) -> Image.Image | None:
         for page in pages.values():
             thumb = page.get("thumbnail", {})
             img_url = thumb.get("source")
-            # Also try original if thumbnail is small
             original = page.get("original", {}).get("source")
             src = original or img_url
             if src:
@@ -61,39 +77,72 @@ def _wikipedia_article_image(article_title: str) -> Image.Image | None:
     return None
 
 
-def fetch_wikipedia(artist_name: str) -> Image.Image | None:
-    """Find an artist's Wikipedia article by name and return their photo."""
-    # Step 1: OpenSearch to get the canonical article title
-    url = (
-        "https://en.wikipedia.org/w/api.php"
-        f"?action=opensearch&search={urllib.parse.quote(artist_name)}&limit=5&format=json"
-    )
-    try:
-        r = requests.get(url, timeout=10, headers=HEADERS)
-        results = r.json()
-        # results = [query, [titles], [descriptions], [urls]]
-        titles = results[1] if len(results) > 1 else []
-        descriptions = results[2] if len(results) > 2 else []
+TYPE_KEYWORDS = {
+    "comedian": ["comedian", "stand-up", "standup", "comic", "comedy"],
+    "musician": ["singer", "musician", "playback", "band", "vocalist", "composer"],
+    "dj": ["dj", "disc jockey", "music producer", "electronic"],
+    "other": [],
+}
 
-        for title, desc in zip(titles, descriptions):
-            # Skip disambiguation pages and generic pages
-            if "disambiguation" in title.lower():
-                continue
-            # Prefer results where the title closely matches the artist name
-            name_lower = artist_name.lower()
-            title_lower = title.lower()
-            # Check name is in the title or desc mentions performer/comedian/singer/musician
-            name_words = name_lower.split()
-            if not all(w in title_lower for w in name_words):
-                continue
 
-            print(f"    Wikipedia: trying article '{title}'")
-            img = _wikipedia_article_image(title)
-            if img:
-                print(f"    Wikipedia: found image {img.width}x{img.height}")
-                return img
-    except Exception as e:
-        print(f"    Wikipedia search failed: {e}")
+def fetch_wikipedia(artist_name: str, performer_type: str = "") -> Image.Image | None:
+    """Find an artist's Wikipedia article by name and return their photo.
+
+    Uses performer_type to disambiguate (e.g. 'Amit Tandon comedian' vs actor).
+    """
+    # Try type-specific search first, then fallback to plain name
+    search_terms = []
+    if performer_type and performer_type in TYPE_KEYWORDS:
+        for kw in TYPE_KEYWORDS[performer_type][:2]:
+            search_terms.append(f"{artist_name} {kw}")
+    search_terms.append(artist_name)
+
+    type_kws = TYPE_KEYWORDS.get(performer_type, [])
+
+    for search_term in search_terms:
+        url = (
+            "https://en.wikipedia.org/w/api.php"
+            f"?action=opensearch&search={urllib.parse.quote(search_term)}&limit=5&format=json"
+        )
+        try:
+            r = requests.get(url, timeout=10, headers=HEADERS)
+            results = r.json()
+            titles = results[1] if len(results) > 1 else []
+            descriptions = results[2] if len(results) > 2 else []
+
+            for title, desc in zip(titles, descriptions):
+                if "disambiguation" in title.lower():
+                    continue
+                name_words = artist_name.lower().split()
+                if not all(w in title.lower() for w in name_words):
+                    continue
+
+                # If we have a performer type, reject articles about the WRONG profession
+                # Use article extract if OpenSearch description is empty
+                check_text = desc.lower()
+                if type_kws and not check_text:
+                    check_text = _wikipedia_article_extract(title).lower()[:500]
+
+                if type_kws and check_text:
+                    wrong_professions = {
+                        "comedian": ["actor", "actress", "film actor", "television actor"],
+                        "musician": ["actor", "actress", "comedian"],
+                        "dj": ["actor", "actress", "comedian"],
+                    }
+                    wrong_kws = wrong_professions.get(performer_type, [])
+                    has_right = any(k in check_text for k in type_kws)
+                    has_wrong = any(k in check_text for k in wrong_kws)
+                    if has_wrong and not has_right:
+                        print(f"    Wikipedia: skipping '{title}' (wrong profession)")
+                        continue
+
+                print(f"    Wikipedia: trying article '{title}'")
+                img = _wikipedia_article_image(title)
+                if img:
+                    print(f"    Wikipedia: found image {img.width}x{img.height}")
+                    return img
+        except Exception as e:
+            print(f"    Wikipedia search failed: {e}")
     return None
 
 
@@ -101,9 +150,11 @@ def fetch_wikipedia(artist_name: str) -> Image.Image | None:
 # 2. WIKIDATA
 # ─────────────────────────────────────────────────────────────
 
-def fetch_wikidata(artist_name: str) -> Image.Image | None:
-    """Search Wikidata for the artist and return their P18 image if available."""
-    # Step 1: Search entities
+def fetch_wikidata(artist_name: str, performer_type: str = "") -> Image.Image | None:
+    """Search Wikidata for the artist and return their P18 image if available.
+
+    Uses performer_type to prefer the right entity when names are ambiguous.
+    """
     url = (
         "https://www.wikidata.org/w/api.php"
         f"?action=wbsearchentities&search={urllib.parse.quote(artist_name)}"
@@ -113,21 +164,45 @@ def fetch_wikidata(artist_name: str) -> Image.Image | None:
         r = requests.get(url, timeout=10, headers=HEADERS)
         results = r.json().get("search", [])
 
+        type_kws = TYPE_KEYWORDS.get(performer_type, [])
+        wrong_professions = {
+            "comedian": ["actor", "actress", "film director"],
+            "musician": ["actor", "actress", "comedian"],
+            "dj": ["actor", "actress", "comedian"],
+        }
+        wrong_kws = wrong_professions.get(performer_type, [])
+
+        # Sort: entities matching performer_type first
+        def _score(entity):
+            desc = entity.get("description", "").lower()
+            if type_kws and any(k in desc for k in type_kws):
+                return 0  # best match
+            if wrong_kws and any(k in desc for k in wrong_kws):
+                return 2  # wrong profession
+            return 1  # neutral
+
+        results.sort(key=_score)
+
         for entity in results:
             qid = entity.get("id")
             label = entity.get("label", "")
             description = entity.get("description", "").lower()
 
-            # Only consider entities that look like people
             if not qid:
                 continue
+
+            # Skip entities about the wrong profession
+            if wrong_kws and any(k in description for k in wrong_kws):
+                has_right = type_kws and any(k in description for k in type_kws)
+                if not has_right:
+                    print(f"    Wikidata: skipping {label} (wrong profession: {description[:60]})")
+                    continue
+
             if not any(w in description for w in [
                 "singer", "musician", "comedian", "actor", "actress",
                 "performer", "artist", "composer", "rapper", "band",
                 "indian", "bollywood", "playback", "stand-up", "standup",
             ]):
-                # If description doesn't match, only continue if the label
-                # exactly matches the artist name
                 if label.lower() != artist_name.lower():
                     continue
 

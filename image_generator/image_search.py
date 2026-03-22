@@ -298,10 +298,10 @@ def search_event_image(title: str, description: str = "", max_results: int = 15)
             fetch_musicbrainz_spotify, fetch_spotify,
         )
 
-        # All types: try Wikipedia + Wikidata
+        # All types: try Wikipedia + Wikidata (pass performer_type for disambiguation)
         for fn, label in [(fetch_wikipedia, "Wikipedia"), (fetch_wikidata, "Wikidata")]:
             print(f"    Trying {label}...")
-            img = fn(artist_name)
+            img = fn(artist_name, performer_type=performer_type)
             if img:
                 _save_to_cache(title, img)
                 return img
