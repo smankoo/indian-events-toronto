@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 import requests
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 from PIL import Image
 
 MIN_WIDTH = 600

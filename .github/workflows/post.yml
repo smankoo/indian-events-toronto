@@ -22,6 +22,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   post:
@@ -67,6 +69,25 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
-          git add data/events.db
-          git diff --cached --quiet && echo "No DB changes" || git commit -m "Update events database [skip ci]"
+          git add data/events.db docs/
+          git diff --cached --quiet && echo "No changes" || git commit -m "Update events database and link-in-bio [skip ci]"
           git push
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy-pages:
+    needs: post
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

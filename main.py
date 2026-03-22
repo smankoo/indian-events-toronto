@@ -13,6 +13,7 @@ from data.store import is_new, save_event, mark_posted, get_unposted_events
 from classifier.indian_classifier import classify_event
 from image_generator.create_post import create_post_image
 from publisher.instagram import publish_post, build_caption
+from publisher.linkinbio import generate_linkinbio
 
 # Toronto / GTA cities — events outside this area are skipped
 GTA_CITIES = {
@@ -125,6 +126,10 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
 
         print(f"\nPublishing complete!")
 
+    # Step 6: Update link-in-bio page
+    print("\n=== STEP 6: Updating link-in-bio page ===")
+    generate_linkinbio()
+
 
 def publish_unposted(post_limit: int = 2):
     """Publish previously generated but unposted events."""
@@ -159,6 +164,10 @@ def publish_unposted(post_limit: int = 2):
             print(f"    -> PUBLISH ERROR: {e}")
 
     print(f"\n{posted} events published.")
+
+    # Update link-in-bio page
+    print("\n=== Updating link-in-bio page ===")
+    generate_linkinbio()
 
 
 if __name__ == "__main__":
