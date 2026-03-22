@@ -30,10 +30,15 @@ def get_connection() -> sqlite3.Connection:
             is_indian INTEGER,
             classification_reason TEXT,
             posted INTEGER DEFAULT 0,
+            posted_image_url TEXT DEFAULT '',
             processed_at TEXT,
             PRIMARY KEY (source, source_id)
         )
     """)
+    # Migration: add posted_image_url if missing
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(processed_events)").fetchall()]
+    if "posted_image_url" not in cols:
+        conn.execute("ALTER TABLE processed_events ADD COLUMN posted_image_url TEXT DEFAULT ''")
     conn.commit()
     return conn
 
@@ -81,11 +86,11 @@ def save_event(event: Event, is_indian: bool, classification_reason: str = ""):
     conn.close()
 
 
-def mark_posted(source: str, source_id: str):
+def mark_posted(source: str, source_id: str, posted_image_url: str = ""):
     conn = get_connection()
     conn.execute(
-        "UPDATE processed_events SET posted = 1 WHERE source = ? AND source_id = ?",
-        (source, source_id),
+        "UPDATE processed_events SET posted = 1, posted_image_url = ? WHERE source = ? AND source_id = ?",
+        (posted_image_url, source, source_id),
     )
     conn.commit()
     conn.close()
@@ -96,7 +101,8 @@ def get_posted_events() -> list[Event]:
     conn = get_connection()
     rows = conn.execute(
         """SELECT source, source_id, title, date, time_str, venue, address, city,
-                  price, description, image_url, event_url, categories, languages, organizer
+                  price, description, image_url, event_url, categories, languages,
+                  organizer, posted_image_url
            FROM processed_events
            WHERE is_indian = 1 AND posted = 1
            ORDER BY date ASC"""
@@ -113,6 +119,7 @@ def get_posted_events() -> list[Event]:
             categories=r[12].split(",") if r[12] else [],
             languages=r[13].split(",") if r[13] else [],
             organizer=r[14] or "",
+            posted_image_url=r[15] or "",
         ))
     return events
 

@@ -35,16 +35,11 @@ def upload_image(image_path: Path) -> str:
     return data["image"]["url"]
 
 
-def publish_post(image_path: Path, caption: str) -> str:
+def publish_post(image_path: Path, caption: str) -> tuple[str, str]:
     """
     Publish a single-image post to Instagram.
 
-    1. Upload image to ImgBB (Instagram needs a public URL)
-    2. Create a media container on Instagram
-    3. Poll until container is ready
-    4. Publish the container
-
-    Returns the Instagram media ID of the published post.
+    Returns (media_id, public_image_url).
     """
     access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
     ig_user_id = _get_env("INSTAGRAM_USER_ID")
@@ -97,7 +92,7 @@ def publish_post(image_path: Path, caption: str) -> str:
     resp.raise_for_status()
     media_id = resp.json()["id"]
     print(f"    Published! Media ID: {media_id}")
-    return media_id
+    return media_id, image_url
 
 
 def build_caption(event) -> str:

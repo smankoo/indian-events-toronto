@@ -96,6 +96,14 @@ body {{
     transform: translateY(-1px);
 }}
 
+.event-card .poster {{
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+}}
+
 .event-card .date {{
     color: #FF9933;
     font-size: 12px;
@@ -181,6 +189,7 @@ def _event_card(event) -> str:
     city = html.escape(event.city) if event.city else ""
     price = html.escape(event.price) if event.price else ""
     url = html.escape(event.event_url)
+    poster_url = html.escape(event.posted_image_url) if event.posted_image_url else ""
 
     details = f'<span>{venue}</span>'
     if city and city.lower() not in venue.lower():
@@ -189,8 +198,10 @@ def _event_card(event) -> str:
         details = f'<span>{time_str}</span>' + details
 
     price_tag = f'<span class="price">{price}</span>' if price else ""
+    img_tag = f'<img class="poster" src="{poster_url}" alt="{title}" loading="lazy">' if poster_url else ""
 
     return f"""    <a class="event-card" href="{url}" target="_blank" rel="noopener">
+        {img_tag}
         <div class="date">{date_str}</div>
         <div class="title">{title}</div>
         <div class="details">{details}</div>
