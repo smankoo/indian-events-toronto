@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+
+# Environment / secrets
+.env
+.env.*
+
+# Generated content (ephemeral, regenerated each run)
+output/*.png
+data/image_cache/
+
+# SQLite WAL sidecar files (DB itself is committed)
+data/events.db-wal
+data/events.db-shm
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Claude Code
+.claude/

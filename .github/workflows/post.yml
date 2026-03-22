@@ -1,0 +1,71 @@
+name: Scrape & Post to Instagram
+
+on:
+  schedule:
+    # Twice daily: 10am and 6pm ET (UTC-5)
+    - cron: "0 15 * * *"
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish to Instagram"
+        type: boolean
+        default: true
+      post_limit:
+        description: "Max posts per run"
+        type: number
+        default: 2
+      publish_only:
+        description: "Only publish (skip scrape/generate)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: instagram-pipeline
+      cancel-in-progress: false
+
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -r requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Run pipeline
+        run: |
+          if [ "${{ inputs.publish_only }}" = "true" ]; then
+            python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}
+          elif [ "${{ inputs.publish }}" = "false" ]; then
+            python main.py --post-limit ${{ inputs.post_limit || 2 }}
+          else
+            python main.py --publish --post-limit ${{ inputs.post_limit || 2 }}
+          fi
+
+      - name: Commit updated database
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+          git add data/events.db
+          git diff --cached --quiet && echo "No DB changes" || git commit -m "Update events database [skip ci]"
+          git push
