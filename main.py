@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pipeline: Scrape -> Dedup -> Classify -> Generate Images -> Publish to Instagram"""
+"""Pipeline: Scrape -> Dedup -> Classify -> Generate Images -> Publish to Instagram + Facebook"""
 
 import os
 import sys
@@ -13,6 +13,7 @@ from data.store import is_new, save_event, mark_posted, get_unposted_events
 from classifier.indian_classifier import classify_event
 from image_generator.create_post import create_post_image
 from publisher.instagram import publish_post, build_caption
+from publisher.facebook import publish_to_facebook, build_fb_caption
 from publisher.linkinbio import generate_linkinbio
 
 import re
@@ -160,17 +161,25 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
 
     print(f"\nDone! {len(generated)} images saved to output/")
 
-    # Step 5: Publish to Instagram (if enabled)
+    # Step 5: Publish to Instagram + Facebook (if enabled)
     if publish and generated:
         to_post = generated[:post_limit]
-        print(f"\n=== STEP 5: Publishing to Instagram ({len(to_post)}/{len(generated)}) ===")
+        print(f"\n=== STEP 5: Publishing to Instagram & Facebook ({len(to_post)}/{len(generated)}) ===")
         for i, (event, path) in enumerate(to_post):
             print(f"  [{i+1}/{len(to_post)}] Posting: {event.title[:60]}...")
             try:
                 caption = build_caption(event)
                 media_id, posted_image_url = publish_post(path, caption)
                 mark_posted(event.source, event.source_id, posted_image_url)
-                print(f"    -> Published (media_id: {media_id})")
+                print(f"    -> Instagram published (media_id: {media_id})")
+
+                # Cross-post to Facebook using the same uploaded image
+                try:
+                    fb_caption = build_fb_caption(event)
+                    fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
+                    print(f"    -> Facebook published (post_id: {fb_post_id})")
+                except Exception as e:
+                    print(f"    -> Facebook publish error: {e}")
             except Exception as e:
                 print(f"    -> PUBLISH ERROR: {e}")
 
@@ -209,7 +218,14 @@ def publish_unposted(post_limit: int = 2):
             media_id, posted_image_url = publish_post(image_path, caption)
             mark_posted(event.source, event.source_id, posted_image_url)
             posted += 1
-            print(f"    -> Published (media_id: {media_id})")
+            print(f"    -> Instagram published (media_id: {media_id})")
+
+            try:
+                fb_caption = build_fb_caption(event)
+                fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
+                print(f"    -> Facebook published (post_id: {fb_post_id})")
+            except Exception as e:
+                print(f"    -> Facebook publish error: {e}")
         except Exception as e:
             print(f"    -> PUBLISH ERROR: {e}")
 
