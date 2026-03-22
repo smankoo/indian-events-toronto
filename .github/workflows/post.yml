@@ -2,9 +2,9 @@ name: Scrape & Post to Instagram + Facebook
 
 on:
   schedule:
-    # Twice daily: 10am and 6pm ET (UTC-5)
-    - cron: "0 15 * * *"
-    - cron: "0 23 * * *"
+    # Twice daily: 8am and 5pm EDT (UTC-4). During EST these run at 7am and 4pm ET.
+    - cron: "0 12 * * *"
+    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       publish:
