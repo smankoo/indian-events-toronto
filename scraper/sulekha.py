@@ -43,6 +43,11 @@ def scrape_listing_page() -> list[dict]:
             else:
                 raise
 
+    # Debug: log response status and size
+    print(f"  Response: {resp.status_code}, {len(resp.text)} bytes, URL: {resp.url}")
+    if len(resp.text) < 500:
+        print(f"  Body: {resp.text[:500]}")
+
     soup = BeautifulSoup(resp.text, "html.parser")
 
     events = []
