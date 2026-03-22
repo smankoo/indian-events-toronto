@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 
 from models import Event
 
-BASE_URL = "https://events.sulekha.com"
+SITE_ROOT = "https://events.sulekha.com"
+LISTING_URL = "https://events.sulekha.com/toronto-metro-area"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -32,7 +33,7 @@ def scrape_listing_page() -> list[dict]:
     resp = None
     for attempt in range(3):
         try:
-            resp = session.get(BASE_URL, timeout=30)
+            resp = session.get(LISTING_URL, timeout=30)
             resp.raise_for_status()
             break
         except requests.RequestException as e:
@@ -74,7 +75,7 @@ def parse_event_id_from_url(url: str) -> str:
 
 def scrape_detail_page(event_url: str) -> dict:
     """Fetch an individual event page for additional details."""
-    full_url = event_url if event_url.startswith("http") else BASE_URL + event_url
+    full_url = event_url if event_url.startswith("http") else SITE_ROOT + event_url
     resp = requests.get(full_url, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -149,7 +150,7 @@ def parse_listing_event(ld_event: dict) -> dict:
     # Build the detail page URL
     event_url = ld_event.get("url", "")
     if event_url and not event_url.startswith("http"):
-        event_url = BASE_URL + event_url
+        event_url = SITE_ROOT + event_url
 
     # Parse price
     offers = ld_event.get("offers", {})
