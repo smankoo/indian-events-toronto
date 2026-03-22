@@ -45,12 +45,13 @@ EXCLUDE (these are HARD rules — never classify as Indian):
 - Do NOT rationalize inclusion by saying "appeals to South Asian diaspora" — this account is specifically for INDIAN events, not broadly South Asian
 
 ## Job 2: Clean up the event title
-Scraped event titles often have formatting issues. Return a polished version:
+Scraped event titles often have formatting issues and redundant info. Return a polished version:
+- Remove venue names, city names, and location info that's redundant (we show these separately on the post). E.g. "Afghan Party Night Eid Special Toronto Luna Lounge" → "Afghan Party Night Eid Special", "Bollywood Night at Rebel Toronto" → "Bollywood Night"
+- Remove redundant dates/years from titles (e.g. "Diwali Bash 2026 March 22" → "Diwali Bash 2026")
 - Fix bad spacing (e.g. "2026Dopamine" → "2026 Dopamine", "Dopamine , Bollywood" → "Dopamine, Bollywood")
 - Fix obvious typos/misspellings (e.g. "Bollwood" → "Bollywood")
 - Fix missing or wrong apostrophes (e.g. "Canadas" → "Canada's")
 - Fix inconsistent capitalization (use Title Case for event names)
-- Remove redundant year suffixes that are awkwardly jammed in (e.g. "Socials 2026Dopamine" → "Socials 2026 Dopamine")
 - Do NOT change the meaning, artist names you're unsure about, or remove intentional stylization
 - If the title looks fine, return it unchanged
 
