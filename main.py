@@ -14,6 +14,33 @@ from classifier.indian_classifier import classify_event
 from image_generator.create_post import create_post_image
 from publisher.instagram import publish_post, build_caption
 
+# Toronto / GTA cities — events outside this area are skipped
+GTA_CITIES = {
+    "toronto", "mississauga", "brampton", "markham", "vaughan",
+    "richmond hill", "scarborough", "etobicoke", "north york",
+    "oakville", "burlington", "hamilton", "ajax", "pickering",
+    "oshawa", "whitby", "milton", "newmarket", "aurora",
+    "stouffville", "caledon", "halton hills", "guelph",
+    "kitchener", "waterloo", "cambridge", "barrie",
+}
+
+GTA_KEYWORDS = {"toronto", "gta", "mississauga", "brampton", "markham", "vaughan", "scarborough"}
+
+
+def is_gta_event(event) -> bool:
+    """Check if an event is in the Toronto / GTA area."""
+    searchable = " ".join([
+        event.city, event.address, event.venue, event.title,
+    ]).lower()
+    if any(city in searchable for city in GTA_KEYWORDS):
+        return True
+    if event.city and event.city.lower().strip() in GTA_CITIES:
+        return True
+    # Ontario without a specific non-GTA city is likely GTA on Sulekha
+    if ", on" in event.address.lower() or "ontario" in event.address.lower():
+        return True
+    return False
+
 
 def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
     # Step 1: Scrape
@@ -21,10 +48,19 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
     events = scrape_events()
     print(f"Scraped {len(events)} events total\n")
 
-    # Step 2: Filter new events
-    print("=== STEP 2: Checking for new events ===")
-    new_events = [e for e in events if is_new(e)]
-    print(f"{len(new_events)} new events (out of {len(events)} total)\n")
+    # Step 2: Filter new + local events
+    print("=== STEP 2: Filtering new events in Toronto/GTA ===")
+    new_events = []
+    skipped_location = 0
+    for e in events:
+        if not is_new(e):
+            continue
+        if not is_gta_event(e):
+            skipped_location += 1
+            print(f"  Skipping (not GTA): {e.title[:50]} [{e.city or 'no city'}]")
+            continue
+        new_events.append(e)
+    print(f"{len(new_events)} new GTA events ({skipped_location} skipped for location)\n")
 
     if not new_events:
         print("No new events to process. Done!")
