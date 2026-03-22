@@ -48,24 +48,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install --system -r requirements.txt
-          playwright install chromium --with-deps
+          uv venv
+          uv pip install -r requirements.txt
+          .venv/bin/playwright install chromium --with-deps
 
       - name: Run pipeline
         run: |
           if [ "${{ inputs.publish_only }}" = "true" ]; then
-            python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}
           elif [ "${{ inputs.publish }}" = "false" ]; then
-            python main.py --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --post-limit ${{ inputs.post_limit || 2 }}
           else
-            python main.py --publish --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish --post-limit ${{ inputs.post_limit || 2 }}
           fi
 
       - name: Commit updated database
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+          .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
           git add data/events.db
           git diff --cached --quiet && echo "No DB changes" || git commit -m "Update events database [skip ci]"
           git push
