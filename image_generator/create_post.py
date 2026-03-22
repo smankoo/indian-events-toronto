@@ -134,7 +134,7 @@ def create_post_image(event: Event, style: str = "A") -> Path:
 
     tmp_html = tempfile.NamedTemporaryFile(suffix=".html", delete=False, mode="w", encoding="utf-8")
     tmp_html.write(html)
-    tmp_html.flush()
+    tmp_html.close()
 
     with sync_playwright() as p:
         browser = p.chromium.launch(args=["--allow-file-access-from-files"])
