@@ -30,9 +30,11 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
         print("No new events to process. Done!")
         return
 
-    # Step 3: Classify
-    print("=== STEP 3: Classifying events ===")
+    # Step 3: Classify (lazily — stop once we have enough Indian events)
+    target = limit if limit else post_limit
+    print(f"=== STEP 3: Classifying events (need {target} Indian events) ===")
     indian_events = []
+    classified = 0
     for i, event in enumerate(new_events):
         print(f"  [{i+1}/{len(new_events)}] Classifying: {event.title[:60]}...")
         is_indian, reason = classify_event(
@@ -46,11 +48,15 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
 
         # Save to DB regardless
         save_event(event, is_indian, reason)
+        classified += 1
 
         if is_indian:
             indian_events.append(event)
+            if len(indian_events) >= target:
+                print(f"\n  Reached target of {target} Indian events, skipping remaining {len(new_events) - classified} events")
+                break
 
-    print(f"\n{len(indian_events)} Indian events out of {len(new_events)} new events\n")
+    print(f"\n{len(indian_events)} Indian events found (classified {classified}/{len(new_events)})\n")
 
     # Step 4: Generate images
     to_generate = indian_events[:limit] if limit else indian_events
