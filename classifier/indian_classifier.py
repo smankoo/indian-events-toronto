@@ -8,7 +8,7 @@ client = OpenAI(
     api_key=os.environ["OPENROUTER_API_KEY"],
 )
 
-MODEL = "anthropic/claude-sonnet-4"
+MODEL = "google/gemini-2.5-flash-lite"
 
 SYSTEM_PROMPT = """You classify events for @indian.events.toronto, an Instagram account posting Indian events in the Toronto/GTA area.
 
