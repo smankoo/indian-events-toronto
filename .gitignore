@@ -11,6 +11,11 @@ __pycache__/
 # Generated content (ephemeral, regenerated each run)
 output/*.png
 data/image_cache/
+data/experiment_cache/
+
+# Experiment scripts (local dev only)
+experiment_*.py
+test_ai_enhance.py
 
 # SQLite WAL sidecar files (DB itself is committed)
 data/events.db-wal

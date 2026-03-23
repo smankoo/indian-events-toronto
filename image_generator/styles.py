@@ -33,7 +33,8 @@ MIN_FONT_HANDLE  = 22
 
 
 def _base_html(font_path: str, bg_path: str | None,
-               card_css: str, card_inner_html: str) -> str:
+               card_css: str, card_inner_html: str,
+               image_fit: str = "contain") -> str:
     """Shared skeleton — image box is identical for all styles."""
     img_url = f"url('file://{bg_path}')" if bg_path else "none"
     info_h  = CANVAS_H - TOP_BAR_H - IMAGE_BOX_H - BRANDING_H - BOTTOM_BAR_H
@@ -71,7 +72,7 @@ def _base_html(font_path: str, bg_path: str | None,
     background: radial-gradient(ellipse at 60% 40%, #2a1a0a 0%, #12080e 45%, #0a0a10 100%);
   }}
 
-  /* Blurred ambient fill — brightened so it's visible even with dark source images */
+  /* Blurred ambient fill — only needed when image is contained (not covering) */
   .image-box .blur-bg {{
     position: absolute;
     inset: -60px;
@@ -80,17 +81,17 @@ def _base_html(font_path: str, bg_path: str | None,
     background-position: center;
     filter: blur(40px) brightness(0.55) saturate(1.8);
     z-index: 0;
+    {"display: none;" if image_fit == "cover" else ""}
   }}
 
-  /* Sharp image — fully contained, pushed slightly toward top so
-     the bottom gap (and thus blur) is more visible */
+  /* Sharp image — fit mode depends on whether we have a known-ratio AI image */
   .image-box img {{
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center 35%;
+    object-fit: {image_fit};
+    object-position: center {"center" if image_fit == "cover" else "35%"};
     z-index: 1;
   }}
 
@@ -153,7 +154,7 @@ def _base_html(font_path: str, bg_path: str | None,
 # STYLE B — Cinematic
 # Near-black card, saffron date, outlined price pill, generous whitespace.
 # ══════════════════════════════════════════════════════════════════════════
-def build_html_B(font_path, bg_path, title, date_text, time_text, venue_text, price_text):
+def build_html_B(font_path, bg_path, title, date_text, time_text, venue_text, price_text, image_fit="contain"):
     time_html = ""
     if time_text:
         time_html = (
@@ -221,7 +222,7 @@ def build_html_B(font_path, bg_path, title, date_text, time_text, venue_text, pr
     {price_html}
     """
 
-    return _base_html(font_path, bg_path, card_css, card_inner)
+    return _base_html(font_path, bg_path, card_css, card_inner, image_fit=image_fit)
 
 
 # Keep the router in create_post.py pointing to build_html_B as default

@@ -22,7 +22,7 @@ HEADERS = {
 }
 
 
-def _cache_key(title: str) -> str:
+def cache_key(title: str) -> str:
     """Generate a stable cache key from an event title."""
     normalized = extract_search_query(title).lower().strip()
     return hashlib.sha256(normalized.encode()).hexdigest()[:16]
@@ -31,7 +31,7 @@ def _cache_key(title: str) -> str:
 def _get_cached(title: str) -> Image.Image | None:
     """Return cached image for this event title, or None."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    path = CACHE_DIR / f"{_cache_key(title)}.jpg"
+    path = CACHE_DIR / f"{cache_key(title)}.jpg"
     if path.exists():
         try:
             return Image.open(path).convert("RGB")
@@ -43,7 +43,7 @@ def _get_cached(title: str) -> Image.Image | None:
 def _save_to_cache(title: str, img: Image.Image) -> None:
     """Save an image to the disk cache."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    path = CACHE_DIR / f"{_cache_key(title)}.jpg"
+    path = CACHE_DIR / f"{cache_key(title)}.jpg"
     img.save(path, "JPEG", quality=95)
 
 
@@ -170,7 +170,7 @@ import json as _json
 PERFORMER_TYPES = ("musician", "comedian", "dj", "event", "other")
 
 
-def _classify_event(title: str, description: str) -> dict:
+def classify_event(title: str, description: str) -> dict:
     """Ask the LLM to classify the event and generate tailored search queries.
 
     Returns a dict with:
@@ -270,7 +270,7 @@ No markdown, no explanation."""
         return _fallback()
 
 
-def search_event_image(title: str, description: str = "", max_results: int = 15) -> Image.Image | None:
+def search_event_image(title: str, description: str = "", max_results: int = 15, event_info: dict | None = None) -> Image.Image | None:
     """Search for a high-quality, text-free image appropriate for the event.
 
     Routes differently based on performer type:
@@ -279,6 +279,8 @@ def search_event_image(title: str, description: str = "", max_results: int = 15)
       dj       → Wikipedia → DuckDuckGo
       event    → DuckDuckGo with atmosphere queries (skip artist lookup)
       other    → DuckDuckGo with portrait queries
+
+    If event_info is provided, skips the classify_event() call.
     """
     # Check disk cache first
     cached = _get_cached(title)
@@ -286,7 +288,7 @@ def search_event_image(title: str, description: str = "", max_results: int = 15)
         print(f"    Using cached image: {cached.width}x{cached.height}")
         return cached
 
-    info = _classify_event(title, description)
+    info = event_info or classify_event(title, description)
     performer_type = info["type"]
     artist_name    = info["artist_name"]
     queries        = info["queries"]
