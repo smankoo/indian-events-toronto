@@ -84,7 +84,7 @@ def _image_box_css(bg_path: str | None) -> str:
     background: {DARK_BG_HEX};"""
 
 
-def _build_html(bg_path: str | None, event: Event, style: str = "A") -> str:
+def _build_html(bg_path: str | None, event: Event, style: str = "A", image_fit: str = "contain") -> str:
     from image_generator.styles import build_html_A, build_html_B, build_html_C, build_html_D
 
     font_path    = str(FONTS_DIR / "Montserrat.ttf")
@@ -98,30 +98,70 @@ def _build_html(bg_path: str | None, event: Event, style: str = "A") -> str:
 
     builders = {"A": build_html_A, "B": build_html_B, "C": build_html_C, "D": build_html_D}
     builder  = builders.get(style, build_html_A)
-    return builder(font_path, bg_path, title, date_text, time_text, venue_text, price_text)
+    return builder(font_path, bg_path, title, date_text, time_text, venue_text, price_text, image_fit=image_fit)
 
 
 def create_post_image(event: Event, style: str = "A") -> Path:
     """Create an Instagram post image using Playwright for crisp text rendering."""
     from playwright.sync_api import sync_playwright
-    from image_generator.image_search import search_event_image
+    from image_generator.image_search import search_event_image, classify_event, cache_key as _cache_key, is_placeholder
+    from image_generator.ai_enhance import enhance_image
 
     OUTPUT_DIR.mkdir(exist_ok=True)
 
-    # --- Fetch background image (raw — layout handled by CSS) ---
-    print(f"    Searching for high-res image...")
-    bg_img = search_event_image(event.title, description=event.description, max_results=8)
+    # --- Classify event type (used for AI enhancement prompting) ---
+    info = classify_event(event.title, event.description)
+    performer_type = info["type"]
+    artist_name = info["artist_name"]
+    event_cache_key = _cache_key(event.title)
+
+    # --- Primary source: best Sulekha event image ---
+    # Pick the image closest to square/portrait from all available URLs.
+    # header2 images are 1280x500 banners (often horizontally squished);
+    # gallery/root images tend to have the original aspect ratio.
+    sulekha_img = None
+    image_urls = getattr(event, "image_urls", []) or ([event.image_url] if event.image_url else [])
+    best_score = float("inf")  # lower = closer to 1:1 = better
+    for url in image_urls:
+        raw = download_image(url)
+        if raw and not is_placeholder(raw):
+            ratio = raw.width / raw.height
+            score = abs(ratio - 1.0)  # prefer square-ish
+            print(f"    Sulekha image option: {raw.width}x{raw.height} (ratio {ratio:.2f}, score {score:.2f})")
+            if score < best_score:
+                best_score = score
+                sulekha_img = raw
+    if sulekha_img:
+        print(f"    Best Sulekha image: {sulekha_img.width}x{sulekha_img.height}")
+    elif image_urls:
+        print(f"    All Sulekha images unusable (placeholder or download failed)")
+
+    # --- AI Enhancement (Sulekha image → Gemini) ---
+    ai_generated = False
+    bg_img = enhance_image(
+        source_img=sulekha_img,
+        title=event.title,
+        description=event.description,
+        performer_type=performer_type,
+        artist_name=artist_name,
+        cache_key=event_cache_key,
+    )
     if bg_img:
-        print(f"    Found web image: {bg_img.size[0]}x{bg_img.size[1]}")
-    else:
-        # Fallback to Sulekha image — but reject posters with text overlay
-        from image_generator.image_search import has_significant_text, is_placeholder
-        raw = download_image(event.image_url) if event.image_url else None
-        if raw and not is_placeholder(raw) and not has_significant_text(raw):
-            bg_img = raw
-            print(f"    Using Sulekha image: {bg_img.size[0]}x{bg_img.size[1]}")
-        elif raw:
-            print(f"    Sulekha image rejected (has text overlay or is placeholder)")
+        ai_generated = True
+
+    if not bg_img and sulekha_img:
+        # AI failed — use Sulekha image directly if it's reasonably clean
+        from image_generator.image_search import has_significant_text
+        if not has_significant_text(sulekha_img):
+            bg_img = sulekha_img
+            print(f"    AI enhance failed, using Sulekha image directly")
+        else:
+            print(f"    Sulekha image has text overlays, skipping")
+
+    if not bg_img:
+        # Last resort: try web search
+        print(f"    No Sulekha image, falling back to web search...")
+        bg_img = search_event_image(event.title, description=event.description, max_results=8, event_info=info)
 
     # Save raw image to temp file — CSS does all the fitting/cropping
     bg_path = None
@@ -131,7 +171,9 @@ def create_post_image(event: Event, style: str = "A") -> Path:
         bg_img.save(tmp_img.name, "JPEG", quality=95)
         bg_path = tmp_img.name
 
-    html = _build_html(bg_path, event, style)
+    # AI images have a known 5:4 ratio — use cover to fill the box cleanly
+    image_fit = "cover" if ai_generated else "contain"
+    html = _build_html(bg_path, event, style, image_fit=image_fit)
 
     safe_title = "".join(c if c.isalnum() or c in "-_ " else "" for c in event.title)[:50].strip().replace(" ", "_")
     date_str   = event.date.strftime("%Y%m%d")

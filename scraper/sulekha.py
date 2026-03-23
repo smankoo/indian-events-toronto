@@ -88,26 +88,27 @@ def scrape_detail_page(event_url: str) -> dict:
         "organizer": "",
     }
 
-    # Collect all event images from CDN, prioritize by quality
-    candidates = {"header2": [], "header": [], "root": [], "thumbnail": []}
+    # Collect all event images from CDN (deduped, preserving order)
+    all_image_urls = []
+    seen_urls = set()
     for img in soup.find_all("img"):
         src = img.get("src", "")
         if "usimg.sulekha.io/cdn/events/images/" not in src:
             continue
-        if "/header2/" in src:
-            candidates["header2"].append(src)
-        elif "/header/" in src:
-            candidates["header"].append(src)
-        elif "/thumbnail/" in src:
-            candidates["thumbnail"].append(src)
-        elif "/organizer/" not in src:
-            candidates["root"].append(src)
+        if "/organizer/" in src or "/thumbnail/" in src:
+            continue
+        if src not in seen_urls:
+            seen_urls.add(src)
+            all_image_urls.append(src)
 
-    # Prefer: header2 (1280x500) > root (varies) > header > thumbnail
-    for key in ["header2", "root", "header", "thumbnail"]:
-        if candidates[key]:
-            detail["image_url"] = candidates[key][0]
+    detail["image_urls"] = all_image_urls
+    # Primary image: prefer header2 for backward compat
+    for src in all_image_urls:
+        if "/header2/" in src:
+            detail["image_url"] = src
             break
+    if not detail["image_url"] and all_image_urls:
+        detail["image_url"] = all_image_urls[0]
 
     # Get JSON-LD from detail page for richer data
     for script in soup.find_all("script", type="application/ld+json"):
@@ -228,6 +229,7 @@ def scrape_events() -> list[Event]:
             categories=detail["categories"],
             languages=detail["languages"],
             organizer=detail["organizer"],
+            image_urls=detail.get("image_urls", []),
         )
         events.append(event)
 
