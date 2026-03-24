@@ -14,10 +14,12 @@ def _get_env(name: str) -> str:
     return val
 
 
-def build_fb_caption(event) -> str:
+def build_fb_caption(event, instagram_handle: str | None = None) -> str:
     """Build a Facebook caption — includes a direct event link (unlike Instagram)."""
     lines = []
     lines.append(event.title)
+    if instagram_handle:
+        lines.append(f"🎤 @{instagram_handle}")
     lines.append("")
     lines.append(f"📅 {event.date.strftime('%A, %B %-d, %Y')}")
     if event.time_str:
