@@ -70,11 +70,20 @@ def is_new(event: Event) -> bool:
 def save_event(event: Event, is_indian: bool, classification_reason: str = ""):
     conn = get_connection()
     conn.execute(
-        """INSERT OR REPLACE INTO processed_events
+        """INSERT INTO processed_events
            (source, source_id, title, date, time_str, venue, address, city, price,
             description, image_url, event_url, categories, languages, organizer,
             is_indian, classification_reason, processed_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(source, source_id) DO UPDATE SET
+            title=excluded.title, date=excluded.date, time_str=excluded.time_str,
+            venue=excluded.venue, address=excluded.address, city=excluded.city,
+            price=excluded.price, description=excluded.description,
+            image_url=excluded.image_url, event_url=excluded.event_url,
+            categories=excluded.categories, languages=excluded.languages,
+            organizer=excluded.organizer, is_indian=excluded.is_indian,
+            classification_reason=excluded.classification_reason,
+            processed_at=excluded.processed_at""",
         (
             event.source,
             event.source_id,
