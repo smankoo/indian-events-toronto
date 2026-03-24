@@ -43,6 +43,16 @@ def get_connection() -> sqlite3.Connection:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_posted_at TEXT DEFAULT ''")
     if "story_days_posted" not in cols:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_days_posted TEXT DEFAULT ''")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS instagram_handles (
+            artist_name TEXT PRIMARY KEY,
+            performer_type TEXT,
+            instagram_handle TEXT,
+            source TEXT,
+            followers_count INTEGER DEFAULT 0,
+            looked_up_at TEXT
+        )
+    """)
     conn.commit()
     return conn
 
@@ -218,3 +228,42 @@ def get_unposted_events() -> list[Event]:
             organizer=r[14] or "",
         ))
     return events
+
+
+def get_cached_handle(artist_name: str) -> tuple[str | None, bool] | None:
+    """Return (handle, is_fresh) from cache, or None if not cached.
+
+    Fresh = found handle < 30 days old, or failed lookup < 7 days old.
+    """
+    from datetime import timedelta
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT instagram_handle, looked_up_at FROM instagram_handles WHERE artist_name = ?",
+        (artist_name,),
+    ).fetchone()
+    conn.close()
+
+    if not row:
+        return None
+
+    handle, looked_up_at = row[0], row[1]
+    if not looked_up_at:
+        return None
+
+    age = datetime.now() - datetime.fromisoformat(looked_up_at)
+    ttl = timedelta(days=30) if handle else timedelta(days=7)
+    return handle, age < ttl
+
+
+def save_handle_cache(artist_name: str, performer_type: str, handle: str | None,
+                      source: str, followers_count: int):
+    """Cache a handle lookup result."""
+    conn = get_connection()
+    conn.execute(
+        """INSERT OR REPLACE INTO instagram_handles
+           (artist_name, performer_type, instagram_handle, source, followers_count, looked_up_at)
+           VALUES (?, ?, ?, ?, ?, ?)""",
+        (artist_name, performer_type, handle, source, followers_count, datetime.now().isoformat()),
+    )
+    conn.commit()
+    conn.close()

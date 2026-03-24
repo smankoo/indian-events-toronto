@@ -185,19 +185,31 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
 
     # Step 5: Publish to Instagram + Facebook (if enabled)
     if publish and generated:
+        from image_generator.image_search import classify_event as classify_performer
+        from publisher.instagram_handle import lookup_instagram_handle
+
         to_post = generated[:post_limit]
         print(f"\n=== STEP 5: Publishing to Instagram & Facebook ({len(to_post)}/{len(generated)}) ===")
         for i, (event, path) in enumerate(to_post):
             print(f"  [{i+1}/{len(to_post)}] Posting: {event.title[:60]}...")
             try:
-                caption = build_caption(event)
-                media_id, posted_image_url = publish_post(path, caption)
+                # Look up artist's Instagram handle for tagging
+                ig_handle = None
+                try:
+                    info = classify_performer(event.title, event.description)
+                    if info["artist_name"]:
+                        ig_handle = lookup_instagram_handle(info["artist_name"], info["type"])
+                except Exception as e:
+                    print(f"    -> Handle lookup error (continuing): {e}")
+
+                caption = build_caption(event, instagram_handle=ig_handle)
+                media_id, posted_image_url = publish_post(path, caption, instagram_handle=ig_handle)
                 mark_posted(event.source, event.source_id, posted_image_url)
                 print(f"    -> Instagram published (media_id: {media_id})")
 
                 # Cross-post to Facebook using the same uploaded image
                 try:
-                    fb_caption = build_fb_caption(event)
+                    fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
                     fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
                     print(f"    -> Facebook published (post_id: {fb_post_id})")
                 except Exception as e:
@@ -219,6 +231,9 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
 
 def publish_unposted(post_limit: int = 2):
     """Publish previously generated but unposted events."""
+    from image_generator.image_search import classify_event as classify_performer
+    from publisher.instagram_handle import lookup_instagram_handle
+
     print("\n=== Publishing unposted events ===")
     unposted = get_unposted_events()
     if not unposted:
@@ -241,14 +256,23 @@ def publish_unposted(post_limit: int = 2):
 
         print(f"  Posting: {event.title[:60]}...")
         try:
-            caption = build_caption(event)
-            media_id, posted_image_url = publish_post(image_path, caption)
+            # Look up artist's Instagram handle for tagging
+            ig_handle = None
+            try:
+                info = classify_performer(event.title, event.description)
+                if info["artist_name"]:
+                    ig_handle = lookup_instagram_handle(info["artist_name"], info["type"])
+            except Exception as e:
+                print(f"    -> Handle lookup error (continuing): {e}")
+
+            caption = build_caption(event, instagram_handle=ig_handle)
+            media_id, posted_image_url = publish_post(image_path, caption, instagram_handle=ig_handle)
             mark_posted(event.source, event.source_id, posted_image_url)
             posted += 1
             print(f"    -> Instagram published (media_id: {media_id})")
 
             try:
-                fb_caption = build_fb_caption(event)
+                fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
                 fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
                 print(f"    -> Facebook published (post_id: {fb_post_id})")
             except Exception as e:

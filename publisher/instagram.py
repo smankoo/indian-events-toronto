@@ -1,5 +1,6 @@
 """Publish images to Instagram via the Graph API (Instagram Business Login flow)."""
 
+import json
 import os
 import time
 import base64
@@ -35,10 +36,11 @@ def upload_image(image_path: Path) -> str:
     return data["image"]["url"]
 
 
-def publish_post(image_path: Path, caption: str) -> tuple[str, str]:
+def publish_post(image_path: Path, caption: str, instagram_handle: str | None = None) -> tuple[str, str]:
     """
     Publish a single-image post to Instagram.
 
+    If instagram_handle is provided, the artist is tagged in the image.
     Returns (media_id, public_image_url).
     """
     access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
@@ -51,15 +53,29 @@ def publish_post(image_path: Path, caption: str) -> tuple[str, str]:
 
     # Step 2: Create media container
     print(f"    Creating Instagram media container...")
+    container_data = {
+        "image_url": image_url,
+        "caption": caption,
+        "access_token": access_token,
+    }
+    if instagram_handle:
+        container_data["user_tags"] = json.dumps([
+            {"username": instagram_handle, "x": 0.5, "y": 0.8}
+        ])
     resp = requests.post(
         f"{GRAPH_API}/{ig_user_id}/media",
-        data={
-            "image_url": image_url,
-            "caption": caption,
-            "access_token": access_token,
-        },
+        data=container_data,
         timeout=30,
     )
+    # If user_tags caused an error, retry without them
+    if not resp.ok and instagram_handle:
+        print(f"    user_tags rejected, retrying without tag...")
+        container_data.pop("user_tags", None)
+        resp = requests.post(
+            f"{GRAPH_API}/{ig_user_id}/media",
+            data=container_data,
+            timeout=30,
+        )
     resp.raise_for_status()
     container_id = resp.json()["id"]
     print(f"    Container ID: {container_id}")
@@ -156,10 +172,12 @@ def publish_story(image_path: Path) -> tuple[str, str]:
     return media_id, image_url
 
 
-def build_caption(event) -> str:
+def build_caption(event, instagram_handle: str | None = None) -> str:
     """Build an Instagram caption from an Event object."""
     lines = []
     lines.append(event.title)
+    if instagram_handle:
+        lines.append(f"🎤 @{instagram_handle}")
     lines.append("")
     lines.append(f"📅 {event.date.strftime('%A, %B %-d, %Y')}")
     if event.time_str:
