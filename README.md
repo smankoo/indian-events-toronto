@@ -76,11 +76,22 @@ The LLM classifier handles nuanced cultural rules:
 
 ### Countdown Stories
 
-For events happening within 5 days, the pipeline auto-generates Instagram Stories with countdown timers. Story deduplication ensures each event-day combination is only posted once.
+For events happening within 5 days, the pipeline auto-generates Instagram Stories with countdown timers. Multiple visual styles available (neon frame, cinematic gradient, split screen), with a dark gradient CTA bar linking to tickets. Story deduplication ensures each event-day combination is only posted once.
+
+### Artist Auto-Tagging
+
+Performers are automatically tagged in Instagram posts using a waterfall handle lookup:
+
+1. **Manual overrides** — curated JSON file for known ambiguous artists
+2. **Wikidata P2003** — community-verified Instagram usernames with performer-type disambiguation
+3. **DuckDuckGo search** — multi-candidate scoring (name similarity, brevity, frequency, context clues)
+4. **LLM suggestion** — Gemini as a last resort
+
+All candidates are verified via Instagram's **Business Discovery API** (account exists, 1000+ followers, bio matches performer type). Handles are cached in SQLite with 30-day TTL. Disambiguation handles tricky cases like "Amit Tandon" (comedian vs actor) and "Gaurav Kapoor" (comedian vs cricketer).
 
 ### Multi-Platform Publishing
 
-- **Instagram** — professional post images + countdown stories via Graph API v21.0
+- **Instagram** — professional post images + countdown stories + artist tagging via Graph API v21.0
 - **Facebook** — automatic cross-posting to a Page (reuses uploaded image URL)
 - **Link-in-bio** — auto-generated static HTML page deployed to GitHub Pages
 
@@ -128,12 +139,14 @@ For events happening within 5 days, the pipeline auto-generates Instagram Storie
 |
 +-- publisher/
 |   +-- instagram.py               # Instagram Graph API (posts + stories)
+|   +-- instagram_handle.py        # Artist handle lookup + verification
 |   +-- facebook.py                # Facebook Graph API cross-posting
 |   +-- linkinbio.py               # Static link-in-bio page generator
 |
 +-- data/
-|   +-- store.py                   # SQLite CRUD + story tracking
+|   +-- store.py                   # SQLite CRUD + story tracking + handle cache
 |   +-- events.db                  # SQLite database
+|   +-- instagram_handles.json     # Manual artist handle overrides
 |   +-- image_cache/               # Cached images (gitignored)
 |
 +-- docs/
@@ -179,11 +192,14 @@ uv pip install -r requirements.txt
 ### Usage
 
 ```bash
-# Dry run — scrape, classify, generate images (no publishing)
+# Scrape, classify, generate images (no publishing)
 uv run python main.py --post-limit 2
 
 # Full run — scrape, classify, generate, publish to Instagram + Facebook
 uv run python main.py --publish --post-limit 2
+
+# Dry run — full pipeline including artist handle lookup, but skip actual API calls
+uv run python main.py --dry-run --post-limit 2
 
 # Publish previously generated but unposted events
 uv run python main.py --publish-only --post-limit 1
@@ -205,6 +221,7 @@ uv run python main.py --publish --post-limit 2 --no-stories
 | `--publish-only` | Skip scrape/classify, publish unposted events from DB |
 | `--stories-only` | Only publish countdown stories |
 | `--no-stories` | Skip countdown story publishing |
+| `--dry-run` | Full pipeline with handle lookup but no actual publishing |
 
 ---
 
@@ -227,6 +244,7 @@ Trigger a run manually from the Actions tab with options:
 | `post_limit` | number | `2` | Max posts per run |
 | `publish_only` | boolean | `false` | Skip scrape/classify |
 | `stories_only` | boolean | `false` | Only publish stories |
+| `dry_run` | boolean | `false` | Full pipeline without actual publishing |
 
 ### What Happens Each Run
 
@@ -259,6 +277,7 @@ Full arc42 + C4 documentation is available in [`docs/architecture/README.md`](do
 | **SQLite in git** | Zero infrastructure; database travels with code |
 | **Playwright rendering** | Crisp text; PIL produces blurry output |
 | **Multi-source image waterfall** | Wikipedia/Wikidata identity-verified before broad search |
+| **Artist handle waterfall** | Manual → Wikidata → DDG → LLM, all verified via Business Discovery |
 
 ---
 
@@ -285,6 +304,8 @@ The [Developer Guide](docs/architecture/README.md#14-developer-guide--where-to-m
 | Post visual design | `image_generator/styles.py` |
 | Story visual design | `image_generator/create_story.py` |
 | Instagram API | `publisher/instagram.py` |
+| Artist handle lookup | `publisher/instagram_handle.py` |
+| Handle overrides | `data/instagram_handles.json` |
 | Database schema | `data/store.py` |
 | CI/CD workflow | `.github/workflows/post.yml` |
 
