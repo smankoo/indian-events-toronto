@@ -97,6 +97,7 @@ jobs:
           fi
 
       - name: Commit updated database
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -106,12 +107,14 @@ jobs:
           git push
 
       - name: Deploy to GitHub Pages
+        if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
   deploy-pages:
     needs: post
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       pages: write

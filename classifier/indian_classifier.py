@@ -5,7 +5,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ["OPENROUTER_API_KEY"],
+    api_key=os.environ.get("OPENROUTER_API_KEY", ""),
 )
 
 MODEL = "google/gemini-2.5-flash-lite"
