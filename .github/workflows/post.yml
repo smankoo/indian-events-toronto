@@ -23,6 +23,10 @@ on:
         description: "Only publish countdown stories"
         type: boolean
         default: false
+      dry_run:
+        description: "Dry run (show what would be posted without publishing)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -80,7 +84,9 @@ jobs:
 
       - name: Run pipeline
         run: |
-          if [ "${{ inputs.stories_only }}" = "true" ]; then
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            .venv/bin/python main.py --dry-run --post-limit ${{ inputs.post_limit || 2 }}
+          elif [ "${{ inputs.stories_only }}" = "true" ]; then
             .venv/bin/python main.py --stories-only
           elif [ "${{ inputs.publish_only }}" = "true" ]; then
             .venv/bin/python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}

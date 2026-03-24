@@ -109,7 +109,7 @@ def publish_stories():
             print(f"    -> STORY ERROR: {e}")
 
 
-def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: bool = True):
+def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: bool = True, dry_run: bool = False):
     # Step 1: Scrape
     print("\n=== STEP 1: Scraping events ===")
     events = scrape_events()
@@ -184,14 +184,15 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
     print(f"\nDone! {len(generated)} images saved to output/")
 
     # Step 5: Publish to Instagram + Facebook (if enabled)
-    if publish and generated:
+    if (publish or dry_run) and generated:
         from image_generator.image_search import classify_event as classify_performer
         from publisher.instagram_handle import lookup_instagram_handle
 
         to_post = generated[:post_limit]
-        print(f"\n=== STEP 5: Publishing to Instagram & Facebook ({len(to_post)}/{len(generated)}) ===")
+        mode = "DRY RUN" if dry_run else "Publishing"
+        print(f"\n=== STEP 5: {mode} — Instagram & Facebook ({len(to_post)}/{len(generated)}) ===")
         for i, (event, path) in enumerate(to_post):
-            print(f"  [{i+1}/{len(to_post)}] Posting: {event.title[:60]}...")
+            print(f"  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}Posting: {event.title[:60]}...")
             try:
                 # Look up artist's Instagram handle for tagging
                 ig_handle = None
@@ -203,26 +204,44 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
                     print(f"    -> Handle lookup error (continuing): {e}")
 
                 caption = build_caption(event, instagram_handle=ig_handle)
-                media_id, posted_image_url = publish_post(path, caption, instagram_handle=ig_handle)
-                mark_posted(event.source, event.source_id, posted_image_url)
-                print(f"    -> Instagram published (media_id: {media_id})")
 
-                # Cross-post to Facebook using the same uploaded image
-                try:
-                    fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
-                    fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
-                    print(f"    -> Facebook published (post_id: {fb_post_id})")
-                except Exception as e:
-                    print(f"    -> Facebook publish error: {e}")
+                if dry_run:
+                    print(f"    -> Image: {path.name}")
+                    print(f"    -> Artist tag: @{ig_handle}" if ig_handle else "    -> Artist tag: none")
+                    print(f"    -> Caption preview:")
+                    for line in caption.split('\n')[:6]:
+                        print(f"       {line}")
+                    print(f"       ...")
+                    print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
+                else:
+                    media_id, posted_image_url = publish_post(path, caption, instagram_handle=ig_handle)
+                    mark_posted(event.source, event.source_id, posted_image_url)
+                    print(f"    -> Instagram published (media_id: {media_id})")
+
+                    # Cross-post to Facebook using the same uploaded image
+                    try:
+                        fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
+                        fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
+                        print(f"    -> Facebook published (post_id: {fb_post_id})")
+                    except Exception as e:
+                        print(f"    -> Facebook publish error: {e}")
             except Exception as e:
                 print(f"    -> PUBLISH ERROR: {e}")
 
-        print(f"\nPublishing complete!")
+        print(f"\n{'Dry run' if dry_run else 'Publishing'} complete!")
 
     # Step 5.5: Publish countdown stories for upcoming posted events
-    if stories:
+    if stories and not dry_run:
         print(f"\n=== STEP 5.5: Publishing countdown stories ===")
         publish_stories()
+    elif stories and dry_run:
+        print(f"\n=== STEP 5.5: [DRY RUN] Countdown stories ===")
+        candidates = get_story_candidates(max_days=5)
+        if candidates:
+            for event, days_left in candidates:
+                print(f"  [{days_left}d to go] {event.title[:60]} — would publish story")
+        else:
+            print("  No story candidates found.")
 
     # Step 6: Update link-in-bio page
     print("\n=== STEP 6: Updating link-in-bio page ===")
@@ -296,6 +315,7 @@ if __name__ == "__main__":
     parser.add_argument("--publish-only", action="store_true", help="Only publish unposted events (skip scrape/classify/generate)")
     parser.add_argument("--no-stories", action="store_true", help="Skip publishing countdown stories")
     parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories (skip everything else)")
+    parser.add_argument("--dry-run", action="store_true", help="Run full pipeline but skip actual publishing (shows what would be posted)")
     args = parser.parse_args()
 
     if args.stories_only:
@@ -307,4 +327,5 @@ if __name__ == "__main__":
             print("\n=== Publishing countdown stories ===")
             publish_stories()
     else:
-        run(limit=args.limit, publish=args.publish, post_limit=args.post_limit, stories=not args.no_stories)
+        run(limit=args.limit, publish=args.publish, post_limit=args.post_limit,
+            stories=not args.no_stories, dry_run=args.dry_run)
