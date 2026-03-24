@@ -40,22 +40,6 @@ def download_image(url: str) -> Image.Image | None:
         return None
 
 
-def clean_title(title: str) -> str:
-    patterns = [
-        r'\s*[-–—]\s*Live\s+In\s+Toronto.*$',
-        r'\s*Live\s+In\s+Toronto.*$',
-        r'\s*[-–—]\s*Toronto,?\s*O[Nn]?.*$',
-        r'\s*\|\s*Tickets\s+Start.*$',
-        r'\s*\((?:\d+:\d+\s*(?:am|pm))\).*$',
-        r'\s*Stand\s*-?\s*Up\s+Comedy\s+Live\s+In\s+Toronto.*$',
-        r'\s*Standup\s+Comedy\s+Live\s+\d{4}$',
-    ]
-    cleaned = title
-    for pat in patterns:
-        cleaned = re.sub(pat, '', cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r'^(?:Toronto|Brampton|Mississauga),?\s*(?:On)?\s*[-–—]\s*', '', cleaned, flags=re.IGNORECASE)
-    return cleaned.strip() or title
-
 
 def format_price(price: str) -> str:
     p = price.replace("CAD ", "CA$").replace("CAD", "CA$")
@@ -88,7 +72,7 @@ def _build_html(bg_path: str | None, event: Event, style: str = "A", image_fit: 
     from image_generator.styles import build_html_A, build_html_B, build_html_C, build_html_D
 
     font_path    = str(FONTS_DIR / "Montserrat.ttf")
-    title        = clean_title(event.title)
+    title        = event.title
     date_text    = event.date.strftime("%A, %B %-d").upper()
     time_text    = event.time_str.upper() if event.time_str else ""
     venue_text   = event.venue
