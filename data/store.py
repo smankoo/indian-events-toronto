@@ -35,10 +35,14 @@ def get_connection() -> sqlite3.Connection:
             PRIMARY KEY (source, source_id)
         )
     """)
-    # Migration: add posted_image_url if missing
+    # Migrations: add columns if missing
     cols = [r[1] for r in conn.execute("PRAGMA table_info(processed_events)").fetchall()]
     if "posted_image_url" not in cols:
         conn.execute("ALTER TABLE processed_events ADD COLUMN posted_image_url TEXT DEFAULT ''")
+    if "story_posted_at" not in cols:
+        conn.execute("ALTER TABLE processed_events ADD COLUMN story_posted_at TEXT DEFAULT ''")
+    if "story_days_posted" not in cols:
+        conn.execute("ALTER TABLE processed_events ADD COLUMN story_days_posted TEXT DEFAULT ''")
     conn.commit()
     return conn
 
@@ -122,6 +126,72 @@ def get_posted_events() -> list[Event]:
             posted_image_url=r[15] or "",
         ))
     return events
+
+
+def get_story_candidates(max_days: int = 4) -> list[tuple[Event, int]]:
+    """Return posted events that are 1-N days away and haven't had a story for that day count.
+
+    Returns list of (event, days_left) tuples, sorted by days_left ascending.
+    """
+    from datetime import date as date_type
+
+    conn = get_connection()
+    rows = conn.execute(
+        """SELECT source, source_id, title, date, time_str, venue, address, city,
+                  price, description, image_url, event_url, categories, languages,
+                  organizer, posted_image_url, story_days_posted
+           FROM processed_events
+           WHERE is_indian = 1 AND posted = 1
+           ORDER BY date ASC"""
+    ).fetchall()
+    conn.close()
+
+    today = date_type.today()
+    candidates = []
+    for r in rows:
+        event_date = datetime.fromisoformat(r[3]).date()
+        days_left = (event_date - today).days
+        if days_left < 1 or days_left > max_days:
+            continue
+
+        already_posted = set(r[16].split(",")) if r[16] else set()
+        if str(days_left) in already_posted:
+            continue
+
+        event = Event(
+            source=r[0], source_id=r[1], title=r[2],
+            date=datetime.fromisoformat(r[3]), time_str=r[4],
+            venue=r[5], address=r[6], city=r[7], price=r[8],
+            description=r[9], image_url=r[10], event_url=r[11],
+            categories=r[12].split(",") if r[12] else [],
+            languages=r[13].split(",") if r[13] else [],
+            organizer=r[14] or "",
+            posted_image_url=r[15] or "",
+        )
+        candidates.append((event, days_left))
+
+    candidates.sort(key=lambda x: x[1])
+    return candidates
+
+
+def mark_story_posted(source: str, source_id: str, days_left: int):
+    """Record that a story was posted for a specific day count."""
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT story_days_posted FROM processed_events WHERE source = ? AND source_id = ?",
+        (source, source_id),
+    ).fetchone()
+    existing = row[0] if row and row[0] else ""
+    days_set = set(existing.split(",")) if existing else set()
+    days_set.discard("")
+    days_set.add(str(days_left))
+    updated = ",".join(sorted(days_set, key=int, reverse=True))
+    conn.execute(
+        "UPDATE processed_events SET story_days_posted = ?, story_posted_at = ? WHERE source = ? AND source_id = ?",
+        (updated, datetime.now().isoformat(), source, source_id),
+    )
+    conn.commit()
+    conn.close()
 
 
 def get_unposted_events() -> list[Event]:
