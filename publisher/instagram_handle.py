@@ -171,8 +171,9 @@ def _lookup_ddg(artist_name: str, performer_type: str) -> list[tuple[str, float]
     from ddgs import DDGS
 
     queries = [
-        f'"{artist_name}" {performer_type} official instagram site:instagram.com',
-        f'"{artist_name}" instagram site:instagram.com',
+        f'{artist_name} {performer_type} instagram',
+        f'{artist_name} instagram',
+        f'"{artist_name}" official instagram site:instagram.com',
     ]
 
     all_candidates: dict[str, list[str]] = {}
