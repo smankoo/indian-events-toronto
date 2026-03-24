@@ -8,7 +8,7 @@ import requests
 from PIL import Image
 
 from models import Event
-from image_generator.create_post import clean_title, FONTS_DIR, OUTPUT_DIR
+from image_generator.create_post import FONTS_DIR, OUTPUT_DIR
 
 STORY_W = 1080
 STORY_H = 1920
@@ -335,7 +335,7 @@ def create_story_image(event: Event, days_left: int, style: str = "C") -> Path:
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     font_path = str(FONTS_DIR / "Montserrat.ttf")
-    title = clean_title(event.title)
+    title = event.title
     date_text = event.date.strftime("%A, %B %-d").upper()
 
     # Download and crop the posted image to get the background

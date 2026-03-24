@@ -236,6 +236,7 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
         publish_stories()
     elif stories and dry_run:
         print(f"\n=== STEP 5.5: [DRY RUN] Countdown stories ===")
+        from image_generator.create_story import create_story_image  # noqa: F401 — verify import works
         candidates = get_story_candidates(max_days=5)
         if candidates:
             for event, days_left in candidates:
