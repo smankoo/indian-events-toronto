@@ -95,6 +95,67 @@ def publish_post(image_path: Path, caption: str) -> tuple[str, str]:
     return media_id, image_url
 
 
+def publish_story(image_path: Path) -> tuple[str, str]:
+    """
+    Publish a single image to Instagram Stories.
+
+    Stories auto-expire after 24 hours and do not become Highlights.
+    Returns (media_id, public_image_url).
+    """
+    access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
+    ig_user_id = _get_env("INSTAGRAM_USER_ID")
+
+    # Step 1: Upload image to get a public URL
+    print(f"    Uploading story image...")
+    image_url = upload_image(image_path)
+    print(f"    Public URL: {image_url}")
+
+    # Step 2: Create story media container
+    print(f"    Creating Instagram story container...")
+    resp = requests.post(
+        f"{GRAPH_API}/{ig_user_id}/media",
+        data={
+            "image_url": image_url,
+            "media_type": "STORIES",
+            "access_token": access_token,
+        },
+        timeout=30,
+    )
+    resp.raise_for_status()
+    container_id = resp.json()["id"]
+    print(f"    Container ID: {container_id}")
+
+    # Step 3: Poll until container is ready
+    print(f"    Waiting for container to be ready...")
+    for attempt in range(30):
+        resp = requests.get(
+            f"{GRAPH_API}/{container_id}",
+            params={"fields": "status_code", "access_token": access_token},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        status = resp.json().get("status_code")
+        if status == "FINISHED":
+            break
+        if status == "ERROR":
+            raise RuntimeError(f"Story container {container_id} failed: {resp.json()}")
+        time.sleep(2)
+    else:
+        raise RuntimeError(f"Story container {container_id} not ready after 60s")
+
+    # Step 4: Publish
+    print(f"    Publishing story...")
+    resp = requests.post(
+        f"{GRAPH_API}/{ig_user_id}/media_publish",
+        data={"creation_id": container_id, "access_token": access_token},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    media_id = resp.json()["id"]
+    print(f"    Story published! Media ID: {media_id}")
+    return media_id, image_url
+
+
 def build_caption(event) -> str:
     """Build an Instagram caption from an Event object."""
     lines = []

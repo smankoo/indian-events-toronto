@@ -9,10 +9,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from scraper.sulekha import scrape_events
-from data.store import is_new, save_event, mark_posted, get_unposted_events
+from data.store import is_new, save_event, mark_posted, get_unposted_events, get_story_candidates, mark_story_posted
 from classifier.indian_classifier import classify_event
 from image_generator.create_post import create_post_image
-from publisher.instagram import publish_post, build_caption
+from publisher.instagram import publish_post, publish_story, build_caption
 from publisher.facebook import publish_to_facebook, build_fb_caption
 from publisher.linkinbio import generate_linkinbio
 
@@ -87,7 +87,29 @@ def is_gta_event(event) -> bool:
     return False
 
 
-def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
+def publish_stories():
+    """Publish countdown stories for posted events that are <5 days away."""
+    from image_generator.create_story import create_story_image
+
+    candidates = get_story_candidates(max_days=5)
+    if not candidates:
+        print("No story candidates found.")
+        return
+
+    print(f"Found {len(candidates)} story candidate(s)")
+    for event, days_left in candidates:
+        print(f"  [{days_left}d to go] {event.title[:60]}...")
+        try:
+            story_path = create_story_image(event, days_left, style="C")
+            print(f"    -> Story image: {story_path.name}")
+            media_id, image_url = publish_story(story_path)
+            mark_story_posted(event.source, event.source_id, days_left)
+            print(f"    -> Story published (media_id: {media_id})")
+        except Exception as e:
+            print(f"    -> STORY ERROR: {e}")
+
+
+def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: bool = True):
     # Step 1: Scrape
     print("\n=== STEP 1: Scraping events ===")
     events = scrape_events()
@@ -185,6 +207,11 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2):
 
         print(f"\nPublishing complete!")
 
+    # Step 5.5: Publish countdown stories for upcoming posted events
+    if publish and stories:
+        print(f"\n=== STEP 5.5: Publishing countdown stories ===")
+        publish_stories()
+
     # Step 6: Update link-in-bio page
     print("\n=== STEP 6: Updating link-in-bio page ===")
     generate_linkinbio()
@@ -243,9 +270,14 @@ if __name__ == "__main__":
     parser.add_argument("--publish", action="store_true", help="Also publish to Instagram")
     parser.add_argument("--post-limit", type=int, default=2, help="Max posts per run (default: 2)")
     parser.add_argument("--publish-only", action="store_true", help="Only publish unposted events (skip scrape/classify/generate)")
+    parser.add_argument("--no-stories", action="store_true", help="Skip publishing countdown stories")
+    parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories (skip everything else)")
     args = parser.parse_args()
 
-    if args.publish_only:
+    if args.stories_only:
+        print("\n=== Publishing countdown stories ===")
+        publish_stories()
+    elif args.publish_only:
         publish_unposted(post_limit=args.post_limit)
     else:
-        run(limit=args.limit, publish=args.publish, post_limit=args.post_limit)
+        run(limit=args.limit, publish=args.publish, post_limit=args.post_limit, stories=not args.no_stories)
