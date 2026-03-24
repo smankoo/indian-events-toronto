@@ -19,10 +19,6 @@ on:
         description: "Only publish (skip scrape/generate)"
         type: boolean
         default: false
-      stories_only:
-        description: "Only publish countdown stories"
-        type: boolean
-        default: false
       dry_run:
         description: "Dry run (show what would be posted without publishing)"
         type: boolean
@@ -37,7 +33,7 @@ jobs:
   post:
     runs-on: ubuntu-latest
     concurrency:
-      group: instagram-pipeline
+      group: instagram-posts
       cancel-in-progress: false
 
     env:
@@ -85,15 +81,13 @@ jobs:
       - name: Run pipeline
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            .venv/bin/python main.py --dry-run --post-limit ${{ inputs.post_limit || 2 }}
-          elif [ "${{ inputs.stories_only }}" = "true" ]; then
-            .venv/bin/python main.py --stories-only
+            .venv/bin/python main.py --dry-run --no-stories --post-limit ${{ inputs.post_limit || 2 }}
           elif [ "${{ inputs.publish_only }}" = "true" ]; then
-            .venv/bin/python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish-only --no-stories --post-limit ${{ inputs.post_limit || 2 }}
           elif [ "${{ inputs.publish }}" = "false" ]; then
-            .venv/bin/python main.py --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --no-stories --post-limit ${{ inputs.post_limit || 2 }}
           else
-            .venv/bin/python main.py --publish --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish --no-stories --post-limit ${{ inputs.post_limit || 2 }}
           fi
 
       - name: Commit updated database
