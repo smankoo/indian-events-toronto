@@ -208,7 +208,7 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
         print(f"\nPublishing complete!")
 
     # Step 5.5: Publish countdown stories for upcoming posted events
-    if publish and stories:
+    if stories:
         print(f"\n=== STEP 5.5: Publishing countdown stories ===")
         publish_stories()
 
@@ -279,5 +279,8 @@ if __name__ == "__main__":
         publish_stories()
     elif args.publish_only:
         publish_unposted(post_limit=args.post_limit)
+        if not args.no_stories:
+            print("\n=== Publishing countdown stories ===")
+            publish_stories()
     else:
         run(limit=args.limit, publish=args.publish, post_limit=args.post_limit, stories=not args.no_stories)
