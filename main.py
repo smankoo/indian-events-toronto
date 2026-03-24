@@ -320,12 +320,20 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.stories_only:
-        print("\n=== Publishing countdown stories ===")
-        publish_stories()
+        if args.dry_run:
+            print("\n=== [DRY RUN] Countdown stories ===")
+            candidates = get_story_candidates(max_days=5)
+            if candidates:
+                for event, days_left in candidates:
+                    print(f"  [{days_left}d to go] {event.title[:60]} — would publish story")
+            else:
+                print("  No story candidates found.")
+        else:
+            print("\n=== Publishing countdown stories ===")
+            publish_stories()
     elif args.publish_only:
         publish_unposted(post_limit=args.post_limit)
         if not args.no_stories:
-            print("\n=== Publishing countdown stories ===")
             publish_stories()
     else:
         run(limit=args.limit, publish=args.publish, post_limit=args.post_limit,
