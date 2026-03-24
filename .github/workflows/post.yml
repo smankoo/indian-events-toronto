@@ -19,6 +19,10 @@ on:
         description: "Only publish (skip scrape/generate)"
         type: boolean
         default: false
+      stories_only:
+        description: "Only publish countdown stories"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -76,7 +80,9 @@ jobs:
 
       - name: Run pipeline
         run: |
-          if [ "${{ inputs.publish_only }}" = "true" ]; then
+          if [ "${{ inputs.stories_only }}" = "true" ]; then
+            .venv/bin/python main.py --stories-only
+          elif [ "${{ inputs.publish_only }}" = "true" ]; then
             .venv/bin/python main.py --publish-only --post-limit ${{ inputs.post_limit || 2 }}
           elif [ "${{ inputs.publish }}" = "false" ]; then
             .venv/bin/python main.py --post-limit ${{ inputs.post_limit || 2 }}
