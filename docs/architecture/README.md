@@ -371,6 +371,31 @@ publish_story(image_path)
     +-- Publish                  -- POST media_publish -> returns media_id
 ```
 
+#### `publisher/instagram_handle.py` — Artist handle lookup with disambiguation
+
+```
+lookup_instagram_handle(artist_name, performer_type) -> str | None
+    |
+    +-- Check manual overrides     -- data/instagram_handles.json (highest confidence)
+    +-- Check SQLite cache         -- 30-day TTL for found, 7-day for failed
+    +-- Wikidata P2003             -- Community-verified Instagram usernames
+    |   +-- Entity search with performer_type disambiguation
+    |   +-- Skips wrong professions (comedian vs actor, etc.)
+    +-- DuckDuckGo text search     -- Multi-candidate scored lookup
+    |   +-- 3 query strategies (simple, with type, with site: filter)
+    |   +-- Scores by: name similarity, brevity, "official" mentions, frequency
+    |   +-- Returns top 3 candidates for verification
+    +-- LLM suggestion             -- Gemini Flash Lite as last resort
+    |
+    +-- Verification (all sources except manual overrides):
+        +-- Instagram Business Discovery API
+        +-- Checks: account exists, public, 1000+ followers
+        +-- Bio/name matches performer type or artist name
+        +-- Falls through to next candidate on failure
+```
+
+Handles are cached in the `instagram_handles` table (keyed by artist name, not event). The `user_tags` parameter on the Instagram media container tags the artist in the post image, and `@handle` is added to both Instagram and Facebook captions.
+
 #### `publisher/facebook.py`
 
 ```
@@ -427,6 +452,19 @@ generate_linkinbio()
 - `get_unposted_events()` — Indian events not yet published
 - `get_story_candidates(max_days)` — Posted events 1-N days away, excluding already-storied day counts
 - `mark_story_posted(source, source_id, days_left)` — Append day count to `story_days_posted`
+- `get_cached_handle(artist_name)` — Return cached Instagram handle with freshness check
+- `save_handle_cache(artist_name, performer_type, handle, source, followers)` — Cache handle lookup result
+
+**Second table: `instagram_handles`** — caches artist handle lookups (keyed by artist, not event)
+
+| Column | Type | Purpose |
+|--------|------|---------|
+| `artist_name` | TEXT | Artist name (PK) |
+| `performer_type` | TEXT | comedian/musician/dj |
+| `instagram_handle` | TEXT | Handle or NULL if lookup failed |
+| `source` | TEXT | How it was found (manual/wikidata/ddg/llm) |
+| `followers_count` | INTEGER | Follower count at lookup time |
+| `looked_up_at` | TEXT | ISO timestamp (TTL: 30d found, 7d failed) |
 
 ### 6.6 Data Model (`models.py`)
 
