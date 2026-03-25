@@ -36,11 +36,12 @@ def upload_image(image_path: Path) -> str:
     return data["image"]["url"]
 
 
-def publish_post(image_path: Path, caption: str, instagram_handle: str | None = None) -> tuple[str, str]:
+def publish_post(image_path: Path, caption: str, instagram_handle: str | None = None,
+                 instagram_handles: list[str] | None = None) -> tuple[str, str]:
     """
     Publish a single-image post to Instagram.
 
-    If instagram_handle is provided, the artist is tagged in the image.
+    If instagram_handles (or instagram_handle) is provided, artists are tagged in the image.
     Returns (media_id, public_image_url).
     """
     access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
@@ -58,18 +59,22 @@ def publish_post(image_path: Path, caption: str, instagram_handle: str | None = 
         "caption": caption,
         "access_token": access_token,
     }
-    if instagram_handle:
-        container_data["user_tags"] = json.dumps([
-            {"username": instagram_handle, "x": 0.5, "y": 0.8}
-        ])
+    handles_to_tag = instagram_handles or ([instagram_handle] if instagram_handle else [])
+    if handles_to_tag:
+        tags = []
+        for idx, h in enumerate(handles_to_tag):
+            x = 0.3 + (idx * 0.2)  # spread tags horizontally: 0.3, 0.5, 0.7, ...
+            x = min(x, 0.9)
+            tags.append({"username": h, "x": x, "y": 0.8})
+        container_data["user_tags"] = json.dumps(tags)
     resp = requests.post(
         f"{GRAPH_API}/{ig_user_id}/media",
         data=container_data,
         timeout=30,
     )
     # If user_tags caused an error, retry without them
-    if not resp.ok and instagram_handle:
-        print(f"    user_tags rejected, retrying without tag...")
+    if not resp.ok and handles_to_tag:
+        print(f"    user_tags rejected, retrying without tags...")
         container_data.pop("user_tags", None)
         resp = requests.post(
             f"{GRAPH_API}/{ig_user_id}/media",
@@ -172,12 +177,14 @@ def publish_story(image_path: Path) -> tuple[str, str]:
     return media_id, image_url
 
 
-def build_caption(event, instagram_handle: str | None = None) -> str:
+def build_caption(event, instagram_handle: str | None = None,
+                  instagram_handles: list[str] | None = None) -> str:
     """Build an Instagram caption from an Event object."""
     lines = []
     lines.append(event.title)
-    if instagram_handle:
-        lines.append(f"🎤 @{instagram_handle}")
+    handles = instagram_handles or ([instagram_handle] if instagram_handle else [])
+    if handles:
+        lines.append("🎤 " + " ".join(f"@{h}" for h in handles))
     lines.append("")
     lines.append(f"📅 {event.date.strftime('%A, %B %-d, %Y')}")
     if event.time_str:

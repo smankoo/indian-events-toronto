@@ -194,33 +194,41 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
         for i, (event, path) in enumerate(to_post):
             print(f"  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}Posting: {event.title[:60]}...")
             try:
-                # Look up artist's Instagram handle for tagging
-                ig_handle = None
+                # Look up Instagram handles for all artists in the event
+                ig_handles = []
                 try:
                     info = classify_performer(event.title, event.description)
-                    if info["artist_name"]:
-                        ig_handle = lookup_instagram_handle(info["artist_name"], info["type"])
+                    for artist_name in info.get("artist_names", []):
+                        try:
+                            h = lookup_instagram_handle(artist_name, info["type"])
+                            if h:
+                                ig_handles.append(h)
+                        except Exception as e:
+                            print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
                 except Exception as e:
-                    print(f"    -> Handle lookup error (continuing): {e}")
+                    print(f"    -> Classification error (continuing): {e}")
 
-                caption = build_caption(event, instagram_handle=ig_handle)
+                caption = build_caption(event, instagram_handles=ig_handles)
 
                 if dry_run:
                     print(f"    -> Image: {path.name}")
-                    print(f"    -> Artist tag: @{ig_handle}" if ig_handle else "    -> Artist tag: none")
+                    if ig_handles:
+                        print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles)}")
+                    else:
+                        print(f"    -> Artist tags: none")
                     print(f"    -> Caption preview:")
                     for line in caption.split('\n')[:6]:
                         print(f"       {line}")
                     print(f"       ...")
                     print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
                 else:
-                    media_id, posted_image_url = publish_post(path, caption, instagram_handle=ig_handle)
+                    media_id, posted_image_url = publish_post(path, caption, instagram_handles=ig_handles)
                     mark_posted(event.source, event.source_id, posted_image_url)
                     print(f"    -> Instagram published (media_id: {media_id})")
 
                     # Cross-post to Facebook using the same uploaded image
                     try:
-                        fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
+                        fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
                         fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
                         print(f"    -> Facebook published (post_id: {fb_post_id})")
                     except Exception as e:
@@ -276,23 +284,28 @@ def publish_unposted(post_limit: int = 2):
 
         print(f"  Posting: {event.title[:60]}...")
         try:
-            # Look up artist's Instagram handle for tagging
-            ig_handle = None
+            # Look up Instagram handles for all artists in the event
+            ig_handles = []
             try:
                 info = classify_performer(event.title, event.description)
-                if info["artist_name"]:
-                    ig_handle = lookup_instagram_handle(info["artist_name"], info["type"])
+                for artist_name in info.get("artist_names", []):
+                    try:
+                        h = lookup_instagram_handle(artist_name, info["type"])
+                        if h:
+                            ig_handles.append(h)
+                    except Exception as e:
+                        print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
             except Exception as e:
-                print(f"    -> Handle lookup error (continuing): {e}")
+                print(f"    -> Classification error (continuing): {e}")
 
-            caption = build_caption(event, instagram_handle=ig_handle)
-            media_id, posted_image_url = publish_post(image_path, caption, instagram_handle=ig_handle)
+            caption = build_caption(event, instagram_handles=ig_handles)
+            media_id, posted_image_url = publish_post(image_path, caption, instagram_handles=ig_handles)
             mark_posted(event.source, event.source_id, posted_image_url)
             posted += 1
             print(f"    -> Instagram published (media_id: {media_id})")
 
             try:
-                fb_caption = build_fb_caption(event, instagram_handle=ig_handle)
+                fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
                 fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
                 print(f"    -> Facebook published (post_id: {fb_post_id})")
             except Exception as e:
