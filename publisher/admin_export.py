@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 
 from data.store import get_connection
-from publisher.event_profile import MAJOR_VENUES, TOUR_PATTERNS, PARTY_PATTERNS
+from publisher.event_profile import MAJOR_VENUES
 from models import Event
 
 ADMIN_DIR = Path(__file__).parent.parent / "docs" / "admin"
@@ -36,13 +36,9 @@ def _classify_venue(venue: str) -> str:
     return "unknown"
 
 
-def _classify_format(title: str) -> str:
-    """Classify event format from title."""
-    if TOUR_PATTERNS.search(title):
-        return "tour"
-    if PARTY_PATTERNS.search(title):
-        return "party"
-    return "standard"
+def _classify_format(has_artists: bool) -> str:
+    """Classify event format: performance (has artists) vs social (no artists)."""
+    return "performance" if has_artists else "social"
 
 
 def export_admin_json():
@@ -97,7 +93,7 @@ def export_admin_json():
 
         parsed_price = _parse_price(price)
         venue_class = _classify_venue(venue)
-        event_format = _classify_format(title)
+        event_format = _classify_format(total_followers > 0)
 
         events_out.append({
             "title": title,

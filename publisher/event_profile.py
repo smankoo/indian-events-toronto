@@ -71,21 +71,23 @@ def score_event(event: Event, artist_followers: dict[str, int] | None = None) ->
     else:
         reasons.append("No artist follower data")
 
-    # ── Ticket price (0-20 points) ──
+    # ── Ticket price (0-20 points, log-proportional) ──
+    price_max_pts = 20
+    price_floor = 10
+    price_ceil = 200
     price_val = _parse_price(event.price)
-    if price_val is not None:
-        if price_val >= 100:
-            points += 20
-            reasons.append(f"Premium ticket price (CA${price_val})")
-        elif price_val >= 50:
-            points += 15
-            reasons.append(f"Mid-range ticket price (CA${price_val})")
-        elif price_val >= 25:
-            points += 8
-            reasons.append(f"Standard ticket price (CA${price_val})")
+    if price_val is not None and price_val > price_floor:
+        if price_val >= price_ceil:
+            p_pts = price_max_pts
         else:
-            points += 0
-            reasons.append(f"Budget ticket price (CA${price_val})")
+            log_floor = math.log10(price_floor)
+            log_ceil = math.log10(price_ceil)
+            log_val = math.log10(price_val)
+            p_pts = round(((log_val - log_floor) / (log_ceil - log_floor)) * price_max_pts)
+        points += p_pts
+        reasons.append(f"CA${price_val:.0f} ticket → {p_pts}/{price_max_pts} pts")
+    elif price_val is not None:
+        reasons.append(f"CA${price_val:.0f} ticket → 0/{price_max_pts} pts")
     else:
         reasons.append("No price info")
 
@@ -109,17 +111,14 @@ def score_event(event: Event, artist_followers: dict[str, int] | None = None) ->
             points += 5
             reasons.append(f"Unknown venue type ({event.venue})")
 
-    # ── Event type from title (0-20 points) ──
-    title = event.title or ""
-    if TOUR_PATTERNS.search(title):
-        points += 20
-        reasons.append("Tour/concert format")
-    elif PARTY_PATTERNS.search(title):
-        points += 0
-        reasons.append("Party/social event format")
+    # ── Event type (0-20 points): performance vs social ──
+    # If we identified artists, it's a performance; otherwise social/party
+    format_max_pts = 20
+    if total_followers > 0:
+        points += format_max_pts
+        reasons.append(f"Performance (artists identified) → {format_max_pts}/{format_max_pts} pts")
     else:
-        points += 10
-        reasons.append("Standard event format")
+        reasons.append(f"Social/party (no artists) → 0/{format_max_pts} pts")
 
     # ── Determine tier ──
     if points >= 55:
