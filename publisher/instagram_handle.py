@@ -73,14 +73,16 @@ def lookup_instagram_handle(artist_name: str, performer_type: str) -> str | None
 
     # Source 3: DuckDuckGo (scored multi-candidate)
     candidates = _lookup_ddg(artist_name, performer_type)
-    for candidate, score in candidates:
-        verified, followers = _verify_handle(candidate, artist_name, performer_type)
+    for c in candidates:
+        verified, followers = _verify_handle(
+            c.handle, artist_name, performer_type, ddg_signals=c,
+        )
         if verified:
-            print(f"    IG handle (ddg, score={score}, verified): @{candidate} ({followers} followers)")
-            save_handle_cache(artist_name, performer_type, candidate, "ddg", followers)
-            return candidate
+            print(f"    IG handle (ddg, score={c.score}, verified): @{c.handle} ({followers} followers)")
+            save_handle_cache(artist_name, performer_type, c.handle, "ddg", followers)
+            return c.handle
         else:
-            print(f"    IG handle (ddg): @{candidate} — verification failed")
+            print(f"    IG handle (ddg): @{c.handle} — verification failed")
 
     # Source 4: LLM suggestion
     handle = _lookup_llm(artist_name, performer_type)
@@ -166,8 +168,23 @@ def _lookup_wikidata(artist_name: str, performer_type: str) -> str | None:
     return None
 
 
-def _lookup_ddg(artist_name: str, performer_type: str) -> list[tuple[str, float]]:
-    """Search DuckDuckGo, return scored candidates [(handle, score)]."""
+class _DdgCandidate:
+    """A candidate handle from DuckDuckGo with extracted profile signals."""
+
+    __slots__ = ("handle", "score", "followers", "following", "description", "display_name")
+
+    def __init__(self, handle: str, score: float, followers: int, following: int,
+                 description: str, display_name: str):
+        self.handle = handle
+        self.score = score
+        self.followers = followers
+        self.following = following
+        self.description = description
+        self.display_name = display_name
+
+
+def _lookup_ddg(artist_name: str, performer_type: str) -> list[_DdgCandidate]:
+    """Search DuckDuckGo, return scored candidates with extracted profile signals."""
     from ddgs import DDGS
 
     queries = [
@@ -237,9 +254,29 @@ def _lookup_ddg(artist_name: str, performer_type: str) -> list[tuple[str, float]
         # Frequency bonus (0-10)
         score += min(len(texts), 3) * 3.3
 
-        scored.append((handle, round(score, 1)))
+        # Extract profile signals from DDG snippets
+        # DDG often shows "51K Followers, 144 Following, 214 Posts" in snippets
+        followers = _parse_count(combined, r"([\d,.]+[KMkm]?)\s*followers")
+        following = _parse_count(combined, r"([\d,.]+[KMkm]?)\s*following")
 
-    scored.sort(key=lambda x: x[1], reverse=True)
+        # Extract display name from title like "Name (@handle) - Instagram"
+        display_name = ""
+        for text in texts:
+            title_m = re.search(r'^(.*?)\s*\(@' + re.escape(handle) + r'\)', text)
+            if title_m:
+                display_name = title_m.group(1).strip().lower()
+                break
+
+        scored.append(_DdgCandidate(
+            handle=handle,
+            score=round(score, 1),
+            followers=followers,
+            following=following,
+            description=combined,
+            display_name=display_name,
+        ))
+
+    scored.sort(key=lambda x: x.score, reverse=True)
     return scored[:3]  # top 3 candidates
 
 
@@ -274,8 +311,75 @@ def _lookup_llm(artist_name: str, performer_type: str) -> str | None:
     return None
 
 
-def _verify_handle(handle: str, artist_name: str, performer_type: str) -> tuple[bool, int]:
-    """Verify a handle via Instagram Business Discovery API.
+FAN_KEYWORDS = ["fan account", "fan page", "fanpage", "unofficial", "parody", "tribute"]
+
+
+def _parse_count(text: str, pattern: str) -> int:
+    """Parse a follower/following count like '51K' or '1,234' into an integer."""
+    m = re.search(pattern, text, re.IGNORECASE)
+    if not m:
+        return 0
+    raw = m.group(1).strip().upper().replace(",", "")
+    try:
+        if raw.endswith("K"):
+            return int(float(raw[:-1]) * 1_000)
+        elif raw.endswith("M"):
+            return int(float(raw[:-1]) * 1_000_000)
+        return int(raw)
+    except ValueError:
+        return 0
+
+
+
+def _check_profile_signals(
+    followers: int,
+    following: int,
+    bio: str,
+    name: str,
+    artist_name: str,
+    performer_type: str,
+) -> tuple[bool, str]:
+    """Evaluate profile signals. Returns (accepted, reason)."""
+    # Reject fan / parody accounts
+    if any(kw in bio for kw in FAN_KEYWORDS):
+        return False, "fan/parody account"
+
+    # Must have reasonable followers
+    if followers < 1000:
+        return False, f"too few followers ({followers})"
+
+    # Follower/following ratio — real artists typically have high ratio
+    ratio = followers / max(following, 1)
+
+    name_parts = artist_name.lower().split()
+    type_kws = TYPE_KEYWORDS.get(performer_type, [])
+
+    bio_match = any(k in bio for k in type_kws) if type_kws else False
+    name_match = any(p in name for p in name_parts)
+
+    if (bio_match or name_match) and ratio >= 2:
+        return True, "name/bio match + good ratio"
+
+    if name_match and followers >= 5_000:
+        return True, "name match + decent followers"
+
+    # High follower count + exists = likely correct
+    if followers >= 100_000:
+        return True, "high follower count"
+
+    if ratio < 1.5 and followers < 50_000:
+        return False, f"suspicious ratio ({ratio:.1f}) with low followers"
+
+    return False, "insufficient signals"
+
+
+def _verify_handle(
+    handle: str,
+    artist_name: str,
+    performer_type: str,
+    ddg_signals: "_DdgCandidate | None" = None,
+) -> tuple[bool, int]:
+    """Verify a handle via Instagram Business Discovery API, with DDG-signal fallback.
 
     Returns (verified, followers_count).
     """
@@ -294,33 +398,55 @@ def _verify_handle(handle: str, artist_name: str, performer_type: str) -> tuple[
             },
             timeout=15,
         )
-        if resp.status_code != 200:
-            return False, 0
 
-        bd = resp.json().get("business_discovery", {})
-        followers = bd.get("followers_count", 0)
-        bio = bd.get("biography", "").lower()
-        name = bd.get("name", "").lower()
+        if resp.status_code == 200:
+            # Business / creator account — use API data
+            bd = resp.json().get("business_discovery", {})
+            followers = bd.get("followers_count", 0)
+            bio = bd.get("biography", "").lower()
+            name = bd.get("name", "").lower()
+            following = 0  # Business Discovery doesn't expose following_count
 
-        # Must have reasonable followers
-        if followers < 1000:
-            return False, followers
+            ok, reason = _check_profile_signals(
+                followers, following, bio, name, artist_name, performer_type,
+            )
+            if ok:
+                print(f"    IG verify (business): @{handle} ✓ — {reason} ({followers} followers)")
+            else:
+                print(f"    IG verify (business): @{handle} ✗ — {reason}")
+            return ok, followers
 
-        # Check bio/name matches performer type or artist name
-        type_kws = TYPE_KEYWORDS.get(performer_type, [])
+        # Non-200 → likely a personal account (not business/creator).
+        # Use DDG snippet signals if available (follower count, display name, etc.)
+        if ddg_signals and ddg_signals.followers > 0:
+            ok, reason = _check_profile_signals(
+                ddg_signals.followers,
+                ddg_signals.following,
+                ddg_signals.description,
+                ddg_signals.display_name,
+                artist_name,
+                performer_type,
+            )
+            if ok:
+                ratio = ddg_signals.followers / max(ddg_signals.following, 1)
+                print(
+                    f"    IG verify (ddg-signals): @{handle} ✓ — {reason} "
+                    f"({ddg_signals.followers} followers, ratio {ratio:.1f})"
+                )
+            else:
+                print(f"    IG verify (ddg-signals): @{handle} ✗ — {reason}")
+            return ok, ddg_signals.followers
+
+        # Last resort: accept if handle closely matches artist name
+        handle_clean = handle.lower().replace("_", "").replace(".", "")
+        name_clean = artist_name.lower().replace(" ", "")
+        similarity = SequenceMatcher(None, name_clean, handle_clean).ratio()
         name_parts = artist_name.lower().split()
-
-        bio_match = any(k in bio for k in type_kws) if type_kws else False
-        name_match = any(p in name for p in name_parts)
-
-        if bio_match or name_match:
-            return True, followers
-
-        # High follower count + account exists = likely correct even without keyword match
-        if followers >= 100_000:
-            return True, followers
-
-        return False, followers
+        parts_in_handle = sum(1 for p in name_parts if p in handle.lower())
+        if similarity >= 0.7 and parts_in_handle >= len(name_parts):
+            print(f"    IG verify (name-match fallback): @{handle} ✓ — similarity {similarity:.2f}")
+            return True, 0
+        return False, 0
 
     except Exception:
         # API error — don't block, assume unverified
