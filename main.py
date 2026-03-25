@@ -371,6 +371,39 @@ def reconcile(dry_run: bool = False):
     conn.close()
 
 
+def backfill_handles():
+    """Look up Instagram handles for all future Indian events that don't have them cached."""
+    from image_generator.image_search import classify_event as classify_performer
+    from publisher.instagram_handle import lookup_instagram_handle
+    from data.store import get_connection
+
+    conn = get_connection()
+    rows = conn.execute(
+        """SELECT title, description FROM processed_events
+           WHERE is_indian = 1 AND date >= date('now')
+           ORDER BY date ASC"""
+    ).fetchall()
+    conn.close()
+
+    print(f"\n=== Backfilling Instagram handles for {len(rows)} future Indian events ===")
+    for title, description in rows:
+        try:
+            info = classify_performer(title, description or "")
+            artists = info.get("artist_names", [])
+            if not artists:
+                continue
+            print(f"\n  {title[:60]}")
+            for artist_name in artists:
+                try:
+                    lookup_instagram_handle(artist_name, info["type"])
+                except Exception as e:
+                    print(f"    Handle lookup error for '{artist_name}': {e}")
+        except Exception as e:
+            print(f"    Classification error for '{title[:50]}': {e}")
+
+    print("\nBackfill complete.")
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
@@ -381,10 +414,13 @@ if __name__ == "__main__":
     parser.add_argument("--classify-limit", type=int, default=10, help="Max events to classify per ingest (default: 10)")
     parser.add_argument("--no-stories", action="store_true", help="Skip publishing countdown stories")
     parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories")
+    parser.add_argument("--backfill-handles", action="store_true", help="Look up IG handles for all future Indian events missing them")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be posted without publishing")
     args = parser.parse_args()
 
-    if args.reconcile:
+    if args.backfill_handles:
+        backfill_handles()
+    elif args.reconcile:
         reconcile(dry_run=args.dry_run)
     elif args.stories_only:
         if args.dry_run:
