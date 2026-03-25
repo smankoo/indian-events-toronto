@@ -53,10 +53,14 @@ def lookup_instagram_handle(artist_name: str, performer_type: str) -> str | None
                 print(f"    IG handle (cached): @{handle}")
             return handle
 
-    # Source 1: Manual overrides (still verify to get follower count)
+    # Source 1: Manual overrides (verify to get follower count)
     handle = _lookup_manual(artist_name)
     if handle:
+        # Try Business Discovery API first
         verified, followers = _verify_handle(handle, artist_name, performer_type)
+        # If API couldn't get followers (personal account), try DDG for follower count
+        if followers == 0:
+            followers = _fetch_follower_count_ddg(handle)
         print(f"    IG handle (manual): @{handle} ({followers} followers)")
         save_handle_cache(artist_name, performer_type, handle, "manual", followers)
         return handle
@@ -279,6 +283,22 @@ def _lookup_ddg(artist_name: str, performer_type: str) -> list[_DdgCandidate]:
 
     scored.sort(key=lambda x: x.score, reverse=True)
     return scored[:3]  # top 3 candidates
+
+
+def _fetch_follower_count_ddg(handle: str) -> int:
+    """Quick DDG search to get follower count for a known handle."""
+    from ddgs import DDGS
+
+    try:
+        results = list(DDGS().text(f"instagram.com/{handle}", max_results=3))
+        for r in results:
+            text = (r.get("body", "") + " " + r.get("title", "")).lower()
+            count = _parse_count(text, r"([\d,.]+[KMkm]?)\s*followers")
+            if count > 0:
+                return count
+    except Exception:
+        pass
+    return 0
 
 
 def _lookup_llm(artist_name: str, performer_type: str) -> str | None:
