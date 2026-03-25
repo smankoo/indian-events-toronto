@@ -48,24 +48,24 @@ def score_event(event: Event, artist_followers: dict[str, int] | None = None) ->
     artist_followers = artist_followers or {}
 
     # ── Artist followers (0-40 points) ──
-    max_followers = max(artist_followers.values(), default=0)
+    # Use total followers across all artists (multi-artist events get combined reach)
     total_followers = sum(artist_followers.values())
 
-    if max_followers >= 500_000:
+    if total_followers >= 500_000:
         points += 40
-        reasons.append(f"Major artist ({_fmt(max_followers)} IG followers)")
-    elif max_followers >= 100_000:
+        reasons.append(f"Major artist(s) ({_fmt(total_followers)} total IG followers)")
+    elif total_followers >= 100_000:
         points += 30
-        reasons.append(f"Well-known artist ({_fmt(max_followers)} IG followers)")
-    elif max_followers >= 30_000:
+        reasons.append(f"Well-known artist(s) ({_fmt(total_followers)} total IG followers)")
+    elif total_followers >= 30_000:
         points += 20
-        reasons.append(f"Rising artist ({_fmt(max_followers)} IG followers)")
-    elif max_followers >= 5_000:
+        reasons.append(f"Rising artist(s) ({_fmt(total_followers)} total IG followers)")
+    elif total_followers >= 5_000:
         points += 10
-        reasons.append(f"Emerging artist ({_fmt(max_followers)} IG followers)")
-    elif max_followers > 0:
+        reasons.append(f"Emerging artist(s) ({_fmt(total_followers)} total IG followers)")
+    elif total_followers > 0:
         points += 0
-        reasons.append(f"Small following ({_fmt(max_followers)} IG followers)")
+        reasons.append(f"Small following ({_fmt(total_followers)} total IG followers)")
     else:
         reasons.append("No artist follower data")
 

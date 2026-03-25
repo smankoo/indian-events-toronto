@@ -86,10 +86,12 @@ def export_admin_json():
 
         artist_data = []
         max_followers = 0
+        total_followers = 0
         for a in artists:
             f = follower_cache.get(a.lower(), 0)
             h = handle_cache.get(a.lower())
             artist_data.append({"name": a, "handle": h, "followers": f})
+            total_followers += f
             if f > max_followers:
                 max_followers = f
 
@@ -112,6 +114,7 @@ def export_admin_json():
             "artists": artist_data,
             "signals": {
                 "max_followers": max_followers,
+                "total_followers": total_followers,
                 "venue_class": venue_class,
                 "event_format": event_format,
             },
