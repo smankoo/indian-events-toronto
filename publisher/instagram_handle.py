@@ -53,11 +53,12 @@ def lookup_instagram_handle(artist_name: str, performer_type: str) -> str | None
                 print(f"    IG handle (cached): @{handle}")
             return handle
 
-    # Source 1: Manual overrides
+    # Source 1: Manual overrides (still verify to get follower count)
     handle = _lookup_manual(artist_name)
     if handle:
-        print(f"    IG handle (manual): @{handle}")
-        save_handle_cache(artist_name, performer_type, handle, "manual", 0)
+        verified, followers = _verify_handle(handle, artist_name, performer_type)
+        print(f"    IG handle (manual): @{handle} ({followers} followers)")
+        save_handle_cache(artist_name, performer_type, handle, "manual", followers)
         return handle
 
     # Source 2: Wikidata P2003
