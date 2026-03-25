@@ -157,7 +157,14 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
 
     # Step 3b: Include previously classified but unposted events from DB
     new_ids = {(e.source, e.source_id) for e in indian_events}
-    unposted = [e for e in get_unposted_events() if (e.source, e.source_id) not in new_ids]
+    unposted = []
+    for e in get_unposted_events():
+        if (e.source, e.source_id) in new_ids:
+            continue
+        similar = find_similar_event(e)
+        if similar and similar["posted"]:
+            continue  # a similar event was already posted (e.g. different showtime)
+        unposted.append(e)
     if unposted:
         print(f"\n  + {len(unposted)} unposted event(s) from previous runs:")
         for e in unposted:
