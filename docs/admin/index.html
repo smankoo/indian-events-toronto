@@ -420,7 +420,8 @@ function scoreEvent(e, cfg) {
   let total = 0;
 
   // Followers
-  const mf = e.signals.max_followers;
+  // Use total followers across all artists on the event
+  const mf = e.signals.total_followers || e.signals.max_followers;
   let fPts = 0, fLabel = 'No data';
   if (mf > 0) {
     for (const t of cfg.followers.tiers) {
