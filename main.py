@@ -223,7 +223,10 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
             print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
         else:
             try:
-                media_id, posted_image_url = publish_post(path, caption, instagram_handles=ig_handles)
+                event_key = f"{event.source}::{event.source_id}"
+                media_id, posted_image_url = publish_post(
+                    path, caption, instagram_handles=ig_handles, event_key=event_key,
+                )
                 mark_posted(event.source, event.source_id, posted_image_url)
                 posted += 1
                 print(f"    -> Instagram published (media_id: {media_id})")
@@ -261,11 +264,83 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
     generate_linkinbio()
 
 
+def reconcile(dry_run: bool = False):
+    """Reconcile DB posted status with what's actually on Instagram.
+
+    Fetches all posts from our IG account, matches them to DB events via
+    alt_text keys (format "iet::source::source_id"), and marks any DB events
+    as unposted if they're no longer on Instagram (e.g. manually deleted).
+
+    For legacy posts without alt_text keys, falls back to caption title matching.
+    """
+    from publisher.instagram import fetch_posted_media
+    from data.store import get_connection
+
+    print("\n=== Reconciling DB with Instagram ===")
+
+    # Step 1: Fetch all posts from Instagram
+    print("  Fetching posts from Instagram...")
+    ig_media = fetch_posted_media(limit=200)
+    print(f"  Found {len(ig_media)} posts on Instagram")
+
+    # Build lookup sets
+    ig_keys = set()       # event keys from alt_text (reliable)
+    ig_captions = set()   # first line of captions (fallback for legacy)
+    for m in ig_media:
+        if m["event_key"]:
+            ig_keys.add(m["event_key"])
+        caption = m.get("caption", "") or ""
+        first_line = caption.split("\n")[0].strip()
+        if first_line:
+            ig_captions.add(first_line.lower())
+
+    # Step 2: Check DB events marked as posted
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT source, source_id, title FROM processed_events WHERE posted = 1 AND is_indian = 1"
+    ).fetchall()
+    print(f"  DB has {len(rows)} events marked as posted")
+
+    missing = []
+    for source, source_id, title in rows:
+        key = f"{source}::{source_id}"
+        if key in ig_keys:
+            continue  # found by alt_text key — confirmed on IG
+        # Fallback: check caption title match (for legacy posts without alt_text)
+        if title.lower() in ig_captions:
+            continue  # found by caption match
+        missing.append((source, source_id, title))
+
+    if not missing:
+        print("  ✓ All posted events are still on Instagram")
+        conn.close()
+        return
+
+    print(f"\n  Found {len(missing)} event(s) in DB marked posted but NOT on Instagram:")
+    for source, source_id, title in missing:
+        print(f"    - {title}")
+
+    if dry_run:
+        print(f"\n  [DRY RUN] Would mark {len(missing)} event(s) as unposted")
+    else:
+        for source, source_id, title in missing:
+            conn.execute(
+                "UPDATE processed_events SET posted = 0, posted_image_url = '' "
+                "WHERE source = ? AND source_id = ?",
+                (source, source_id),
+            )
+        conn.commit()
+        print(f"\n  ✓ Marked {len(missing)} event(s) as unposted — they'll be reposted on next --post run")
+
+    conn.close()
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--ingest", action="store_true", help="Ingest events: scrape sources, filter, classify, and save to DB")
     parser.add_argument("--post", action="store_true", help="Generate images and publish unposted events")
+    parser.add_argument("--reconcile", action="store_true", help="Sync DB posted status with what's actually on Instagram")
     parser.add_argument("--post-limit", type=int, default=2, help="Max posts per run (default: 2)")
     parser.add_argument("--classify-limit", type=int, default=10, help="Max events to classify per ingest (default: 10)")
     parser.add_argument("--no-stories", action="store_true", help="Skip publishing countdown stories")
@@ -273,7 +348,9 @@ if __name__ == "__main__":
     parser.add_argument("--dry-run", action="store_true", help="Show what would be posted without publishing")
     args = parser.parse_args()
 
-    if args.stories_only:
+    if args.reconcile:
+        reconcile(dry_run=args.dry_run)
+    elif args.stories_only:
         if args.dry_run:
             print("\n=== [DRY RUN] Countdown stories ===")
             candidates = get_story_candidates(max_days=5)

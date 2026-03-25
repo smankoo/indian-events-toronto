@@ -37,11 +37,13 @@ def upload_image(image_path: Path) -> str:
 
 
 def publish_post(image_path: Path, caption: str, instagram_handle: str | None = None,
-                 instagram_handles: list[str] | None = None) -> tuple[str, str]:
+                 instagram_handles: list[str] | None = None,
+                 event_key: str | None = None) -> tuple[str, str]:
     """
     Publish a single-image post to Instagram.
 
     If instagram_handles (or instagram_handle) is provided, artists are tagged in the image.
+    If event_key is provided, it's embedded as alt_text for reconciliation.
     Returns (media_id, public_image_url).
     """
     access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
@@ -59,6 +61,8 @@ def publish_post(image_path: Path, caption: str, instagram_handle: str | None = 
         "caption": caption,
         "access_token": access_token,
     }
+    if event_key:
+        container_data["alt_text"] = f"iet::{event_key}"
     handles_to_tag = instagram_handles or ([instagram_handle] if instagram_handle else [])
     if handles_to_tag:
         tags = []
@@ -175,6 +179,48 @@ def publish_story(image_path: Path) -> tuple[str, str]:
     media_id = resp.json()["id"]
     print(f"    Story published! Media ID: {media_id}")
     return media_id, image_url
+
+
+def fetch_posted_media(limit: int = 100) -> list[dict]:
+    """Fetch recent media from our IG account.
+
+    Returns list of dicts with keys: id, caption, timestamp, event_key.
+    event_key is extracted from alt_text (format "iet::source::source_id")
+    or None if not present (legacy posts without alt_text).
+    """
+    access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
+    ig_user_id = _get_env("INSTAGRAM_USER_ID")
+
+    media = []
+    url = f"{GRAPH_API}/{ig_user_id}/media"
+    params = {
+        "fields": "id,caption,timestamp,alt_text",
+        "limit": min(limit, 100),
+        "access_token": access_token,
+    }
+
+    while url and len(media) < limit:
+        resp = requests.get(url, params=params, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+
+        for m in data.get("data", []):
+            event_key = None
+            alt = m.get("alt_text", "") or ""
+            if alt.startswith("iet::"):
+                event_key = alt[5:]  # "source::source_id"
+            media.append({
+                "id": m["id"],
+                "caption": m.get("caption", ""),
+                "timestamp": m.get("timestamp", ""),
+                "event_key": event_key,
+            })
+
+        # Pagination
+        url = data.get("paging", {}).get("next")
+        params = {}  # next URL already includes params
+
+    return media[:limit]
 
 
 def build_caption(event, instagram_handle: str | None = None,
