@@ -6,301 +6,555 @@
 <title>IET Admin — Event Profiles</title>
 <style>
   :root {
-    --bg: #0f0f12;
-    --card: #16161e;
-    --card-hover: #1c1c26;
-    --accent: #FF9933;
-    --accent-dim: rgba(255,153,51,0.15);
-    --text: #e8e8f0;
-    --muted: #8888aa;
-    --green: #4ade80;
-    --red: #f87171;
-    --high: #FF9933;
-    --medium: #60a5fa;
-    --low: #8888aa;
+    --bg: #0f0f12; --card: #16161e; --card-hover: #1c1c26;
+    --accent: #FF9933; --accent-dim: rgba(255,153,51,0.15);
+    --text: #e8e8f0; --muted: #8888aa;
+    --green: #4ade80; --red: #f87171;
+    --high: #FF9933; --medium: #60a5fa; --low: #8888aa;
     --border: rgba(255,255,255,0.06);
+    --panel: #111118;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; display: flex;
   }
 
-  /* Header */
-  header {
-    padding: 28px 32px 20px;
+  /* ── Settings panel (left sidebar) ── */
+  .settings-panel {
+    width: 340px; min-width: 340px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 24px 20px;
+    overflow-y: auto;
+    height: 100vh;
+    position: sticky; top: 0;
+  }
+  .settings-panel h2 {
+    font-size: 14px; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 20px;
+  }
+
+  .factor-group {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
+  }
+  .factor-group:last-child { border-bottom: none; }
+  .factor-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .factor-name {
+    font-size: 13px; font-weight: 600; color: var(--text);
+  }
+  .factor-weight {
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  .weight-slider-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .weight-slider-row label {
+    font-size: 11px; color: var(--muted); width: 55px; text-align: right;
+    flex-shrink: 0;
+  }
+  .weight-slider-row input[type=range] { flex: 1; }
+  .weight-slider-row .val {
+    font-size: 12px; color: var(--accent); width: 28px;
+    font-weight: 700; text-align: right;
+  }
+
+  .threshold-row {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 6px;
+  }
+  .threshold-row label {
+    font-size: 11px; color: var(--muted); flex: 1;
+  }
+  .threshold-row input[type=number] {
+    width: 70px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); padding: 3px 6px; border-radius: 4px;
+    font-size: 12px; text-align: right;
+  }
+  .threshold-row .pts {
+    font-size: 11px; color: var(--accent); width: 30px;
+    font-weight: 600;
+  }
+
+  .tier-thresholds {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .tier-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .tier-row label { font-size: 12px; color: var(--muted); width: 65px; }
+  .tier-row input[type=number] {
+    width: 60px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); padding: 3px 6px; border-radius: 4px;
+    font-size: 12px; text-align: right;
+  }
+  .tier-badge-sm {
+    font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* ── Main content ── */
+  .main { flex: 1; overflow-y: auto; }
+
+  header {
+    padding: 24px 28px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
   }
   header h1 {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.3px;
+    font-size: 20px; font-weight: 700; color: var(--accent);
   }
   header h1 span { color: var(--muted); font-weight: 400; }
 
-  /* Filters */
-  .filters {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
   .filters button {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 5px 14px; border-radius: 18px;
+    font-size: 12px; cursor: pointer; transition: all 0.15s;
   }
   .filters button:hover { border-color: var(--accent); color: var(--text); }
   .filters button.active {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--accent);
+    background: var(--accent-dim); border-color: var(--accent); color: var(--accent);
   }
 
-  /* Stats bar */
   .stats {
-    padding: 16px 32px;
-    display: flex;
-    gap: 24px;
-    font-size: 13px;
-    color: var(--muted);
+    padding: 12px 28px; display: flex; gap: 20px;
+    font-size: 12px; color: var(--muted);
     border-bottom: 1px solid var(--border);
   }
   .stats strong { color: var(--text); }
 
-  /* Event list */
-  .events { padding: 16px 32px; }
+  .events { padding: 12px 28px 40px; }
 
   .event-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 16px;
-    align-items: start;
-    transition: background 0.15s;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 8px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 12px; align-items: start; transition: background 0.15s;
   }
   .event-card:hover { background: var(--card-hover); }
 
-  .event-main { min-width: 0; }
-  .event-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-  .event-title a {
-    color: var(--text);
-    text-decoration: none;
-  }
+  .event-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+  .event-title a { color: var(--text); text-decoration: none; }
   .event-title a:hover { color: var(--accent); }
 
   .event-meta {
-    font-size: 13px;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 16px;
-    margin-bottom: 10px;
+    font-size: 12px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 3px 14px; margin-bottom: 8px;
   }
 
-  .artists {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
+  .artists { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
   .artist-tag {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.05);
-    color: var(--muted);
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
   }
-  .artist-tag .followers {
-    color: var(--accent);
-    margin-left: 4px;
-  }
+  .artist-tag .followers { color: var(--accent); margin-left: 3px; }
 
-  .reasons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+  /* Score breakdown pills */
+  .breakdown { display: flex; flex-wrap: wrap; gap: 4px; }
+  .bp {
+    font-size: 10px; padding: 2px 7px; border-radius: 6px;
+    border: 1px solid var(--border); color: var(--muted);
+    display: flex; align-items: center; gap: 4px;
   }
-  .reason {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.03);
-    color: var(--muted);
-    border: 1px solid var(--border);
+  .bp .pts-earned {
+    font-weight: 700; min-width: 16px; text-align: right;
   }
+  .bp.pos .pts-earned { color: var(--accent); }
+  .bp.zero .pts-earned { color: #555; }
+  .bp .factor-label { opacity: 0.8; }
+  .bp .detail { color: #666; }
 
-  /* Right side: tier badge + status */
   .event-side {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-    min-width: 100px;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    min-width: 90px;
   }
-
   .tier-badge {
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 14px;
-    border-radius: 16px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 11px; font-weight: 700; padding: 3px 12px;
+    border-radius: 14px; text-transform: uppercase; letter-spacing: 0.8px;
   }
-  .tier-high {
-    background: rgba(255,153,51,0.15);
-    color: var(--high);
-    border: 1px solid rgba(255,153,51,0.3);
-  }
-  .tier-medium {
-    background: rgba(96,165,250,0.12);
-    color: var(--medium);
-    border: 1px solid rgba(96,165,250,0.25);
-  }
-  .tier-low {
-    background: rgba(136,136,170,0.1);
-    color: var(--low);
-    border: 1px solid rgba(136,136,170,0.2);
-  }
+  .tier-high { background: rgba(255,153,51,0.15); color: var(--high); border: 1px solid rgba(255,153,51,0.3); }
+  .tier-medium { background: rgba(96,165,250,0.12); color: var(--medium); border: 1px solid rgba(96,165,250,0.25); }
+  .tier-low { background: rgba(136,136,170,0.1); color: var(--low); border: 1px solid rgba(136,136,170,0.2); }
 
-  .score {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-  }
-  .score-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+  .score { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+  .score-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-  .status-badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-  .status {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 8px;
-  }
+  .status-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .status { font-size: 10px; padding: 2px 6px; border-radius: 6px; }
   .status-posted { background: rgba(74,222,128,0.12); color: var(--green); }
   .status-unposted { background: rgba(248,113,113,0.12); color: var(--red); }
-  .status-story { background: rgba(96,165,250,0.12); color: var(--medium); }
 
-  .event-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 6px;
-    object-fit: cover;
-    border: 1px solid var(--border);
+  input[type=range] {
+    -webkit-appearance: none; height: 4px; border-radius: 2px;
+    background: var(--border); outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--accent); cursor: pointer;
   }
 
-  /* Responsive */
-  @media (max-width: 640px) {
-    header, .stats, .events { padding-left: 16px; padding-right: 16px; }
-    .event-card { grid-template-columns: 1fr; }
-    .event-side { flex-direction: row; align-items: center; }
+  @media (max-width: 900px) {
+    body { flex-direction: column; }
+    .settings-panel { width: 100%; min-width: 0; height: auto; position: static;
+      border-right: none; border-bottom: 1px solid var(--border); }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>IET Admin <span>— Event Profiles</span></h1>
-  <div class="filters">
-    <button class="active" data-filter="all">All</button>
-    <button data-filter="High">High</button>
-    <button data-filter="Medium">Medium</button>
-    <button data-filter="Low">Low</button>
-    <button data-filter="unposted">Unposted</button>
-  </div>
-</header>
+<!-- ── Settings panel ── -->
+<div class="settings-panel">
+  <h2>Scoring Settings</h2>
 
-<div class="stats" id="stats"></div>
-<div class="events" id="events"></div>
+  <!-- Artist Followers -->
+  <div class="factor-group">
+    <div class="factor-header">
+      <span class="factor-name">Artist Followers</span>
+      <span class="factor-weight">max <span id="w-followers-val">40</span> pts</span>
+    </div>
+    <div class="weight-slider-row">
+      <label>Max pts</label>
+      <input type="range" min="0" max="60" value="40" id="w-followers" oninput="updateSettings()">
+      <span class="val" id="w-followers-display">40</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ <input type="number" value="500000" id="t-followers-4" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-followers-4">40</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ <input type="number" value="100000" id="t-followers-3" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-followers-3">30</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ <input type="number" value="30000" id="t-followers-2" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-followers-2">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ <input type="number" value="5000" id="t-followers-1" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-followers-1">10</span>
+    </div>
+  </div>
+
+  <!-- Ticket Price -->
+  <div class="factor-group">
+    <div class="factor-header">
+      <span class="factor-name">Ticket Price</span>
+      <span class="factor-weight">max <span id="w-price-val">20</span> pts</span>
+    </div>
+    <div class="weight-slider-row">
+      <label>Max pts</label>
+      <input type="range" min="0" max="40" value="20" id="w-price" oninput="updateSettings()">
+      <span class="val" id="w-price-display">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ CA$<input type="number" value="100" id="t-price-4" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-price-4">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ CA$<input type="number" value="50" id="t-price-3" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-price-3">15</span>
+    </div>
+    <div class="threshold-row">
+      <label>≥ CA$<input type="number" value="25" id="t-price-2" oninput="updateSettings()"> → </label>
+      <span class="pts" id="pts-price-2">8</span>
+    </div>
+  </div>
+
+  <!-- Venue -->
+  <div class="factor-group">
+    <div class="factor-header">
+      <span class="factor-name">Venue</span>
+      <span class="factor-weight">max <span id="w-venue-val">20</span> pts</span>
+    </div>
+    <div class="weight-slider-row">
+      <label>Max pts</label>
+      <input type="range" min="0" max="40" value="20" id="w-venue" oninput="updateSettings()">
+      <span class="val" id="w-venue-display">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>Major venue →</label>
+      <span class="pts" id="pts-venue-major">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>Mid-size venue →</label>
+      <span class="pts" id="pts-venue-mid">12</span>
+    </div>
+    <div class="threshold-row">
+      <label>Unknown venue →</label>
+      <span class="pts" id="pts-venue-unknown">5</span>
+    </div>
+    <div class="threshold-row">
+      <label>Small venue →</label>
+      <span class="pts" id="pts-venue-small">0</span>
+    </div>
+  </div>
+
+  <!-- Event Format -->
+  <div class="factor-group">
+    <div class="factor-header">
+      <span class="factor-name">Event Format</span>
+      <span class="factor-weight">max <span id="w-format-val">20</span> pts</span>
+    </div>
+    <div class="weight-slider-row">
+      <label>Max pts</label>
+      <input type="range" min="0" max="40" value="20" id="w-format" oninput="updateSettings()">
+      <span class="val" id="w-format-display">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>Tour / concert →</label>
+      <span class="pts" id="pts-format-tour">20</span>
+    </div>
+    <div class="threshold-row">
+      <label>Standard →</label>
+      <span class="pts" id="pts-format-standard">10</span>
+    </div>
+    <div class="threshold-row">
+      <label>Party / social →</label>
+      <span class="pts" id="pts-format-party">0</span>
+    </div>
+  </div>
+
+  <!-- Tier Thresholds -->
+  <div class="tier-thresholds">
+    <div class="factor-header">
+      <span class="factor-name">Tier Thresholds</span>
+    </div>
+    <div class="tier-row">
+      <label><span class="tier-badge-sm tier-high">High</span></label>
+      <span style="font-size:12px;color:var(--muted)">≥</span>
+      <input type="number" value="55" id="tier-high" oninput="updateSettings()">
+      <span style="font-size:11px;color:var(--muted)">pts</span>
+    </div>
+    <div class="tier-row">
+      <label><span class="tier-badge-sm tier-medium">Medium</span></label>
+      <span style="font-size:12px;color:var(--muted)">≥</span>
+      <input type="number" value="25" id="tier-medium" oninput="updateSettings()">
+      <span style="font-size:11px;color:var(--muted)">pts</span>
+    </div>
+    <div class="tier-row">
+      <label><span class="tier-badge-sm tier-low">Low</span></label>
+      <span style="font-size:12px;color:var(--muted)">&lt;</span>
+      <span style="font-size:12px;color:var(--muted)" id="low-threshold">25</span>
+      <span style="font-size:11px;color:var(--muted)">pts</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Main content ── -->
+<div class="main">
+  <header>
+    <h1>IET Admin <span>— Event Profiles</span></h1>
+    <div class="filters">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="High">High</button>
+      <button data-filter="Medium">Medium</button>
+      <button data-filter="Low">Low</button>
+      <button data-filter="unposted">Unposted</button>
+    </div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="events" id="events"></div>
+</div>
 
 <script>
 let allEvents = [];
 let activeFilter = 'all';
 
-async function load() {
-  const resp = await fetch('events.json');
-  allEvents = await resp.json();
+// ── Scoring config (mirrors Python defaults) ──
+function getConfig() {
+  const wF = +document.getElementById('w-followers').value;
+  const wP = +document.getElementById('w-price').value;
+  const wV = +document.getElementById('w-venue').value;
+  const wFmt = +document.getElementById('w-format').value;
+
+  return {
+    followers: {
+      maxPts: wF,
+      tiers: [
+        { min: +document.getElementById('t-followers-4').value, pts: wF },
+        { min: +document.getElementById('t-followers-3').value, pts: Math.round(wF * 0.75) },
+        { min: +document.getElementById('t-followers-2').value, pts: Math.round(wF * 0.5) },
+        { min: +document.getElementById('t-followers-1').value, pts: Math.round(wF * 0.25) },
+      ],
+    },
+    price: {
+      maxPts: wP,
+      tiers: [
+        { min: +document.getElementById('t-price-4').value, pts: wP },
+        { min: +document.getElementById('t-price-3').value, pts: Math.round(wP * 0.75) },
+        { min: +document.getElementById('t-price-2').value, pts: Math.round(wP * 0.4) },
+      ],
+    },
+    venue: {
+      maxPts: wV,
+      pts: {
+        major: wV,
+        mid: Math.round(wV * 0.6),
+        unknown: Math.round(wV * 0.25),
+        small: 0,
+      },
+    },
+    format: {
+      maxPts: wFmt,
+      pts: { tour: wFmt, standard: Math.round(wFmt * 0.5), party: 0 },
+    },
+    tierHigh: +document.getElementById('tier-high').value,
+    tierMedium: +document.getElementById('tier-medium').value,
+  };
+}
+
+function scoreEvent(e, cfg) {
+  const breakdown = [];
+  let total = 0;
+
+  // Followers
+  const mf = e.signals.max_followers;
+  let fPts = 0, fLabel = 'No data';
+  if (mf > 0) {
+    for (const t of cfg.followers.tiers) {
+      if (mf >= t.min) { fPts = t.pts; fLabel = fmtK(mf); break; }
+    }
+  }
+  total += fPts;
+  breakdown.push({ factor: 'Followers', pts: fPts, detail: fLabel, maxPts: cfg.followers.maxPts });
+
+  // Price
+  const pv = e.price_val;
+  let pPts = 0, pLabel = 'No data';
+  if (pv !== null) {
+    pLabel = 'CA$' + Math.round(pv);
+    for (const t of cfg.price.tiers) {
+      if (pv >= t.min) { pPts = t.pts; break; }
+    }
+  }
+  total += pPts;
+  breakdown.push({ factor: 'Price', pts: pPts, detail: pLabel, maxPts: cfg.price.maxPts });
+
+  // Venue
+  const vc = e.signals.venue_class;
+  const vPts = cfg.venue.pts[vc] || 0;
+  total += vPts;
+  breakdown.push({ factor: 'Venue', pts: vPts, detail: vc, maxPts: cfg.venue.maxPts });
+
+  // Format
+  const ef = e.signals.event_format;
+  const efPts = cfg.format.pts[ef] || 0;
+  total += efPts;
+  breakdown.push({ factor: 'Format', pts: efPts, detail: ef, maxPts: cfg.format.maxPts });
+
+  const tier = total >= cfg.tierHigh ? 'High' : total >= cfg.tierMedium ? 'Medium' : 'Low';
+  return { tier, score: total, breakdown };
+}
+
+function updateSettings() {
+  const cfg = getConfig();
+
+  // Update displayed point values
+  ['followers', 'price', 'venue', 'format'].forEach(f => {
+    const v = +document.getElementById('w-' + f).value;
+    document.getElementById('w-' + f + '-val').textContent = v;
+    document.getElementById('w-' + f + '-display').textContent = v;
+  });
+
+  // Follower tier points
+  const wF = cfg.followers.maxPts;
+  document.getElementById('pts-followers-4').textContent = wF;
+  document.getElementById('pts-followers-3').textContent = Math.round(wF * 0.75);
+  document.getElementById('pts-followers-2').textContent = Math.round(wF * 0.5);
+  document.getElementById('pts-followers-1').textContent = Math.round(wF * 0.25);
+
+  // Price tier points
+  const wP = cfg.price.maxPts;
+  document.getElementById('pts-price-4').textContent = wP;
+  document.getElementById('pts-price-3').textContent = Math.round(wP * 0.75);
+  document.getElementById('pts-price-2').textContent = Math.round(wP * 0.4);
+
+  // Venue points
+  const wV = cfg.venue.maxPts;
+  document.getElementById('pts-venue-major').textContent = wV;
+  document.getElementById('pts-venue-mid').textContent = Math.round(wV * 0.6);
+  document.getElementById('pts-venue-unknown').textContent = Math.round(wV * 0.25);
+  document.getElementById('pts-venue-small').textContent = 0;
+
+  // Format points
+  const wFmt = cfg.format.maxPts;
+  document.getElementById('pts-format-tour').textContent = wFmt;
+  document.getElementById('pts-format-standard').textContent = Math.round(wFmt * 0.5);
+  document.getElementById('pts-format-party').textContent = 0;
+
+  // Low threshold label
+  document.getElementById('low-threshold').textContent = cfg.tierMedium;
+
   render();
 }
 
 function render() {
-  const filtered = allEvents.filter(e => {
+  const cfg = getConfig();
+
+  // Score all events
+  const scored = allEvents.map(e => ({ ...e, ...scoreEvent(e, cfg) }));
+
+  const filtered = scored.filter(e => {
     if (activeFilter === 'all') return true;
     if (activeFilter === 'unposted') return !e.posted;
-    return e.profile.tier === activeFilter;
+    return e.tier === activeFilter;
   });
 
   // Stats
-  const high = allEvents.filter(e => e.profile.tier === 'High').length;
-  const med = allEvents.filter(e => e.profile.tier === 'Medium').length;
-  const low = allEvents.filter(e => e.profile.tier === 'Low').length;
-  const posted = allEvents.filter(e => e.posted).length;
+  const high = scored.filter(e => e.tier === 'High').length;
+  const med = scored.filter(e => e.tier === 'Medium').length;
+  const low = scored.filter(e => e.tier === 'Low').length;
+  const posted = scored.filter(e => e.posted).length;
+  const maxPossible = cfg.followers.maxPts + cfg.price.maxPts + cfg.venue.maxPts + cfg.format.maxPts;
   document.getElementById('stats').innerHTML =
-    `<span><strong>${allEvents.length}</strong> events</span>` +
+    `<span><strong>${scored.length}</strong> events</span>` +
     `<span style="color:var(--high)"><strong>${high}</strong> high</span>` +
     `<span style="color:var(--medium)"><strong>${med}</strong> medium</span>` +
     `<span style="color:var(--low)"><strong>${low}</strong> low</span>` +
-    `<span><strong>${posted}</strong>/${allEvents.length} posted</span>`;
+    `<span><strong>${posted}</strong>/${scored.length} posted</span>` +
+    `<span>Max possible: <strong>${maxPossible}</strong> pts</span>`;
 
   // Cards
   document.getElementById('events').innerHTML = filtered.map(e => {
     const d = new Date(e.date);
     const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-    const tierClass = `tier-${e.profile.tier.toLowerCase()}`;
+    const tierClass = `tier-${e.tier.toLowerCase()}`;
 
     const artistsHtml = e.artists.map(a => {
       const handle = a.handle ? `@${a.handle}` : a.name;
-      const followers = a.followers > 0
-        ? `<span class="followers">${fmtK(a.followers)}</span>`
-        : '';
+      const followers = a.followers > 0 ? `<span class="followers">${fmtK(a.followers)}</span>` : '';
       return `<span class="artist-tag">${handle}${followers}</span>`;
     }).join('');
 
-    const reasonsHtml = e.profile.reasons.map(r =>
-      `<span class="reason">${r}</span>`
-    ).join('');
+    const breakdownHtml = e.breakdown.map(b => {
+      const cls = b.pts > 0 ? 'pos' : 'zero';
+      return `<span class="bp ${cls}">` +
+        `<span class="pts-earned">${b.pts}</span>` +
+        `<span class="factor-label">${b.factor}</span>` +
+        `<span class="detail">${b.detail}</span>` +
+        `</span>`;
+    }).join('');
 
-    const statusHtml = [
-      e.posted ? '<span class="status status-posted">Posted</span>' : '<span class="status status-unposted">Not posted</span>',
-      e.story_days_posted ? `<span class="status status-story">Stories: ${e.story_days_posted}</span>` : '',
-    ].filter(Boolean).join('');
-
-    const imgHtml = e.posted_image_url
-      ? `<img class="event-image" src="${e.posted_image_url}" alt="">`
-      : '';
+    const statusHtml = e.posted
+      ? '<span class="status status-posted">Posted</span>'
+      : '<span class="status status-unposted">Not posted</span>';
 
     return `
       <div class="event-card">
-        <div class="event-main">
+        <div>
           <div class="event-title">
-            ${imgHtml}
             ${e.event_url ? `<a href="${e.event_url}" target="_blank">${e.title}</a>` : e.title}
           </div>
           <div class="event-meta">
@@ -310,11 +564,11 @@ function render() {
             ${e.price ? `<span>${e.price}</span>` : ''}
           </div>
           ${artistsHtml ? `<div class="artists">${artistsHtml}</div>` : ''}
-          <div class="reasons">${reasonsHtml}</div>
+          <div class="breakdown">${breakdownHtml}</div>
         </div>
         <div class="event-side">
-          <span class="tier-badge ${tierClass}">${e.profile.tier}</span>
-          <span class="score">${e.profile.score}</span>
+          <span class="tier-badge ${tierClass}">${e.tier}</span>
+          <span class="score">${e.score}</span>
           <span class="score-label">score</span>
           <div class="status-badges">${statusHtml}</div>
         </div>
@@ -323,8 +577,8 @@ function render() {
 }
 
 function fmtK(n) {
-  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-  if (n >= 1000) return Math.round(n/1000) + 'K';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n / 1000) + 'K';
   return n;
 }
 
@@ -337,7 +591,11 @@ document.querySelector('.filters').addEventListener('click', e => {
   render();
 });
 
-load();
+// Load data and render
+fetch('events.json').then(r => r.json()).then(data => {
+  allEvents = data;
+  updateSettings();
+});
 </script>
 </body>
 </html>
