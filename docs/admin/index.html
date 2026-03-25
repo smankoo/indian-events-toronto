@@ -230,20 +230,16 @@
       <span class="val" id="w-followers-display">40</span>
     </div>
     <div class="threshold-row">
-      <label>≥ <input type="number" value="500000" id="t-followers-4" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-followers-4">40</span>
+      <label>Floor (0 pts below)</label>
+      <input type="number" value="1000" id="t-followers-floor" oninput="updateSettings()">
     </div>
     <div class="threshold-row">
-      <label>≥ <input type="number" value="100000" id="t-followers-3" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-followers-3">30</span>
+      <label>Ceiling (max pts at)</label>
+      <input type="number" value="5000000" id="t-followers-ceil" oninput="updateSettings()">
     </div>
-    <div class="threshold-row">
-      <label>≥ <input type="number" value="30000" id="t-followers-2" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-followers-2">20</span>
-    </div>
-    <div class="threshold-row">
-      <label>≥ <input type="number" value="5000" id="t-followers-1" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-followers-1">10</span>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">
+      Log-proportional between floor and ceiling.<br>
+      <span id="followers-examples"></span>
     </div>
   </div>
 
@@ -382,12 +378,8 @@ function getConfig() {
   return {
     followers: {
       maxPts: wF,
-      tiers: [
-        { min: +document.getElementById('t-followers-4').value, pts: wF },
-        { min: +document.getElementById('t-followers-3').value, pts: Math.round(wF * 0.75) },
-        { min: +document.getElementById('t-followers-2').value, pts: Math.round(wF * 0.5) },
-        { min: +document.getElementById('t-followers-1').value, pts: Math.round(wF * 0.25) },
-      ],
+      floor: +document.getElementById('t-followers-floor').value,
+      ceil: +document.getElementById('t-followers-ceil').value,
     },
     price: {
       maxPts: wP,
@@ -419,13 +411,18 @@ function scoreEvent(e, cfg) {
   const breakdown = [];
   let total = 0;
 
-  // Followers
-  // Use total followers across all artists on the event
+  // Followers — log-proportional between floor and ceiling
   const mf = e.signals.total_followers || e.signals.max_followers;
   let fPts = 0, fLabel = 'No data';
   if (mf > 0) {
-    for (const t of cfg.followers.tiers) {
-      if (mf >= t.min) { fPts = t.pts; fLabel = fmtK(mf); break; }
+    fLabel = fmtK(mf);
+    if (mf >= cfg.followers.ceil) {
+      fPts = cfg.followers.maxPts;
+    } else if (mf > cfg.followers.floor) {
+      const logFloor = Math.log10(cfg.followers.floor);
+      const logCeil = Math.log10(cfg.followers.ceil);
+      const logVal = Math.log10(mf);
+      fPts = Math.round(((logVal - logFloor) / (logCeil - logFloor)) * cfg.followers.maxPts);
     }
   }
   total += fPts;
@@ -469,12 +466,19 @@ function updateSettings() {
     document.getElementById('w-' + f + '-display').textContent = v;
   });
 
-  // Follower tier points
+  // Show example follower scores
   const wF = cfg.followers.maxPts;
-  document.getElementById('pts-followers-4').textContent = wF;
-  document.getElementById('pts-followers-3').textContent = Math.round(wF * 0.75);
-  document.getElementById('pts-followers-2').textContent = Math.round(wF * 0.5);
-  document.getElementById('pts-followers-1').textContent = Math.round(wF * 0.25);
+  const fl = cfg.followers.floor, cl = cfg.followers.ceil;
+  const logFl = Math.log10(fl), logCl = Math.log10(cl);
+  const exampleF = (n) => {
+    if (n <= fl) return 0;
+    if (n >= cl) return wF;
+    return Math.round(((Math.log10(n) - logFl) / (logCl - logFl)) * wF);
+  };
+  document.getElementById('followers-examples').innerHTML =
+    [5000, 50000, 100000, 500000, 1000000, 3000000].map(n =>
+      `${fmtK(n)} → <strong>${exampleF(n)}</strong>`
+    ).join(' · ');
 
   // Price tier points
   const wP = cfg.price.maxPts;

@@ -14,6 +14,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "small",
       "event_format": "party"
     }
@@ -33,6 +34,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "small",
       "event_format": "party"
     }
@@ -52,6 +54,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "small",
       "event_format": "standard"
     }
@@ -73,15 +76,19 @@
         "name": "Farhan Sabri",
         "handle": "farhansabriofficial",
         "followers": 115000
+<<<<<<< Updated upstream
       },
       {
         "name": "Priyanzah Belange",
         "handle": "priyanzah_belange",
         "followers": 185
+=======
+>>>>>>> Stashed changes
       }
     ],
     "signals": {
       "max_followers": 115000,
+      "total_followers": 115000,
       "venue_class": "unknown",
       "event_format": "standard"
     }
@@ -101,6 +108,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "unknown",
       "event_format": "party"
     }
@@ -126,6 +134,7 @@
     ],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "mid",
       "event_format": "standard"
     }
@@ -145,6 +154,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "small",
       "event_format": "party"
     }
@@ -161,6 +171,7 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
+<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Amit Tandon",
@@ -170,6 +181,12 @@
     ],
     "signals": {
       "max_followers": 369000,
+=======
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+>>>>>>> Stashed changes
       "venue_class": "major",
       "event_format": "standard"
     }
@@ -186,6 +203,7 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
+<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Amit Tandon",
@@ -195,6 +213,12 @@
     ],
     "signals": {
       "max_followers": 369000,
+=======
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+>>>>>>> Stashed changes
       "venue_class": "major",
       "event_format": "standard"
     }
@@ -230,6 +254,7 @@
     ],
     "signals": {
       "max_followers": 139000,
+      "total_followers": 225451,
       "venue_class": "unknown",
       "event_format": "standard"
     }
@@ -249,6 +274,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "unknown",
       "event_format": "party"
     }
@@ -268,6 +294,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "small",
       "event_format": "party"
     }
@@ -287,6 +314,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "mid",
       "event_format": "standard"
     }
@@ -312,6 +340,7 @@
     ],
     "signals": {
       "max_followers": 104000,
+      "total_followers": 104000,
       "venue_class": "major",
       "event_format": "tour"
     }
@@ -337,6 +366,7 @@
     ],
     "signals": {
       "max_followers": 338000,
+      "total_followers": 338000,
       "venue_class": "mid",
       "event_format": "standard"
     }
@@ -353,6 +383,7 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
+<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Abhishek Upmanyu",
@@ -362,6 +393,12 @@
     ],
     "signals": {
       "max_followers": 3000000,
+=======
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+>>>>>>> Stashed changes
       "venue_class": "major",
       "event_format": "standard"
     }
@@ -381,6 +418,7 @@
     "artists": [],
     "signals": {
       "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "unknown",
       "event_format": "party"
     }

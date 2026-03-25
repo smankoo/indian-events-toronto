@@ -7,6 +7,7 @@ Signals used:
   - Event type patterns in title
 """
 
+import math
 import re
 from dataclasses import dataclass, field
 
@@ -47,25 +48,26 @@ def score_event(event: Event, artist_followers: dict[str, int] | None = None) ->
     reasons = []
     artist_followers = artist_followers or {}
 
-    # ── Artist followers (0-40 points) ──
+    # ── Artist followers (0-40 points, log-proportional) ──
     # Use total followers across all artists (multi-artist events get combined reach)
     total_followers = sum(artist_followers.values())
+    follower_max_pts = 40
+    follower_floor = 1_000
+    follower_ceil = 5_000_000
 
-    if total_followers >= 500_000:
-        points += 40
-        reasons.append(f"Major artist(s) ({_fmt(total_followers)} total IG followers)")
-    elif total_followers >= 100_000:
-        points += 30
-        reasons.append(f"Well-known artist(s) ({_fmt(total_followers)} total IG followers)")
-    elif total_followers >= 30_000:
-        points += 20
-        reasons.append(f"Rising artist(s) ({_fmt(total_followers)} total IG followers)")
-    elif total_followers >= 5_000:
-        points += 10
-        reasons.append(f"Emerging artist(s) ({_fmt(total_followers)} total IG followers)")
-    elif total_followers > 0:
-        points += 0
-        reasons.append(f"Small following ({_fmt(total_followers)} total IG followers)")
+    if total_followers >= follower_ceil:
+        f_pts = follower_max_pts
+    elif total_followers > follower_floor:
+        log_floor = math.log10(follower_floor)
+        log_ceil = math.log10(follower_ceil)
+        log_val = math.log10(total_followers)
+        f_pts = round(((log_val - log_floor) / (log_ceil - log_floor)) * follower_max_pts)
+    else:
+        f_pts = 0
+    points += f_pts
+
+    if total_followers > 0:
+        reasons.append(f"{_fmt(total_followers)} total IG followers → {f_pts}/{follower_max_pts} pts")
     else:
         reasons.append("No artist follower data")
 
