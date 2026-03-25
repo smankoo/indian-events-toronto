@@ -2,9 +2,9 @@ name: Post to Instagram + Facebook
 
 on:
   schedule:
-    # Twice daily: 9am and 6pm EDT (offset 1hr from scrape to let it finish first)
-    - cron: "0 13 * * *"
-    - cron: "0 22 * * *"
+    # Twice daily: 8am and 4pm EDT (offset 1hr from ingest to let it finish first)
+    - cron: "0 12 * * *"
+    - cron: "0 20 * * *"
   workflow_dispatch:
     inputs:
       post_limit:
