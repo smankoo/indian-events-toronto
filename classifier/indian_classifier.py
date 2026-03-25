@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 from openai import OpenAI
 
@@ -46,7 +47,7 @@ EXCLUDE (these are HARD rules — never classify as Indian):
 
 ## Job 2: Clean up the event title
 Scraped event titles often have formatting issues and redundant info. Return a polished version:
-- Remove venue names, city names, and location info that's redundant (we show these separately on the post). E.g. "Afghan Party Night Eid Special Toronto Luna Lounge" → "Afghan Party Night Eid Special", "Bollywood Night at Rebel Toronto" → "Bollywood Night"
+- Remove venue names, city names, and location info that's redundant (we show these separately on the post). Specifically remove "Live In Toronto", "Live In Brampton", "Live In Mississauga", "In Toronto", venue names, etc. Examples: "Halwa By Amit Tandon Stand Up Comedy Live In Toronto" → "Halwa By Amit Tandon Stand Up Comedy", "Bismil Ki Mehfil - Main Hoon Sufi - Live In Toronto" → "Bismil Ki Mehfil - Main Hoon Sufi", "Bollywood Night at Rebel Toronto" → "Bollywood Night"
 - Remove redundant dates/years from titles (e.g. "Diwali Bash 2026 March 22" → "Diwali Bash 2026")
 - Fix bad spacing (e.g. "2026Dopamine" → "2026 Dopamine", "Dopamine , Bollywood" → "Dopamine, Bollywood")
 - Fix obvious typos/misspellings (e.g. "Bollwood" → "Bollywood")
@@ -84,7 +85,27 @@ Organizer: {organizer or 'N/A'}"""
 
     try:
         result = json.loads(text)
-        return result.get("is_indian", False), result.get("reason", ""), result.get("cleaned_title", title)
+        cleaned = result.get("cleaned_title", title)
+        cleaned = _strip_location_suffix(cleaned)
+        return result.get("is_indian", False), result.get("reason", ""), cleaned
     except json.JSONDecodeError:
         is_indian = '"is_indian": true' in text.lower() or '"is_indian":true' in text.lower()
-        return is_indian, text, title
+        return is_indian, text, _strip_location_suffix(title)
+
+
+def _strip_location_suffix(title: str) -> str:
+    """Deterministic fallback: strip trailing location phrases the LLM missed."""
+    # Order matters — try longest patterns first
+    patterns = [
+        r'\s*[-–—]\s*Live\s+In\s+\w+.*$',       # "- Live In Toronto"
+        r'\s*Live\s+In\s+\w+.*$',                 # "Live In Toronto"
+        r'\s*[-–—]\s*In\s+Toronto.*$',             # "- In Toronto"
+        r'\s*[-–—]\s*In\s+Brampton.*$',
+        r'\s*[-–—]\s*In\s+Mississauga.*$',
+        r'\s*[-–—]\s*Toronto\s*$',                 # "- Toronto"
+        r'\s*[-–—]\s*Brampton\s*$',
+        r'\s*[-–—]\s*Mississauga\s*$',
+    ]
+    for pat in patterns:
+        title = re.sub(pat, '', title, flags=re.IGNORECASE)
+    return title.strip()
