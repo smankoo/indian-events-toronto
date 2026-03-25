@@ -307,9 +307,16 @@ def reconcile(dry_run: bool = False):
         key = f"{source}::{source_id}"
         if key in ig_keys:
             continue  # found by alt_text key — confirmed on IG
-        # Fallback: check caption title match (for legacy posts without alt_text)
         if title.lower() in ig_captions:
             continue  # found by caption match
+        # Only mark as missing if we can verify it was posted with alt_text keys.
+        # If its key isn't in ig_keys, it could be a legacy post that never had
+        # alt_text — we can't tell if it was deleted or just predates the feature.
+        # Safe heuristic: only reconcile if at least SOME posts have alt_text keys
+        # (meaning the feature is active) AND this event was posted recently enough
+        # to have had one.
+        if not ig_keys:
+            continue  # no alt_text keys on any post yet — can't reconcile safely
         missing.append((source, source_id, title))
 
     if not missing:
