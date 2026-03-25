@@ -76,19 +76,16 @@
         "name": "Farhan Sabri",
         "handle": "farhansabriofficial",
         "followers": 115000
-<<<<<<< Updated upstream
       },
       {
         "name": "Priyanzah Belange",
         "handle": "priyanzah_belange",
         "followers": 185
-=======
->>>>>>> Stashed changes
       }
     ],
     "signals": {
       "max_followers": 115000,
-      "total_followers": 115000,
+      "total_followers": 115185,
       "venue_class": "unknown",
       "event_format": "standard"
     }
@@ -171,7 +168,6 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
-<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Amit Tandon",
@@ -181,12 +177,7 @@
     ],
     "signals": {
       "max_followers": 369000,
-=======
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
->>>>>>> Stashed changes
+      "total_followers": 369000,
       "venue_class": "major",
       "event_format": "standard"
     }
@@ -203,7 +194,6 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
-<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Amit Tandon",
@@ -213,12 +203,7 @@
     ],
     "signals": {
       "max_followers": 369000,
-=======
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
->>>>>>> Stashed changes
+      "total_followers": 369000,
       "venue_class": "major",
       "event_format": "standard"
     }
@@ -383,7 +368,6 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
-<<<<<<< Updated upstream
     "artists": [
       {
         "name": "Abhishek Upmanyu",
@@ -393,12 +377,7 @@
     ],
     "signals": {
       "max_followers": 3000000,
-=======
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
->>>>>>> Stashed changes
+      "total_followers": 3000000,
       "venue_class": "major",
       "event_format": "standard"
     }
