@@ -294,10 +294,11 @@ def reconcile(dry_run: bool = False):
         if first_line:
             ig_captions.add(first_line.lower())
 
-    # Step 2: Check DB events marked as posted
+    # Step 2: Check DB events marked as posted (future events only)
     conn = get_connection()
     rows = conn.execute(
-        "SELECT source, source_id, title FROM processed_events WHERE posted = 1 AND is_indian = 1"
+        "SELECT source, source_id, title FROM processed_events "
+        "WHERE posted = 1 AND is_indian = 1 AND date >= date('now')"
     ).fetchall()
     print(f"  DB has {len(rows)} events marked as posted")
 
