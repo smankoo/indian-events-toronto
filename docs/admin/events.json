@@ -158,8 +158,8 @@
     "price": "CAD 45.00",
     "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
-    "posted": true,
-    "posted_image_url": "https://iili.io/q6js72f.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
