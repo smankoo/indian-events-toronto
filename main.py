@@ -91,8 +91,21 @@ def publish_stories():
             print(f"    -> STORY ERROR: {e}")
 
 
-def ingest(classify_limit: int = 10):
-    """Ingest events: scrape sources, filter, classify, and save to DB. No image generation or publishing."""
+def ingest(classify_limit: int = 10, enrich: bool = True):
+    """Ingest pipeline: scrape → filter → classify → enrich.
+
+    Scraping discovers new events and saves them to the DB.
+    Enrichment (handle lookups) runs on ALL future Indian events,
+    not just newly scraped ones, to keep data fresh.
+    """
+    _scrape(classify_limit)
+    if enrich:
+        _enrich()
+    print("\nIngestion complete. Run --post to generate images and publish.")
+
+
+def _scrape(classify_limit: int = 10):
+    """Scrape sources, filter, classify, and save to DB."""
     # Step 1: Scrape sources
     print("\n=== STEP 1: Scraping events ===")
     events = scrape_events()
@@ -121,13 +134,12 @@ def ingest(classify_limit: int = 10):
     print(f"{len(new_events)} after dedup\n")
 
     if not new_events:
-        print("No new events to process. Done!")
+        print("No new events to process.")
         return
 
     # Step 3: Classify (lazily — stop after classify_limit)
     print(f"=== STEP 3: Classifying events (limit: {classify_limit}) ===")
     indian_count = 0
-    indian_events = []
     classified = 0
     for i, event in enumerate(new_events):
         if classified >= classify_limit:
@@ -151,31 +163,46 @@ def ingest(classify_limit: int = 10):
         classified += 1
         if is_indian:
             indian_count += 1
-            indian_events.append(event)
 
     print(f"\n{indian_count} Indian events found (classified {classified}/{len(new_events)})")
 
-    # Step 4: Look up Instagram handles for all artists in Indian events
-    if indian_events:
-        print(f"\n=== STEP 4: Looking up artist Instagram handles ===")
-        from image_generator.image_search import classify_event as classify_performer
-        from publisher.instagram_handle import lookup_instagram_handle
 
-        for event in indian_events:
-            try:
-                info = classify_performer(event.title, event.description)
-                artists = info.get("artist_names", [])
-                if not artists:
-                    continue
-                for artist_name in artists:
-                    try:
-                        lookup_instagram_handle(artist_name, info["type"])
-                    except Exception as e:
-                        print(f"    Handle lookup error for '{artist_name}': {e}")
-            except Exception as e:
-                print(f"    Classification error for '{event.title[:50]}': {e}")
+def _enrich():
+    """Enrich ALL future Indian events: look up artist IG handles and followers.
 
-    print("Ingestion complete. Run --post to generate images and publish.")
+    Runs on every event, not just new ones — the handle cache ensures
+    already-looked-up artists are instant (no API calls).
+    """
+    from image_generator.image_search import classify_event as classify_performer
+    from publisher.instagram_handle import lookup_instagram_handle
+    from data.store import get_connection
+
+    conn = get_connection()
+    rows = conn.execute(
+        """SELECT title, description FROM processed_events
+           WHERE is_indian = 1 AND date >= date('now')
+           ORDER BY date ASC"""
+    ).fetchall()
+    conn.close()
+
+    print(f"\n=== Enriching {len(rows)} future Indian events ===")
+    enriched = 0
+    for title, description in rows:
+        try:
+            info = classify_performer(title, description or "")
+            artists = info.get("artist_names", [])
+            if not artists:
+                continue
+            for artist_name in artists:
+                try:
+                    lookup_instagram_handle(artist_name, info["type"])
+                    enriched += 1
+                except Exception as e:
+                    print(f"    Handle lookup error for '{artist_name}': {e}")
+        except Exception as e:
+            print(f"    Classification error for '{title[:50]}': {e}")
+
+    print(f"  Enrichment done ({enriched} artist lookups)")
 
 
 def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
@@ -372,35 +399,8 @@ def reconcile(dry_run: bool = False):
 
 
 def backfill_handles():
-    """Look up Instagram handles for all future Indian events that don't have them cached."""
-    from image_generator.image_search import classify_event as classify_performer
-    from publisher.instagram_handle import lookup_instagram_handle
-    from data.store import get_connection
-
-    conn = get_connection()
-    rows = conn.execute(
-        """SELECT title, description FROM processed_events
-           WHERE is_indian = 1 AND date >= date('now')
-           ORDER BY date ASC"""
-    ).fetchall()
-    conn.close()
-
-    print(f"\n=== Backfilling Instagram handles for {len(rows)} future Indian events ===")
-    for title, description in rows:
-        try:
-            info = classify_performer(title, description or "")
-            artists = info.get("artist_names", [])
-            if not artists:
-                continue
-            print(f"\n  {title[:60]}")
-            for artist_name in artists:
-                try:
-                    lookup_instagram_handle(artist_name, info["type"])
-                except Exception as e:
-                    print(f"    Handle lookup error for '{artist_name}': {e}")
-        except Exception as e:
-            print(f"    Classification error for '{title[:50]}': {e}")
-
+    """Alias for _enrich() — look up IG handles for all future Indian events."""
+    _enrich()
     print("\nBackfill complete.")
 
 

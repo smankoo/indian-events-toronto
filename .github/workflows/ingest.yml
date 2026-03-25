@@ -41,7 +41,7 @@ jobs:
           uv venv
           uv pip install -r requirements.txt
 
-      - name: Ingest and classify events
+      - name: Ingest, classify, and enrich events
         run: |
           CLASSIFY_LIMIT=${{ inputs.classify_limit || 10 }}
           CLASSIFY_LIMIT=${CLASSIFY_LIMIT%.*}
