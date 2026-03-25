@@ -80,14 +80,16 @@ jobs:
 
       - name: Run pipeline
         run: |
+          POST_LIMIT=${{ inputs.post_limit || 2 }}
+          POST_LIMIT=${POST_LIMIT%.*}
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            .venv/bin/python main.py --dry-run --no-stories --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --dry-run --no-stories --post-limit $POST_LIMIT
           elif [ "${{ inputs.publish_only }}" = "true" ]; then
-            .venv/bin/python main.py --publish-only --no-stories --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish-only --no-stories --post-limit $POST_LIMIT
           elif [ "${{ inputs.publish }}" = "false" ]; then
-            .venv/bin/python main.py --no-stories --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --no-stories --post-limit $POST_LIMIT
           else
-            .venv/bin/python main.py --publish --no-stories --post-limit ${{ inputs.post_limit || 2 }}
+            .venv/bin/python main.py --publish --no-stories --post-limit $POST_LIMIT
           fi
 
       - name: Commit updated database
