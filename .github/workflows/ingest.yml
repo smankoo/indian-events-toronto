@@ -1,0 +1,56 @@
+name: Ingest Events
+
+on:
+  schedule:
+    # Twice daily: 8am and 5pm EDT (UTC-4). During EST these run at 7am and 4pm ET.
+    - cron: "0 12 * * *"
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+    inputs:
+      classify_limit:
+        description: "Max events to classify (LLM calls)"
+        type: number
+        default: 10
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ingest-events
+      cancel-in-progress: false
+
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Ingest and classify events
+        run: |
+          CLASSIFY_LIMIT=${{ inputs.classify_limit || 10 }}
+          CLASSIFY_LIMIT=${CLASSIFY_LIMIT%.*}
+          .venv/bin/python main.py --ingest --classify-limit $CLASSIFY_LIMIT
+
+      - name: Commit updated database
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+          git add data/events.db
+          git diff --cached --quiet && echo "No changes" || git commit -m "Update events database (ingest) [skip ci]"
+          git push
