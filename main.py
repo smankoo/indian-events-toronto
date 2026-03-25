@@ -127,6 +127,7 @@ def ingest(classify_limit: int = 10):
     # Step 3: Classify (lazily — stop after classify_limit)
     print(f"=== STEP 3: Classifying events (limit: {classify_limit}) ===")
     indian_count = 0
+    indian_events = []
     classified = 0
     for i, event in enumerate(new_events):
         if classified >= classify_limit:
@@ -150,8 +151,30 @@ def ingest(classify_limit: int = 10):
         classified += 1
         if is_indian:
             indian_count += 1
+            indian_events.append(event)
 
     print(f"\n{indian_count} Indian events found (classified {classified}/{len(new_events)})")
+
+    # Step 4: Look up Instagram handles for all artists in Indian events
+    if indian_events:
+        print(f"\n=== STEP 4: Looking up artist Instagram handles ===")
+        from image_generator.image_search import classify_event as classify_performer
+        from publisher.instagram_handle import lookup_instagram_handle
+
+        for event in indian_events:
+            try:
+                info = classify_performer(event.title, event.description)
+                artists = info.get("artist_names", [])
+                if not artists:
+                    continue
+                for artist_name in artists:
+                    try:
+                        lookup_instagram_handle(artist_name, info["type"])
+                    except Exception as e:
+                        print(f"    Handle lookup error for '{artist_name}': {e}")
+            except Exception as e:
+                print(f"    Classification error for '{event.title[:50]}': {e}")
+
     print("Ingestion complete. Run --post to generate images and publish.")
 
 
