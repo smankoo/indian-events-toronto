@@ -1,5 +1,7 @@
+import re
 import sqlite3
 from datetime import datetime
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from models import Event
@@ -65,6 +67,42 @@ def is_new(event: Event) -> bool:
     ).fetchone()
     conn.close()
     return row is None
+
+
+def _normalize_title(title: str) -> str:
+    """Normalize a title for fuzzy comparison — strip times, years, filler."""
+    t = title.lower()
+    t = re.sub(r'\(?\d{1,2}:\d{2}\s*(?:am|pm)\)?', '', t)
+    t = re.sub(r'\b20\d{2}\b', '', t)
+    for filler in ['live in toronto', 'live in brampton', 'live in mississauga',
+                   'toronto', 'brampton', 'mississauga', 'live', 'in', 'on']:
+        t = re.sub(rf'\b{filler}\b', '', t)
+    t = re.sub(r'[^a-z0-9 ]', '', t)
+    return ' '.join(t.split())
+
+
+def find_similar_event(event: Event) -> dict | None:
+    """Check if a similar event (same date, similar title) already exists in the DB.
+
+    Returns a dict with 'source_id', 'posted', 'title' if found, else None.
+    """
+    conn = get_connection()
+    date_str = event.date.strftime("%Y-%m-%d")
+    rows = conn.execute(
+        """SELECT source_id, title, posted FROM processed_events
+           WHERE source = ? AND date LIKE ? || '%'""",
+        (event.source, date_str),
+    ).fetchall()
+    conn.close()
+
+    norm = _normalize_title(event.title)
+    for source_id, title, posted in rows:
+        if source_id == event.source_id:
+            continue  # exact same event, not a "similar" match
+        similarity = SequenceMatcher(None, norm, _normalize_title(title)).ratio()
+        if similarity > 0.7:
+            return {"source_id": source_id, "title": title, "posted": bool(posted)}
+    return None
 
 
 def save_event(event: Event, is_indian: bool, classification_reason: str = ""):

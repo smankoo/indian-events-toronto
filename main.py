@@ -9,31 +9,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from scraper.sulekha import scrape_events
-from data.store import is_new, save_event, mark_posted, get_unposted_events, get_story_candidates, mark_story_posted
+from data.store import is_new, find_similar_event, save_event, mark_posted, get_unposted_events, get_story_candidates, mark_story_posted, _normalize_title
 from classifier.indian_classifier import classify_event
 from image_generator.create_post import create_post_image
 from publisher.instagram import publish_post, publish_story, build_caption
 from publisher.facebook import publish_to_facebook, build_fb_caption
 from publisher.linkinbio import generate_linkinbio
 
-import re
 from difflib import SequenceMatcher
-
-
-def _normalize_title(title: str) -> str:
-    """Normalize a title for fuzzy comparison — strip times, years, filler."""
-    t = title.lower()
-    # Remove time references like (3:30pm), (7:00 pm)
-    t = re.sub(r'\(?\d{1,2}:\d{2}\s*(?:am|pm)\)?', '', t)
-    # Remove years
-    t = re.sub(r'\b20\d{2}\b', '', t)
-    # Remove common filler
-    for filler in ['live in toronto', 'live in brampton', 'live in mississauga',
-                   'toronto', 'brampton', 'mississauga', 'live', 'in', 'on']:
-        t = re.sub(rf'\b{filler}\b', '', t)
-    # Collapse whitespace and strip punctuation
-    t = re.sub(r'[^a-z0-9 ]', '', t)
-    return ' '.join(t.split())
 
 
 def dedup_events(events: list) -> list:
@@ -126,6 +109,10 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
             skipped_location += 1
             print(f"  Skipping (not GTA): {e.title[:50]} [{e.city or 'no city'}]")
             continue
+        similar = find_similar_event(e)
+        if similar:
+            print(f"  Skipping (similar to existing): {e.title[:50]} ≈ \"{similar['title'][:50]}\" (posted={similar['posted']})")
+            continue
         new_events.append(e)
     print(f"{len(new_events)} new GTA events ({skipped_location} skipped for location)")
 
@@ -166,7 +153,18 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
                 print(f"\n  Reached target of {target} Indian events, skipping remaining {len(new_events) - classified} events")
                 break
 
-    print(f"\n{len(indian_events)} Indian events found (classified {classified}/{len(new_events)})\n")
+    print(f"\n{len(indian_events)} Indian events found (classified {classified}/{len(new_events)})")
+
+    # Step 3b: Include previously classified but unposted events from DB
+    new_ids = {(e.source, e.source_id) for e in indian_events}
+    unposted = [e for e in get_unposted_events() if (e.source, e.source_id) not in new_ids]
+    if unposted:
+        print(f"\n  + {len(unposted)} unposted event(s) from previous runs:")
+        for e in unposted:
+            print(f"    - {e.title[:60]} ({e.date.strftime('%b %d')})")
+        indian_events.extend(unposted)
+
+    print()
 
     # Step 4: Generate images
     to_generate = indian_events[:limit] if limit else indian_events
