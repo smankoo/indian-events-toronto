@@ -87,8 +87,17 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
           git add data/events.db docs/
-          git diff --cached --quiet && echo "No changes" || git commit -m "Update events database and link-in-bio (post) [skip ci]"
-          git push
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update events database and link-in-bio (post) [skip ci]"
+          # Retry push if another workflow pushed first (binary DB can't merge)
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), pulling and recommitting..."
+            git pull --rebase --strategy-option=theirs origin main
+            .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+            git add data/events.db docs/
+            git diff --cached --quiet || git commit -m "Update events database and link-in-bio (post) [skip ci]"
+          done
 
       - name: Deploy to GitHub Pages
         if: always()
