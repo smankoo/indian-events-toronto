@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IET Admin — Event Profiles</title>
+<style>
+  :root {
+    --bg: #0f0f12;
+    --card: #16161e;
+    --card-hover: #1c1c26;
+    --accent: #FF9933;
+    --accent-dim: rgba(255,153,51,0.15);
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --green: #4ade80;
+    --red: #f87171;
+    --high: #FF9933;
+    --medium: #60a5fa;
+    --low: #8888aa;
+    --border: rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Header */
+  header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  header h1 span { color: var(--muted); font-weight: 400; }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filters button {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filters button:hover { border-color: var(--accent); color: var(--text); }
+  .filters button.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Stats bar */
+  .stats {
+    padding: 16px 32px;
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .stats strong { color: var(--text); }
+
+  /* Event list */
+  .events { padding: 16px 32px; }
+
+  .event-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    transition: background 0.15s;
+  }
+  .event-card:hover { background: var(--card-hover); }
+
+  .event-main { min-width: 0; }
+  .event-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .event-title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .event-title a:hover { color: var(--accent); }
+
+  .event-meta {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-bottom: 10px;
+  }
+
+  .artists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .artist-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+  }
+  .artist-tag .followers {
+    color: var(--accent);
+    margin-left: 4px;
+  }
+
+  .reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .reason {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* Right side: tier badge + status */
+  .event-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: 100px;
+  }
+
+  .tier-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tier-high {
+    background: rgba(255,153,51,0.15);
+    color: var(--high);
+    border: 1px solid rgba(255,153,51,0.3);
+  }
+  .tier-medium {
+    background: rgba(96,165,250,0.12);
+    color: var(--medium);
+    border: 1px solid rgba(96,165,250,0.25);
+  }
+  .tier-low {
+    background: rgba(136,136,170,0.1);
+    color: var(--low);
+    border: 1px solid rgba(136,136,170,0.2);
+  }
+
+  .score {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+  .score-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .status {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .status-posted { background: rgba(74,222,128,0.12); color: var(--green); }
+  .status-unposted { background: rgba(248,113,113,0.12); color: var(--red); }
+  .status-story { background: rgba(96,165,250,0.12); color: var(--medium); }
+
+  .event-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    header, .stats, .events { padding-left: 16px; padding-right: 16px; }
+    .event-card { grid-template-columns: 1fr; }
+    .event-side { flex-direction: row; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IET Admin <span>— Event Profiles</span></h1>
+  <div class="filters">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="High">High</button>
+    <button data-filter="Medium">Medium</button>
+    <button data-filter="Low">Low</button>
+    <button data-filter="unposted">Unposted</button>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+<div class="events" id="events"></div>
+
+<script>
+let allEvents = [];
+let activeFilter = 'all';
+
+async function load() {
+  const resp = await fetch('events.json');
+  allEvents = await resp.json();
+  render();
+}
+
+function render() {
+  const filtered = allEvents.filter(e => {
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'unposted') return !e.posted;
+    return e.profile.tier === activeFilter;
+  });
+
+  // Stats
+  const high = allEvents.filter(e => e.profile.tier === 'High').length;
+  const med = allEvents.filter(e => e.profile.tier === 'Medium').length;
+  const low = allEvents.filter(e => e.profile.tier === 'Low').length;
+  const posted = allEvents.filter(e => e.posted).length;
+  document.getElementById('stats').innerHTML =
+    `<span><strong>${allEvents.length}</strong> events</span>` +
+    `<span style="color:var(--high)"><strong>${high}</strong> high</span>` +
+    `<span style="color:var(--medium)"><strong>${med}</strong> medium</span>` +
+    `<span style="color:var(--low)"><strong>${low}</strong> low</span>` +
+    `<span><strong>${posted}</strong>/${allEvents.length} posted</span>`;
+
+  // Cards
+  document.getElementById('events').innerHTML = filtered.map(e => {
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const tierClass = `tier-${e.profile.tier.toLowerCase()}`;
+
+    const artistsHtml = e.artists.map(a => {
+      const handle = a.handle ? `@${a.handle}` : a.name;
+      const followers = a.followers > 0
+        ? `<span class="followers">${fmtK(a.followers)}</span>`
+        : '';
+      return `<span class="artist-tag">${handle}${followers}</span>`;
+    }).join('');
+
+    const reasonsHtml = e.profile.reasons.map(r =>
+      `<span class="reason">${r}</span>`
+    ).join('');
+
+    const statusHtml = [
+      e.posted ? '<span class="status status-posted">Posted</span>' : '<span class="status status-unposted">Not posted</span>',
+      e.story_days_posted ? `<span class="status status-story">Stories: ${e.story_days_posted}</span>` : '',
+    ].filter(Boolean).join('');
+
+    const imgHtml = e.posted_image_url
+      ? `<img class="event-image" src="${e.posted_image_url}" alt="">`
+      : '';
+
+    return `
+      <div class="event-card">
+        <div class="event-main">
+          <div class="event-title">
+            ${imgHtml}
+            ${e.event_url ? `<a href="${e.event_url}" target="_blank">${e.title}</a>` : e.title}
+          </div>
+          <div class="event-meta">
+            <span>${dateStr}</span>
+            ${e.time ? `<span>${e.time}</span>` : ''}
+            <span>${e.venue}${e.city ? ' · ' + e.city : ''}</span>
+            ${e.price ? `<span>${e.price}</span>` : ''}
+          </div>
+          ${artistsHtml ? `<div class="artists">${artistsHtml}</div>` : ''}
+          <div class="reasons">${reasonsHtml}</div>
+        </div>
+        <div class="event-side">
+          <span class="tier-badge ${tierClass}">${e.profile.tier}</span>
+          <span class="score">${e.profile.score}</span>
+          <span class="score-label">score</span>
+          <div class="status-badges">${statusHtml}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function fmtK(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n/1000) + 'K';
+  return n;
+}
+
+// Filter buttons
+document.querySelector('.filters').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  activeFilter = e.target.dataset.filter;
+  render();
+});
+
+load();
+</script>
+</body>
+</html>

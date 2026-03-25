@@ -263,6 +263,11 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
     print("\n=== Updating link-in-bio page ===")
     generate_linkinbio()
 
+    # Export admin dashboard data
+    print("\n=== Updating admin dashboard ===")
+    from publisher.admin_export import export_admin_json
+    export_admin_json()
+
 
 def reconcile(dry_run: bool = False):
     """Reconcile DB posted status with what's actually on Instagram.
