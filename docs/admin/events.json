@@ -1,88 +1,69 @@
 [
   {
-    "source": "sulekha",
-    "source_id": "399108",
     "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
     "date": "2026-03-27T22:30:00-05:00",
     "time": "10:30 PM",
     "venue": "The Dopamine Lounge",
     "city": "Toronto",
     "price": "CAD 22.90",
+    "price_val": 22.9,
     "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399108",
     "posted": true,
     "posted_image_url": "https://iili.io/qruIuJ1.png",
     "story_days_posted": "3,2",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 0,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$22.9)",
-        "Small venue (The Dopamine Lounge)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "small",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398551",
     "title": "A Curated Speed Dating Evening For South Asians (ages 30-40)",
     "date": "2026-03-28T19:00:00-04:00",
     "time": "7:00 PM",
     "venue": "Desi Bar & Grill",
     "city": "Brampton",
     "price": "CAD 22.63",
+    "price_val": 22.63,
     "event_url": "https://events.sulekha.com/brampton-on-a-curated-speed-dating-evening-for-south-asians-ages-30-40_event-in_brampton-on_398551",
     "posted": true,
     "posted_image_url": "https://iili.io/qruTDG4.png",
     "story_days_posted": "4,3",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 0,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$22.63)",
-        "Small venue (Desi Bar & Grill)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "small",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398885",
     "title": "Socials 2026 Dopamine, Bollywood X Latin X Hip Hop",
     "date": "2026-03-29T20:00:00-04:00",
     "time": "8:00 PM",
     "venue": "The Dopamine - Pub & Lounge",
     "city": "Toronto",
     "price": "CAD 26.11",
+    "price_val": 26.11,
     "event_url": "https://events.sulekha.com/socials-2026-dopamine-bollywood-x-latin-x-hip-hop_event-in_toronto-on_398885",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYUipp.png",
     "story_days_posted": "4",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 18,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$26.11)",
-        "Small venue (The Dopamine - Pub & Lounge)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "small",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "397683",
     "title": "Sabri Ki Mehfil By Farhan Sabri & Priyanzah Belange",
     "date": "2026-04-03T18:30:00-05:00",
     "time": "6:30 PM",
     "venue": "IKON Event Space",
     "city": "Mississauga",
     "price": "CAD 125.00",
+    "price_val": 125.0,
     "event_url": "https://events.sulekha.com/sabri-ki-mehfil-by-farhan-sabri-priyanzah-belange-in-toronto_event-in_mississauga-on_397683",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYZGAg.png",
@@ -99,51 +80,39 @@
         "followers": 0
       }
     ],
-    "profile": {
-      "tier": "High",
-      "score": 65,
-      "reasons": [
-        "Well-known artist (115K IG followers)",
-        "Premium ticket price (CA$125.0)",
-        "Unknown venue type (IKON Event Space)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 115000,
+      "venue_class": "unknown",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399194",
     "title": "Bollywood After Dark",
     "date": "2026-04-04T22:00:00-05:00",
     "time": "10:00 PM",
     "venue": "Oria on King",
     "city": "Toronto",
     "price": "CAD 9.31",
+    "price_val": 9.31,
     "event_url": "https://events.sulekha.com/bollywood-after-dark_event-in_toronto-on_399194",
     "posted": true,
     "posted_image_url": "https://iili.io/q6jI7HJ.png",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 5,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$9.31)",
-        "Unknown venue type (Oria on King)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398563",
     "title": "Bismil Ki Mehfil - Main Hoon Sufi - Live In Toronto",
     "date": "2026-04-10T19:00:00-04:00",
     "time": "7:00 PM",
     "venue": "Embassy Grand Convention Centre and Banquet Hall in Brampton",
     "city": "Brampton",
     "price": "CAD 76.37",
+    "price_val": 76.37,
     "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
     "posted": true,
     "posted_image_url": "https://iili.io/q6jRTzv.png",
@@ -155,51 +124,39 @@
         "followers": 0
       }
     ],
-    "profile": {
-      "tier": "Medium",
-      "score": 37,
-      "reasons": [
-        "No artist follower data",
-        "Mid-range ticket price (CA$76.37)",
-        "Mid-size venue (Embassy Grand Convention Centre and Banquet Hall in Brampton)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "mid",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399303",
     "title": "Desi Singles Comedy Show & Matchmaking",
     "date": "2026-04-18T22:00:00-05:00",
     "time": "10:00 PM",
     "venue": "Desi Food Junction | Indian Restaurant | Hakka | Momos | Bar",
     "city": "Toronto",
     "price": "CAD 6.66",
+    "price_val": 6.66,
     "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399303",
     "posted": true,
     "posted_image_url": "https://iili.io/qiGOQgn.png",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 0,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$6.66)",
-        "Small venue (Desi Food Junction | Indian Restaurant | Hakka | Momos | Bar)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "small",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398019",
     "title": "Halwa By Amit Tandon Stand Up Comedy",
     "date": "2026-04-19T15:30:00-04:00",
     "time": "3:30 PM",
     "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
     "city": "Toronto",
     "price": "CAD 45.00",
+    "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
     "posted": true,
     "posted_image_url": "https://iili.io/q6js72f.png",
@@ -211,26 +168,20 @@
         "followers": 0
       }
     ],
-    "profile": {
-      "tier": "Medium",
-      "score": 38,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$45.0)",
-        "Major venue (Metro Toronto Convention Centre - John Bassett Theatre)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "major",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "396955",
     "title": "Halwa By Amit Tandon Stand Up Comedy",
     "date": "2026-04-19T19:00:00-04:00",
     "time": "7:00 PM",
     "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
     "city": "Toronto",
     "price": "CAD 45.00",
+    "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto_event-in_toronto-on_396955",
     "posted": false,
     "posted_image_url": "",
@@ -242,26 +193,20 @@
         "followers": 0
       }
     ],
-    "profile": {
-      "tier": "Medium",
-      "score": 38,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$45.0)",
-        "Major venue (Metro Toronto Convention Centre - John Bassett Theatre)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "major",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398883",
     "title": "Afusic X Jani Ft. Ali Soomro - Live In Toronto",
     "date": "2026-04-24T19:00:00-04:00",
     "time": "7:00 PM",
     "venue": "To be Announced",
     "city": "Toronto",
     "price": "CAD 27.96",
+    "price_val": 27.96,
     "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
     "posted": true,
     "posted_image_url": "https://iili.io/qiGLTt1.png",
@@ -283,190 +228,143 @@
         "followers": 84000
       }
     ],
-    "profile": {
-      "tier": "Medium",
-      "score": 53,
-      "reasons": [
-        "Well-known artist (139K IG followers)",
-        "Standard ticket price (CA$27.96)",
-        "Unknown venue type (To be Announced)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 139000,
+      "venue_class": "unknown",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399116",
     "title": "Bollywood Desi Night: Bollywood & Indo House Party",
     "date": "2026-04-25T22:00:00-05:00",
     "time": "10:00 PM",
     "venue": "Dine & Dim",
     "city": "Toronto",
     "price": "CAD 22.63",
+    "price_val": 22.63,
     "event_url": "https://events.sulekha.com/bollywood-desi-night-bollywood-indo-house-party_event-in_toronto-on_399116",
     "posted": true,
     "posted_image_url": "https://iili.io/qsYIGi7.png",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 5,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$22.63)",
-        "Unknown venue type (Dine & Dim)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399103",
     "title": "Bollywood After Dark \u2013 Bollywood & Bhangra Party",
     "date": "2026-04-25T22:00:00-05:00",
     "time": "10:00 PM",
     "venue": "Tenjin Karaoke Bar",
     "city": "Toronto",
     "price": "CAD 11.98",
+    "price_val": 11.98,
     "event_url": "https://events.sulekha.com/bollywood-after-dark-toronto-bollywood-bhangra-party-april-25_event-in_toronto-on_399103",
     "posted": true,
     "posted_image_url": "https://iili.io/qsY5mHF.png",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 0,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$11.98)",
-        "Small venue (Tenjin Karaoke Bar)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "small",
+      "event_format": "party"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399122",
     "title": "Nari In Sari",
     "date": "2026-05-01T19:30:00-05:00",
     "time": "7:30 PM",
     "venue": "Chef Kausar-s Autaq Banquet Hall",
     "city": "Mississauga",
     "price": "CAD 38.95",
+    "price_val": 38.95,
     "event_url": "https://events.sulekha.com/nari-in-sari_event-in_mississauga-on_399122",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Medium",
-      "score": 30,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$38.95)",
-        "Mid-size venue (Chef Kausar-s Autaq Banquet Hall)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "mid",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398647",
     "title": "Sanam North American Tour 2026",
     "date": "2026-05-01T20:00:00-05:00",
     "time": "8:00 PM",
     "venue": "Meridian Hall",
     "city": "Toronto",
     "price": "CAD 79.00",
+    "price_val": 79.0,
     "event_url": "https://events.sulekha.com/sanam-north-american-tour-2026-toronto-on_event-in_toronto-on_398647",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "High",
-      "score": 55,
-      "reasons": [
-        "No artist follower data",
-        "Mid-range ticket price (CA$79.0)",
-        "Major venue (Meridian Hall)",
-        "Tour/concert format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "major",
+      "event_format": "tour"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "397947",
     "title": "Hoemonal - Sumukhi Suresh Standup Comedy Live 2026",
     "date": "2026-05-09T19:00:00-04:00",
     "time": "7:00 PM",
     "venue": "Isabel Bader Theatre",
     "city": "Toronto",
     "price": "CAD 40.00",
+    "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toronto-hoemonal-sumuki-suresh-standup-comedy-live-2026_event-in_toronto-on_397947",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Medium",
-      "score": 30,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$40.0)",
-        "Mid-size venue (Isabel Bader Theatre)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "mid",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "398779",
     "title": "Toxic - Abhishek Upmanyu",
     "date": "2026-05-10T18:30:00-05:00",
     "time": "6:30 PM",
     "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
     "city": "Toronto",
     "price": "CAD 40.00",
+    "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toxic-abhishek-upmanyu-live-in-toronto_event-in_toronto-on_398779",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Medium",
-      "score": 38,
-      "reasons": [
-        "No artist follower data",
-        "Standard ticket price (CA$40.0)",
-        "Major venue (Metro Toronto Convention Centre - John Bassett Theatre)",
-        "Standard event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "major",
+      "event_format": "standard"
     }
   },
   {
-    "source": "sulekha",
-    "source_id": "399288",
     "title": "Bollywood Moves & Grooves With Sudipta Ghosh",
     "date": "2026-05-28T19:00:00-05:00",
     "time": "7:00 PM",
     "venue": "Royal Canadian Legion Branch 582",
     "city": "Mississauga",
     "price": "CAD 23.18",
+    "price_val": 23.18,
     "event_url": "https://events.sulekha.com/bollywood-moves-grooves-with-sudipta-ghosh_event-in_mississauga-on_399288",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
-    "profile": {
-      "tier": "Low",
-      "score": 5,
-      "reasons": [
-        "No artist follower data",
-        "Budget ticket price (CA$23.18)",
-        "Unknown venue type (Royal Canadian Legion Branch 582)",
-        "Party/social event format"
-      ]
+    "signals": {
+      "max_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "party"
     }
   }
 ]

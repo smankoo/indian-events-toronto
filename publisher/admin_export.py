@@ -1,18 +1,52 @@
-"""Export event data with profile scores to JSON for the admin dashboard."""
+"""Export event data with raw signals to JSON for the admin dashboard.
+
+Scoring is done client-side in the admin page so the user can
+tweak weights and thresholds interactively.
+"""
 
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 
 from data.store import get_connection
-from publisher.event_profile import score_event
+from publisher.event_profile import MAJOR_VENUES, TOUR_PATTERNS, PARTY_PATTERNS
 from models import Event
 
 ADMIN_DIR = Path(__file__).parent.parent / "docs" / "admin"
 
 
+def _parse_price(price: str | None) -> float | None:
+    if not price:
+        return None
+    m = re.search(r"(\d+(?:\.\d+)?)", price.replace(",", ""))
+    return float(m.group(1)) if m else None
+
+
+def _classify_venue(venue: str) -> str:
+    """Classify venue into major / mid / small / unknown."""
+    v = venue.lower()
+    for name in MAJOR_VENUES:
+        if name in v or v in name:
+            return "major"
+    if any(w in v for w in ["arena", "centre", "center", "theater", "theatre", "hall", "stadium"]):
+        return "mid"
+    if any(w in v for w in ["lounge", "bar", "pub", "restaurant", "grill"]):
+        return "small"
+    return "unknown"
+
+
+def _classify_format(title: str) -> str:
+    """Classify event format from title."""
+    if TOUR_PATTERNS.search(title):
+        return "tour"
+    if PARTY_PATTERNS.search(title):
+        return "party"
+    return "standard"
+
+
 def export_admin_json():
-    """Export all future Indian events with profile scoring to admin/events.json."""
+    """Export all future Indian events with raw signals to admin/events.json."""
     conn = get_connection()
     rows = conn.execute(
         """SELECT source, source_id, title, date, time_str, venue, address, city,
@@ -37,65 +71,49 @@ def export_admin_json():
 
     events_out = []
     for r in rows:
-        event = Event(
-            source=r[0], source_id=r[1], title=r[2],
-            date=datetime.fromisoformat(r[3]), time_str=r[4],
-            venue=r[5], address=r[6], city=r[7], price=r[8],
-            description=r[9], image_url=r[10], event_url=r[11],
-            categories=r[12].split(",") if r[12] else [],
-            languages=r[13].split(",") if r[13] else [],
-            organizer=r[14] or "",
-            posted_image_url=r[15] or "",
-        )
+        title = r[2]
+        venue = r[5] or ""
+        price = r[8]
 
-        # Find artists for this event — match cached handle names against the title.
-        # On CI the LLM classification is more accurate, but this works offline too.
+        # Match cached artist names against title
         artists = []
-        title_lower = event.title.lower()
+        title_lower = title.lower()
         for name in follower_cache:
             if name in title_lower:
                 artists.append(name.title())
-        # Deduplicate
         seen = set()
         artists = [a for a in artists if not (a.lower() in seen or seen.add(a.lower()))]
 
-        artist_followers = {}
-        artist_handles = {}
+        artist_data = []
+        max_followers = 0
         for a in artists:
             f = follower_cache.get(a.lower(), 0)
             h = handle_cache.get(a.lower())
-            if f > 0:
-                artist_followers[a] = f
-            if h:
-                artist_handles[a] = h
+            artist_data.append({"name": a, "handle": h, "followers": f})
+            if f > max_followers:
+                max_followers = f
 
-        profile = score_event(event, artist_followers)
+        parsed_price = _parse_price(price)
+        venue_class = _classify_venue(venue)
+        event_format = _classify_format(title)
 
         events_out.append({
-            "source": r[0],
-            "source_id": r[1],
-            "title": event.title,
+            "title": title,
             "date": r[3],
-            "time": event.time_str or "",
-            "venue": event.venue,
-            "city": event.city or "",
-            "price": event.price or "",
-            "event_url": event.event_url or "",
+            "time": r[4] or "",
+            "venue": venue,
+            "city": r[7] or "",
+            "price": price or "",
+            "price_val": parsed_price,
+            "event_url": r[11] or "",
             "posted": bool(r[16]),
             "posted_image_url": r[15] or "",
             "story_days_posted": r[17] or "",
-            "artists": [
-                {
-                    "name": a,
-                    "handle": artist_handles.get(a),
-                    "followers": artist_followers.get(a, 0),
-                }
-                for a in artists
-            ],
-            "profile": {
-                "tier": profile.tier,
-                "score": profile.score,
-                "reasons": profile.reasons,
+            "artists": artist_data,
+            "signals": {
+                "max_followers": max_followers,
+                "venue_class": venue_class,
+                "event_format": event_format,
             },
         })
 
