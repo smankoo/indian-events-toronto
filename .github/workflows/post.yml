@@ -69,6 +69,10 @@ jobs:
             echo "::warning::Token refresh failed: $RESPONSE (continuing with current token)"
           fi
 
+      - name: Reconcile DB with Instagram
+        if: inputs.dry_run != true
+        run: .venv/bin/python main.py --reconcile
+
       - name: Generate images and publish
         run: |
           POST_LIMIT=${{ inputs.post_limit || 2 }}
