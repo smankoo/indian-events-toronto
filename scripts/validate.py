@@ -91,7 +91,7 @@ def fake_create_story_image(event, days_left, style="C"):
 
 
 def fake_classify_performer(title, description=""):
-    return {"type": "musician", "artist_name": "Test Artist"}
+    return {"type": "musician", "artist_name": "Test Artist", "artist_names": ["Test Artist"]}
 
 
 def fake_lookup_handle(artist_name, performer_type=""):
@@ -105,6 +105,16 @@ def fake_is_new(event):
 
 def main():
     print("=== Pipeline validation (offline, stubbed) ===\n")
+
+    # Pre-import submodules so patch() can resolve dotted paths
+    import scraper.sulekha  # noqa: F401
+    import classifier.indian_classifier  # noqa: F401
+    import image_generator.create_post  # noqa: F401
+    import image_generator.create_story  # noqa: F401
+    import image_generator.image_search  # noqa: F401
+    import publisher.instagram_handle  # noqa: F401
+    import publisher.linkinbio  # noqa: F401
+    import data.store  # noqa: F401
 
     patches = [
         patch("scraper.sulekha.scrape_events", fake_scrape),
