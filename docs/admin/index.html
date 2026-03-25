@@ -255,16 +255,16 @@
       <span class="val" id="w-price-display">20</span>
     </div>
     <div class="threshold-row">
-      <label>≥ CA$<input type="number" value="100" id="t-price-4" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-price-4">20</span>
+      <label>Floor (0 pts below)</label>
+      <input type="number" value="10" id="t-price-floor" oninput="updateSettings()">
     </div>
     <div class="threshold-row">
-      <label>≥ CA$<input type="number" value="50" id="t-price-3" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-price-3">15</span>
+      <label>Ceiling (max pts at)</label>
+      <input type="number" value="200" id="t-price-ceil" oninput="updateSettings()">
     </div>
-    <div class="threshold-row">
-      <label>≥ CA$<input type="number" value="25" id="t-price-2" oninput="updateSettings()"> → </label>
-      <span class="pts" id="pts-price-2">8</span>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">
+      Log-proportional between floor and ceiling.<br>
+      <span id="price-examples"></span>
     </div>
   </div>
 
@@ -300,7 +300,7 @@
   <!-- Event Format -->
   <div class="factor-group">
     <div class="factor-header">
-      <span class="factor-name">Event Format</span>
+      <span class="factor-name">Event Type</span>
       <span class="factor-weight">max <span id="w-format-val">20</span> pts</span>
     </div>
     <div class="weight-slider-row">
@@ -308,17 +308,9 @@
       <input type="range" min="0" max="40" value="20" id="w-format" oninput="updateSettings()">
       <span class="val" id="w-format-display">20</span>
     </div>
-    <div class="threshold-row">
-      <label>Tour / concert →</label>
-      <span class="pts" id="pts-format-tour">20</span>
-    </div>
-    <div class="threshold-row">
-      <label>Standard →</label>
-      <span class="pts" id="pts-format-standard">10</span>
-    </div>
-    <div class="threshold-row">
-      <label>Party / social →</label>
-      <span class="pts" id="pts-format-party">0</span>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5">
+      Performance (artists identified) → max pts<br>
+      Social/party (no artists) → 0 pts
     </div>
   </div>
 
@@ -392,11 +384,8 @@ function getConfig() {
     },
     price: {
       maxPts: wP,
-      tiers: [
-        { min: +document.getElementById('t-price-4').value, pts: wP },
-        { min: +document.getElementById('t-price-3').value, pts: Math.round(wP * 0.75) },
-        { min: +document.getElementById('t-price-2').value, pts: Math.round(wP * 0.4) },
-      ],
+      floor: +document.getElementById('t-price-floor').value,
+      ceil: +document.getElementById('t-price-ceil').value,
     },
     venue: {
       maxPts: wV,
@@ -409,7 +398,6 @@ function getConfig() {
     },
     format: {
       maxPts: wFmt,
-      pts: { tour: wFmt, standard: Math.round(wFmt * 0.5), party: 0 },
     },
     tierHigh: +document.getElementById('tier-high').value,
     tierMedium: +document.getElementById('tier-medium').value,
@@ -437,13 +425,18 @@ function scoreEvent(e, cfg) {
   total += fPts;
   breakdown.push({ factor: 'Followers', pts: fPts, detail: fLabel, maxPts: cfg.followers.maxPts });
 
-  // Price
+  // Price — log-proportional between floor and ceiling
   const pv = e.price_val;
   let pPts = 0, pLabel = 'No data';
   if (pv !== null) {
     pLabel = 'CA$' + Math.round(pv);
-    for (const t of cfg.price.tiers) {
-      if (pv >= t.min) { pPts = t.pts; break; }
+    if (pv >= cfg.price.ceil) {
+      pPts = cfg.price.maxPts;
+    } else if (pv > cfg.price.floor) {
+      const logFloor = Math.log10(cfg.price.floor);
+      const logCeil = Math.log10(cfg.price.ceil);
+      const logVal = Math.log10(pv);
+      pPts = Math.round(((logVal - logFloor) / (logCeil - logFloor)) * cfg.price.maxPts);
     }
   }
   total += pPts;
@@ -455,11 +448,11 @@ function scoreEvent(e, cfg) {
   total += vPts;
   breakdown.push({ factor: 'Venue', pts: vPts, detail: vc, maxPts: cfg.venue.maxPts });
 
-  // Format
+  // Event type — performance (has artists) vs social (no artists)
   const ef = e.signals.event_format;
-  const efPts = cfg.format.pts[ef] || 0;
+  const efPts = ef === 'performance' ? cfg.format.maxPts : 0;
   total += efPts;
-  breakdown.push({ factor: 'Format', pts: efPts, detail: ef, maxPts: cfg.format.maxPts });
+  breakdown.push({ factor: 'Type', pts: efPts, detail: ef, maxPts: cfg.format.maxPts });
 
   const tier = total >= cfg.tierHigh ? 'High' : total >= cfg.tierMedium ? 'Medium' : 'Low';
   return { tier, score: total, breakdown };
@@ -489,11 +482,19 @@ function updateSettings() {
       `${fmtK(n)} → <strong>${exampleF(n)}</strong>`
     ).join(' · ');
 
-  // Price tier points
+  // Price examples
   const wP = cfg.price.maxPts;
-  document.getElementById('pts-price-4').textContent = wP;
-  document.getElementById('pts-price-3').textContent = Math.round(wP * 0.75);
-  document.getElementById('pts-price-2').textContent = Math.round(wP * 0.4);
+  const pFl = cfg.price.floor, pCl = cfg.price.ceil;
+  const logPFl = Math.log10(pFl), logPCl = Math.log10(pCl);
+  const exampleP = (n) => {
+    if (n <= pFl) return 0;
+    if (n >= pCl) return wP;
+    return Math.round(((Math.log10(n) - logPFl) / (logPCl - logPFl)) * wP);
+  };
+  document.getElementById('price-examples').innerHTML =
+    [15, 25, 45, 80, 125, 200].map(n =>
+      `$${n} → <strong>${exampleP(n)}</strong>`
+    ).join(' · ');
 
   // Venue points
   const wV = cfg.venue.maxPts;
@@ -501,12 +502,6 @@ function updateSettings() {
   document.getElementById('pts-venue-mid').textContent = Math.round(wV * 0.6);
   document.getElementById('pts-venue-unknown').textContent = Math.round(wV * 0.25);
   document.getElementById('pts-venue-small').textContent = 0;
-
-  // Format points
-  const wFmt = cfg.format.maxPts;
-  document.getElementById('pts-format-tour').textContent = wFmt;
-  document.getElementById('pts-format-standard').textContent = Math.round(wFmt * 0.5);
-  document.getElementById('pts-format-party').textContent = 0;
 
   // Low threshold label
   document.getElementById('low-threshold').textContent = cfg.tierMedium;
