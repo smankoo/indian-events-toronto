@@ -45,6 +45,8 @@ def get_connection() -> sqlite3.Connection:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_posted_at TEXT DEFAULT ''")
     if "story_days_posted" not in cols:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_days_posted TEXT DEFAULT ''")
+    if "image_urls" not in cols:
+        conn.execute("ALTER TABLE processed_events ADD COLUMN image_urls TEXT DEFAULT ''")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS instagram_handles (
             artist_name TEXT PRIMARY KEY,
@@ -107,17 +109,19 @@ def find_similar_event(event: Event) -> dict | None:
 
 def save_event(event: Event, is_indian: bool, classification_reason: str = ""):
     conn = get_connection()
+    image_urls = ",".join(getattr(event, "image_urls", []) or [])
     conn.execute(
         """INSERT INTO processed_events
            (source, source_id, title, date, time_str, venue, address, city, price,
-            description, image_url, event_url, categories, languages, organizer,
+            description, image_url, image_urls, event_url, categories, languages, organizer,
             is_indian, classification_reason, processed_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(source, source_id) DO UPDATE SET
             title=excluded.title, date=excluded.date, time_str=excluded.time_str,
             venue=excluded.venue, address=excluded.address, city=excluded.city,
             price=excluded.price, description=excluded.description,
-            image_url=excluded.image_url, event_url=excluded.event_url,
+            image_url=excluded.image_url, image_urls=excluded.image_urls,
+            event_url=excluded.event_url,
             categories=excluded.categories, languages=excluded.languages,
             organizer=excluded.organizer, is_indian=excluded.is_indian,
             classification_reason=excluded.classification_reason,
@@ -134,6 +138,7 @@ def save_event(event: Event, is_indian: bool, classification_reason: str = ""):
             event.price,
             event.description,
             event.image_url,
+            image_urls,
             event.event_url,
             ",".join(event.categories),
             ",".join(event.languages),
@@ -256,7 +261,8 @@ def get_unposted_events() -> list[Event]:
     conn = get_connection()
     rows = conn.execute(
         """SELECT source, source_id, title, date, time_str, venue, address, city,
-                  price, description, image_url, event_url, categories, languages, organizer
+                  price, description, image_url, event_url, categories, languages,
+                  organizer, image_urls
            FROM processed_events
            WHERE is_indian = 1 AND posted = 0
            ORDER BY date ASC"""
@@ -273,6 +279,7 @@ def get_unposted_events() -> list[Event]:
             categories=r[12].split(",") if r[12] else [],
             languages=r[13].split(",") if r[13] else [],
             organizer=r[14] or "",
+            image_urls=r[15].split(",") if r[15] else [],
         ))
     return events
 

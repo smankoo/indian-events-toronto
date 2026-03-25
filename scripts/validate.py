@@ -125,6 +125,8 @@ def main():
         patch("publisher.instagram_handle.lookup_instagram_handle", fake_lookup_handle),
         patch("data.store.is_new", fake_is_new),
         patch("data.store.save_event", MagicMock()),
+        patch("data.store.find_similar_event", lambda e: None),
+        patch("data.store.get_unposted_events", lambda: FAKE_EVENTS),
         patch("data.store.mark_posted", MagicMock()),
         patch("data.store.mark_story_posted", MagicMock()),
         patch("data.store.get_story_candidates", lambda max_days=5: [(FAKE_EVENTS[0], 3)]),
@@ -136,8 +138,9 @@ def main():
 
     try:
         # Import main AFTER patches are applied
-        from main import run
-        run(publish=False, post_limit=2, dry_run=True)
+        from main import ingest, post
+        ingest(classify_limit=10)
+        post(post_limit=2, dry_run=True, stories=True)
         print("\n=== Validation PASSED ===")
     except Exception as e:
         print(f"\n=== Validation FAILED: {e} ===")

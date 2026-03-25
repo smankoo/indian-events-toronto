@@ -9,7 +9,7 @@
 
 # Indian Events Toronto
 
-**Automated pipeline that discovers Indian cultural events in the Toronto/GTA area and publishes them to Instagram and Facebook.** Runs unattended on GitHub Actions twice daily — scraping, classifying, AI-enhancing images, and posting with zero manual intervention.
+**Automated pipeline that discovers Indian cultural events in the Toronto/GTA area and publishes them to Instagram and Facebook.** Runs unattended on GitHub Actions — ingesting events and publishing posts independently with zero manual intervention.
 
 <p align="center">
   <strong>
@@ -23,16 +23,19 @@
 ## How It Works
 
 ```
-  Sulekha.com            Gemini Flash Lite           Gemini Flash Image
-  (event source)         (classification)            (AI enhancement)
-       |                       |                           |
-       v                       v                           v
-  +---------+   +----------+   +----------+   +---------+   +----------+
-  | Scrape  |-->| Filter & |-->| Classify |-->| Enhance |-->| Generate |
-  | Events  |   | Dedup    |   | (Indian?)|   | Images  |   | Posts    |
-  +---------+   +----------+   +----------+   +---------+   +----------+
-                                                                  |
-       +----------------------------------------------------------+
+                    INGEST (runs independently)
+  +---------+   +----------+   +----------+
+  | Scrape  |-->| Filter & |-->| Classify |------> SQLite DB
+  | Events  |   | Dedup    |   | (Indian?)|
+  +---------+   +----------+   +----------+
+
+                    POST (runs independently)
+                                +---------+   +----------+
+  SQLite DB -----> Read ------->| Enhance |-->| Generate |
+                  unposted      | Images  |   | Posts    |
+                                +---------+   +----------+
+                                                    |
+       +--------------------------------------------+
        |                    |                    |
        v                    v                    v
   +-----------+   +------------------+   +---------------+
@@ -42,15 +45,18 @@
   +-----------+   +------------------+   +---------------+
 ```
 
-The pipeline runs **twice daily** (8 AM and 5 PM EDT) and:
+The pipeline has two independent stages:
 
+**Ingestion** (twice daily, 8 AM and 5 PM EDT):
 1. **Scrapes** ~250 event listings from [Sulekha](https://events.sulekha.com/toronto-metro-area) via JSON-LD structured data
 2. **Filters** to Toronto/GTA area and removes near-duplicates (>70% title similarity on same date)
 3. **Classifies** each event as "Indian" or not using Gemini Flash Lite with detailed cultural rules
+
+**Posting** (twice daily, 9 AM and 6 PM EDT):
 4. **Enhances** images using AI — replaces backgrounds for artists, generates cinematic scenes for events
 5. **Renders** professional 1080x1350 Instagram posts via Playwright (HTML/CSS -> screenshot)
-6. **Publishes** countdown stories (1080x1920) for events happening within 5 days
-7. **Cross-posts** to Facebook and updates a static [link-in-bio](docs/index.html) page
+6. **Publishes** to Instagram, cross-posts to Facebook, and updates a static [link-in-bio](docs/index.html) page
+7. **Publishes** countdown stories (1080x1920) for events happening within 5 days
 
 ---
 
@@ -119,7 +125,7 @@ All candidates are verified via Instagram's **Business Discovery API** (account 
 
 ```
 .
-+-- main.py                        # Pipeline orchestrator
++-- main.py                        # Pipeline orchestrator (--ingest / --post)
 +-- models.py                      # Event dataclass
 +-- requirements.txt               # Python dependencies
 |
@@ -154,7 +160,9 @@ All candidates are verified via Instagram's **Business Discovery API** (account 
 |   +-- architecture/              # arc42 + C4 architecture docs
 |
 +-- .github/workflows/
-    +-- post.yml                   # GitHub Actions CI/CD
+    +-- ingest.yml                 # Ingestion: scrape + classify + save to DB
+    +-- post.yml                   # Posting: generate images + publish + link-in-bio
+    +-- stories.yml                # Countdown stories for upcoming events
 ```
 
 ---
@@ -192,67 +200,69 @@ uv pip install -r requirements.txt
 ### Usage
 
 ```bash
-# Scrape, classify, generate images (no publishing)
-uv run python main.py --post-limit 2
+# Ingest: scrape, filter, classify, save to DB
+uv run python main.py --ingest
 
-# Full run — scrape, classify, generate, publish to Instagram + Facebook
-uv run python main.py --publish --post-limit 2
+# Ingest with a classification limit (cap LLM API calls)
+uv run python main.py --ingest --classify-limit 5
 
-# Dry run — full pipeline including artist handle lookup, but skip actual API calls
-uv run python main.py --dry-run --post-limit 2
+# Post: generate images + publish unposted events to IG + FB + link-in-bio
+uv run python main.py --post --post-limit 2
 
-# Publish previously generated but unposted events
-uv run python main.py --publish-only --post-limit 1
+# Dry run — generate images and show captions, but skip actual publishing
+uv run python main.py --post --dry-run --post-limit 2
 
 # Only publish countdown stories for upcoming events
 uv run python main.py --stories-only
 
-# Full run but skip stories
-uv run python main.py --publish --post-limit 2 --no-stories
+# Post but skip stories
+uv run python main.py --post --post-limit 2 --no-stories
 ```
 
 ### CLI Flags
 
 | Flag | Description |
 |------|-------------|
-| `--limit N` | Max images to generate (0 = all Indian events found) |
-| `--publish` | Enable publishing to Instagram + Facebook |
+| `--ingest` | Scrape sources, filter, classify, and save to DB |
+| `--post` | Generate images and publish unposted events |
 | `--post-limit N` | Max posts per run (default: 2) |
-| `--publish-only` | Skip scrape/classify, publish unposted events from DB |
+| `--classify-limit N` | Max events to classify per ingest (default: 10) |
 | `--stories-only` | Only publish countdown stories |
 | `--no-stories` | Skip countdown story publishing |
-| `--dry-run` | Full pipeline with handle lookup but no actual publishing |
+| `--dry-run` | Generate images and show captions but skip actual publishing |
 
 ---
 
 ## GitHub Actions
 
-The pipeline runs automatically via GitHub Actions on a cron schedule.
+The pipeline runs automatically via three independent GitHub Actions workflows.
 
-### Scheduled Runs
+### Workflows
 
-- **8:00 AM EDT** and **5:00 PM EDT** daily (UTC: 12:00 and 21:00)
-- Publishes up to 2 posts per run + countdown stories for upcoming events
+| Workflow | Schedule | Purpose |
+|----------|----------|---------|
+| **Ingest Events** (`ingest.yml`) | 8 AM + 5 PM EDT | Scrape, filter, classify, save to DB |
+| **Post to IG + FB** (`post.yml`) | 9 AM + 6 PM EDT | Generate images, publish, update link-in-bio |
+| **Countdown Stories** (`stories.yml`) | 3x daily | Publish countdown stories for upcoming events |
+
+Ingestion and posting are fully decoupled — they communicate only through the SQLite database. The post workflow runs 1 hour after ingestion to let it finish first.
 
 ### Manual Dispatch
 
-Trigger a run manually from the Actions tab with options:
+All three workflows support manual triggers from the Actions tab:
+
+**Ingest Events:**
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
-| `publish` | boolean | `true` | Publish to Instagram |
+| `classify_limit` | number | `10` | Max events to classify (LLM calls) |
+
+**Post to IG + FB:**
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
 | `post_limit` | number | `2` | Max posts per run |
-| `publish_only` | boolean | `false` | Skip scrape/classify |
-| `stories_only` | boolean | `false` | Only publish stories |
-| `dry_run` | boolean | `false` | Full pipeline without actual publishing |
-
-### What Happens Each Run
-
-1. Installs Python 3.12 + dependencies + Playwright
-2. Auto-refreshes the Instagram long-lived token (extends 60-day expiry)
-3. Runs the pipeline with configured flags
-4. Commits updated `events.db` and `docs/` back to the repo
-5. Deploys `docs/` to GitHub Pages
+| `dry_run` | boolean | `false` | Show what would be posted without publishing |
 
 ---
 
@@ -298,7 +308,7 @@ The [Developer Guide](docs/architecture/README.md#14-developer-guide--where-to-m
 
 | What | Where |
 |------|-------|
-| Pipeline orchestration | `main.py` |
+| Pipeline orchestration | `main.py` (`--ingest` and `--post` entry points) |
 | Classification rules | `classifier/indian_classifier.py` (SYSTEM_PROMPT) |
 | AI enhancement prompts | `image_generator/ai_enhance.py` |
 | Post visual design | `image_generator/styles.py` |
@@ -307,7 +317,8 @@ The [Developer Guide](docs/architecture/README.md#14-developer-guide--where-to-m
 | Artist handle lookup | `publisher/instagram_handle.py` |
 | Handle overrides | `data/instagram_handles.json` |
 | Database schema | `data/store.py` |
-| CI/CD workflow | `.github/workflows/post.yml` |
+| Ingestion workflow | `.github/workflows/ingest.yml` |
+| Posting workflow | `.github/workflows/post.yml` |
 
 ---
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Pipeline: Scrape -> Dedup -> Classify -> Generate Images -> Publish to Instagram + Facebook"""
+"""Pipeline with two independent stages:
+  --ingest: Fetch events -> Filter -> Classify -> Save to DB
+  --post:   Generate images -> Publish to IG + FB + link-in-bio
+"""
 
-import os
 import sys
 from pathlib import Path
 
@@ -11,10 +13,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 from scraper.sulekha import scrape_events
 from data.store import is_new, find_similar_event, save_event, mark_posted, get_unposted_events, get_story_candidates, mark_story_posted, _normalize_title
 from classifier.indian_classifier import classify_event
-from image_generator.create_post import create_post_image
-from publisher.instagram import publish_post, publish_story, build_caption
-from publisher.facebook import publish_to_facebook, build_fb_caption
-from publisher.linkinbio import generate_linkinbio
 
 from difflib import SequenceMatcher
 
@@ -73,6 +71,7 @@ def is_gta_event(event) -> bool:
 def publish_stories():
     """Publish countdown stories for posted events that are <5 days away."""
     from image_generator.create_story import create_story_image
+    from publisher.instagram import publish_story
 
     candidates = get_story_candidates(max_days=5)
     if not candidates:
@@ -92,8 +91,9 @@ def publish_stories():
             print(f"    -> STORY ERROR: {e}")
 
 
-def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: bool = True, dry_run: bool = False):
-    # Step 1: Scrape
+def ingest(classify_limit: int = 10):
+    """Ingest events: scrape sources, filter, classify, and save to DB. No image generation or publishing."""
+    # Step 1: Scrape sources
     print("\n=== STEP 1: Scraping events ===")
     events = scrape_events()
     print(f"Scraped {len(events)} events total\n")
@@ -124,12 +124,15 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
         print("No new events to process. Done!")
         return
 
-    # Step 3: Classify (lazily — stop once we have enough Indian events)
-    target = limit if limit else post_limit
-    print(f"=== STEP 3: Classifying events (need {target} Indian events) ===")
-    indian_events = []
+    # Step 3: Classify (lazily — stop after classify_limit)
+    print(f"=== STEP 3: Classifying events (limit: {classify_limit}) ===")
+    indian_count = 0
     classified = 0
     for i, event in enumerate(new_events):
+        if classified >= classify_limit:
+            print(f"\n  Reached classify limit of {classify_limit}, skipping remaining {len(new_events) - classified} events")
+            break
+
         print(f"  [{i+1}/{len(new_events)}] Classifying: {event.title[:60]}...")
         is_indian, reason, cleaned_title = classify_event(
             title=event.title,
@@ -143,182 +146,116 @@ def run(limit: int = 0, publish: bool = False, post_limit: int = 2, stories: boo
             event.title = cleaned_title
         print(f"    -> {'INDIAN' if is_indian else 'NOT INDIAN'}: {reason}")
 
-        # Save to DB regardless (with cleaned title)
         save_event(event, is_indian, reason)
         classified += 1
-
         if is_indian:
-            indian_events.append(event)
-            if len(indian_events) >= target:
-                print(f"\n  Reached target of {target} Indian events, skipping remaining {len(new_events) - classified} events")
-                break
+            indian_count += 1
 
-    print(f"\n{len(indian_events)} Indian events found (classified {classified}/{len(new_events)})")
+    print(f"\n{indian_count} Indian events found (classified {classified}/{len(new_events)})")
+    print("Ingestion complete. Run --post to generate images and publish.")
 
-    # Step 3b: Include previously classified but unposted events from DB
-    new_ids = {(e.source, e.source_id) for e in indian_events}
+
+def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
+    """Generate images and publish unposted events to IG + FB + link-in-bio."""
+    from image_generator.create_post import create_post_image
+    from image_generator.image_search import classify_event as classify_performer
+    from publisher.instagram import publish_post, build_caption
+    from publisher.instagram_handle import lookup_instagram_handle
+    from publisher.facebook import publish_to_facebook, build_fb_caption
+    from publisher.linkinbio import generate_linkinbio
+
+    # Get unposted events, filtering out those with a similar already-posted event
+    all_unposted = get_unposted_events()
     unposted = []
-    for e in get_unposted_events():
-        if (e.source, e.source_id) in new_ids:
-            continue
+    for e in all_unposted:
         similar = find_similar_event(e)
         if similar and similar["posted"]:
             continue  # a similar event was already posted (e.g. different showtime)
         unposted.append(e)
-    if unposted:
-        print(f"\n  + {len(unposted)} unposted event(s) from previous runs:")
-        for e in unposted:
-            print(f"    - {e.title[:60]} ({e.date.strftime('%b %d')})")
-        indian_events.extend(unposted)
 
-    print()
+    if not unposted:
+        print("No unposted events found.")
+        # Still update link-in-bio in case events expired
+        print("\n=== Updating link-in-bio page ===")
+        generate_linkinbio()
+        return
 
-    # Step 4: Generate images
-    to_generate = indian_events[:limit] if limit else indian_events
-    print(f"=== STEP 4: Generating Instagram images (producing {len(to_generate)}) ===")
-    generated = []
-    for i, event in enumerate(to_generate):
-        print(f"  [{i+1}/{len(to_generate)}] Creating image: {event.title[:60]}...")
+    to_post = unposted[:post_limit]
+    mode = "DRY RUN" if dry_run else "Publishing"
+    print(f"\n=== {mode}: {len(to_post)} event(s) to Instagram + Facebook ===")
+
+    posted = 0
+    for i, event in enumerate(to_post):
+        print(f"\n  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}{event.title[:60]}...")
+
+        # Generate image
         try:
             path = create_post_image(event, style="B")
-            print(f"    -> Saved: {path.name}")
-            generated.append((event, path))
+            print(f"    -> Image: {path.name}")
         except Exception as e:
-            print(f"    -> ERROR: {e}")
+            print(f"    -> IMAGE ERROR: {e}")
+            continue
 
-    print(f"\nDone! {len(generated)} images saved to output/")
-
-    # Step 5: Publish to Instagram + Facebook (if enabled)
-    if (publish or dry_run) and generated:
-        from image_generator.image_search import classify_event as classify_performer
-        from publisher.instagram_handle import lookup_instagram_handle
-
-        to_post = generated[:post_limit]
-        mode = "DRY RUN" if dry_run else "Publishing"
-        print(f"\n=== STEP 5: {mode} — Instagram & Facebook ({len(to_post)}/{len(generated)}) ===")
-        for i, (event, path) in enumerate(to_post):
-            print(f"  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}Posting: {event.title[:60]}...")
-            try:
-                # Look up Instagram handles for all artists in the event
-                ig_handles = []
+        # Look up Instagram handles for all artists
+        ig_handles = []
+        try:
+            info = classify_performer(event.title, event.description)
+            for artist_name in info.get("artist_names", []):
                 try:
-                    info = classify_performer(event.title, event.description)
-                    for artist_name in info.get("artist_names", []):
-                        try:
-                            h = lookup_instagram_handle(artist_name, info["type"])
-                            if h:
-                                ig_handles.append(h)
-                        except Exception as e:
-                            print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
+                    h = lookup_instagram_handle(artist_name, info["type"])
+                    if h:
+                        ig_handles.append(h)
                 except Exception as e:
-                    print(f"    -> Classification error (continuing): {e}")
+                    print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
+        except Exception as e:
+            print(f"    -> Classification error (continuing): {e}")
 
-                caption = build_caption(event, instagram_handles=ig_handles)
+        caption = build_caption(event, instagram_handles=ig_handles)
 
-                if dry_run:
-                    print(f"    -> Image: {path.name}")
-                    if ig_handles:
-                        print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles)}")
-                    else:
-                        print(f"    -> Artist tags: none")
-                    print(f"    -> Caption preview:")
-                    for line in caption.split('\n')[:6]:
-                        print(f"       {line}")
-                    print(f"       ...")
-                    print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
-                else:
-                    media_id, posted_image_url = publish_post(path, caption, instagram_handles=ig_handles)
-                    mark_posted(event.source, event.source_id, posted_image_url)
-                    print(f"    -> Instagram published (media_id: {media_id})")
+        if dry_run:
+            if ig_handles:
+                print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles)}")
+            else:
+                print(f"    -> Artist tags: none")
+            print(f"    -> Caption preview:")
+            for line in caption.split('\n')[:6]:
+                print(f"       {line}")
+            print(f"       ...")
+            print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
+        else:
+            try:
+                media_id, posted_image_url = publish_post(path, caption, instagram_handles=ig_handles)
+                mark_posted(event.source, event.source_id, posted_image_url)
+                posted += 1
+                print(f"    -> Instagram published (media_id: {media_id})")
 
-                    # Cross-post to Facebook using the same uploaded image
-                    try:
-                        fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
-                        fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
-                        print(f"    -> Facebook published (post_id: {fb_post_id})")
-                    except Exception as e:
-                        print(f"    -> Facebook publish error: {e}")
+                # Cross-post to Facebook using the same uploaded image
+                try:
+                    fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
+                    fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
+                    print(f"    -> Facebook published (post_id: {fb_post_id})")
+                except Exception as e:
+                    print(f"    -> Facebook publish error: {e}")
             except Exception as e:
                 print(f"    -> PUBLISH ERROR: {e}")
 
-        print(f"\n{'Dry run' if dry_run else 'Publishing'} complete!")
+    if dry_run:
+        print(f"\nDry run complete!")
+    else:
+        print(f"\n{posted} event(s) published.")
 
-    # Step 5.5: Publish countdown stories for upcoming posted events
+    # Publish countdown stories
     if stories and not dry_run:
-        print(f"\n=== STEP 5.5: Publishing countdown stories ===")
+        print(f"\n=== Publishing countdown stories ===")
         publish_stories()
     elif stories and dry_run:
-        print(f"\n=== STEP 5.5: [DRY RUN] Countdown stories ===")
-        from image_generator.create_story import create_story_image  # noqa: F401 — verify import works
+        print(f"\n=== [DRY RUN] Countdown stories ===")
         candidates = get_story_candidates(max_days=5)
         if candidates:
             for event, days_left in candidates:
                 print(f"  [{days_left}d to go] {event.title[:60]} — would publish story")
         else:
             print("  No story candidates found.")
-
-    # Step 6: Update link-in-bio page
-    print("\n=== STEP 6: Updating link-in-bio page ===")
-    generate_linkinbio()
-
-
-def publish_unposted(post_limit: int = 2):
-    """Publish previously generated but unposted events."""
-    from image_generator.image_search import classify_event as classify_performer
-    from publisher.instagram_handle import lookup_instagram_handle
-
-    print("\n=== Publishing unposted events ===")
-    unposted = get_unposted_events()
-    if not unposted:
-        print("No unposted events found.")
-        return
-
-    output_dir = Path(__file__).parent / "output"
-    to_post = unposted[:post_limit]
-    posted = 0
-
-    for event in to_post:
-        # Find the matching image in output/
-        date_str = event.date.strftime("%Y%m%d")
-        safe_title = "".join(c if c.isalnum() or c in "-_ " else "" for c in event.title)[:50].strip().replace(" ", "_")
-        image_path = output_dir / f"{date_str}_{safe_title}.png"
-
-        if not image_path.exists():
-            print(f"  Skipping {event.title[:60]} — image not found: {image_path.name}")
-            continue
-
-        print(f"  Posting: {event.title[:60]}...")
-        try:
-            # Look up Instagram handles for all artists in the event
-            ig_handles = []
-            try:
-                info = classify_performer(event.title, event.description)
-                for artist_name in info.get("artist_names", []):
-                    try:
-                        h = lookup_instagram_handle(artist_name, info["type"])
-                        if h:
-                            ig_handles.append(h)
-                    except Exception as e:
-                        print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
-            except Exception as e:
-                print(f"    -> Classification error (continuing): {e}")
-
-            caption = build_caption(event, instagram_handles=ig_handles)
-            media_id, posted_image_url = publish_post(image_path, caption, instagram_handles=ig_handles)
-            mark_posted(event.source, event.source_id, posted_image_url)
-            posted += 1
-            print(f"    -> Instagram published (media_id: {media_id})")
-
-            try:
-                fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
-                fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
-                print(f"    -> Facebook published (post_id: {fb_post_id})")
-            except Exception as e:
-                print(f"    -> Facebook publish error: {e}")
-        except Exception as e:
-            print(f"    -> PUBLISH ERROR: {e}")
-
-    print(f"\n{posted} events published.")
 
     # Update link-in-bio page
     print("\n=== Updating link-in-bio page ===")
@@ -328,13 +265,13 @@ def publish_unposted(post_limit: int = 2):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--limit", type=int, default=0, help="Max images to generate (0 = all)")
-    parser.add_argument("--publish", action="store_true", help="Also publish to Instagram")
+    parser.add_argument("--ingest", action="store_true", help="Ingest events: scrape sources, filter, classify, and save to DB")
+    parser.add_argument("--post", action="store_true", help="Generate images and publish unposted events")
     parser.add_argument("--post-limit", type=int, default=2, help="Max posts per run (default: 2)")
-    parser.add_argument("--publish-only", action="store_true", help="Only publish unposted events (skip scrape/classify/generate)")
+    parser.add_argument("--classify-limit", type=int, default=10, help="Max events to classify per ingest (default: 10)")
     parser.add_argument("--no-stories", action="store_true", help="Skip publishing countdown stories")
-    parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories (skip everything else)")
-    parser.add_argument("--dry-run", action="store_true", help="Run full pipeline but skip actual publishing (shows what would be posted)")
+    parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories")
+    parser.add_argument("--dry-run", action="store_true", help="Show what would be posted without publishing")
     args = parser.parse_args()
 
     if args.stories_only:
@@ -349,10 +286,10 @@ if __name__ == "__main__":
         else:
             print("\n=== Publishing countdown stories ===")
             publish_stories()
-    elif args.publish_only:
-        publish_unposted(post_limit=args.post_limit)
-        if not args.no_stories:
-            publish_stories()
+    elif args.ingest:
+        ingest(classify_limit=args.classify_limit)
+    elif args.post:
+        post(post_limit=args.post_limit, dry_run=args.dry_run, stories=not args.no_stories)
     else:
-        run(limit=args.limit, publish=args.publish, post_limit=args.post_limit,
-            stories=not args.no_stories, dry_run=args.dry_run)
+        parser.print_help()
+        sys.exit(1)

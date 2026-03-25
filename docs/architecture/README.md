@@ -29,16 +29,20 @@
 
 ### What This App Does
 
-This is an **automated pipeline** that discovers Indian cultural events in the Toronto/GTA area and publishes them to Instagram and Facebook. It runs unattended on GitHub Actions twice daily.
+This is an **automated pipeline** that discovers Indian cultural events in the Toronto/GTA area and publishes them to Instagram and Facebook. It runs unattended on GitHub Actions with two independent stages: **ingestion** and **posting**.
 
-The pipeline:
+**Ingestion** (scrape + classify + save to DB):
 1. **Scrapes** event listings from Sulekha (an Indian community events site)
 2. **Filters** to Toronto/GTA area events only
 3. **Classifies** each event as "Indian" or not using an LLM (Gemini)
+
+**Posting** (generate images + publish to all output channels):
 4. **Enhances** images with AI-powered background replacement and scene generation (Gemini Flash)
 5. **Generates** professional Instagram post images (1080x1350) and countdown stories (1080x1920)
 6. **Publishes** posts and stories to Instagram, cross-posts to Facebook
 7. **Updates** a static link-in-bio page deployed to GitHub Pages
+
+The two stages communicate only through the SQLite database and can run on independent schedules.
 
 ### Stakeholders
 
@@ -174,7 +178,7 @@ The pipeline:
 
 | Container | Technology | Purpose |
 |-----------|------------|---------|
-| **main.py** | Python | Pipeline orchestrator — runs steps in sequence, handles all modes |
+| **main.py** | Python | Pipeline orchestrator — `--ingest` (scrape + classify) and `--post` (generate + publish) entry points |
 | **scraper/** | BeautifulSoup, requests | Fetches + parses Sulekha event listings |
 | **classifier/** | OpenAI client -> OpenRouter | LLM-based event classification + title cleanup |
 | **image_generator/** | Playwright, Pillow, ddgs, OpenRouter | Finds images, AI-enhances them, renders posts + stories |
@@ -431,7 +435,8 @@ generate_linkinbio()
 | `city` | TEXT | City name |
 | `price` | TEXT | Price string (e.g. "CAD 25-50") |
 | `description` | TEXT | Event description |
-| `image_url` | TEXT | Original source image URL |
+| `image_url` | TEXT | Primary source image URL |
+| `image_urls` | TEXT | All source image URLs (comma-separated, for Sulekha-first strategy) |
 | `event_url` | TEXT | Link to event listing |
 | `categories` | TEXT | Comma-separated |
 | `languages` | TEXT | Comma-separated |
@@ -494,10 +499,10 @@ class Event:
 
 ## 7. Runtime View
 
-### 7.1 Normal Pipeline Run (twice daily)
+### 7.1 Ingestion (`--ingest`)
 
 ```
-main.py run(publish=True, post_limit=2)
+main.py ingest(classify_limit=10)
 |
 +-- STEP 1: Scrape
 |   +-- scrape_events() -> ~250 raw events
@@ -508,39 +513,46 @@ main.py run(publish=True, post_limit=2)
 |   +-- dedup_events() -> remove same-date similar titles (>70% SequenceMatcher)
 |   Result: ~100 new unique GTA events
 |
-+-- STEP 3: Classify (lazy — stops early)
-|   +-- For each event: classify_event() -> (is_indian, reason, cleaned_title)
-|   +-- save_event() -> persist to DB regardless of classification
-|   +-- Stop when target Indian events found (default: 2)
-|   Result: 2 Indian events
++-- STEP 3: Classify (up to classify_limit)
+    +-- For each event: classify_event() -> (is_indian, reason, cleaned_title)
+    +-- save_event() -> persist to DB regardless of classification
+    +-- Stop after classify_limit events classified (default: 10)
+    Result: N Indian events saved to DB
+```
+
+No image generation, no publishing, no link-in-bio updates. Pure data ingestion.
+
+### 7.2 Posting (`--post`)
+
+```
+main.py post(post_limit=2, dry_run=False)
 |
-+-- STEP 4: Generate images
-|   +-- For each Indian event:
-|       +-- Download best Sulekha image (closest to square aspect ratio)
-|       +-- enhance_image() -> AI enhancement (background replace / scene gen)
-|       +-- Fallback: Sulekha direct or web search if AI fails
-|       +-- create_post_image() -> render 1080x1350 PNG
++-- Read unposted events from DB
+|   +-- get_unposted_events() -> Indian events not yet published
+|   +-- Filter out events with a similar already-posted event
 |
-+-- STEP 5: Publish
-|   +-- For each generated image:
++-- For each event (up to post_limit):
+|   +-- Generate image
+|   |   +-- Download best Sulekha image from stored image_urls
+|   |   +-- enhance_image() -> AI enhancement (background replace / scene gen)
+|   |   +-- Fallback: Sulekha direct or web search if AI fails
+|   |   +-- create_post_image() -> render 1080x1350 PNG
+|   |
+|   +-- Publish
 |       +-- publish_post() -> upload to freeimage + Instagram
 |       +-- mark_posted() -> update DB
 |       +-- publish_to_facebook() -> cross-post
 |
-+-- STEP 5.5: Publish countdown stories
++-- Publish countdown stories
 |   +-- get_story_candidates(max_days=5) -> events 1-5 days away
 |   +-- For each candidate:
 |       +-- create_story_image() -> render 1080x1920 PNG
 |       +-- publish_story() -> upload + publish as Instagram Story
 |       +-- mark_story_posted() -> record day count to prevent re-posting
 |
-+-- STEP 6: Update link-in-bio
++-- Update link-in-bio
     +-- generate_linkinbio() -> regenerate docs/index.html
 ```
-
-### 7.2 Publish-Only Mode
-
-When `--publish-only` is passed, the pipeline skips scraping/classifying and only publishes previously classified but unposted events from the database.
 
 ### 7.3 Stories-Only Mode
 
@@ -548,7 +560,7 @@ When `--stories-only` is passed, the pipeline skips everything except publishing
 
 ### 7.4 Lazy Classification
 
-The classifier **stops early** once it finds enough Indian events (default: 2). This saves API costs — most events on Sulekha are not Indian, so classifying all ~250 would be wasteful. Unclassified events will be processed on the next run if they're still new.
+The classifier stops after `classify_limit` events (default: 10) to cap API costs. Unclassified events will be processed on the next ingestion run if they're still new.
 
 ### 7.5 Image Sourcing Strategy
 
@@ -567,40 +579,48 @@ The pipeline uses a **Sulekha-first** approach with AI enhancement:
 
 ## 8. Deployment View
 
-### GitHub Actions Workflow (`.github/workflows/post.yml`)
+### GitHub Actions Workflows
 
 ```
 +-------------------------------------------------------------+
-|                    GitHub Actions                             |
+|              Ingest Workflow (ingest.yml)                     |
 |                                                              |
-|  Triggers:                                                   |
-|    - Cron: 8am + 5pm EDT daily                               |
-|    - Manual dispatch with options:                            |
-|      - publish (bool, default: true)                         |
-|      - post_limit (number, default: 2)                       |
-|      - publish_only (bool) — skip scrape/classify            |
-|      - stories_only (bool) — only publish countdown stories  |
+|  Triggers: Cron 8am + 5pm EDT, manual dispatch              |
+|  Secrets: OPENROUTER_API_KEY                                 |
+|  Concurrency: ingest-events                                  |
 |                                                              |
-|  +----------------------------------------------------------+|
-|  | Job: post                                                ||
-|  |   concurrency: instagram-pipeline (no cancel)            ||
-|  |                                                          ||
-|  | 1. Checkout code                                         ||
-|  | 2. Install uv -> Python 3.12 -> deps -> Playwright       ||
-|  | 3. Refresh Instagram token (auto-extend long-lived)      ||
-|  | 4. Run pipeline: python main.py [flags]                  ||
-|  |    - stories_only -> --stories-only                      ||
-|  |    - publish_only -> --publish-only --post-limit N       ||
-|  |    - publish=false -> dry run (no --publish flag)        ||
-|  |    - default -> --publish --post-limit N                 ||
-|  | 5. WAL checkpoint -> commit events.db + docs/ -> push    ||
-|  | 6. Upload docs/ as Pages artifact                        ||
-|  +----------------------------------------------------------+|
+|  1. Checkout code                                            |
+|  2. Install uv -> Python 3.12 -> deps                       |
+|  3. python main.py --ingest --classify-limit N               |
+|  4. WAL checkpoint -> commit events.db -> push               |
++-------------------------------------------------------------+
+
++-------------------------------------------------------------+
+|              Post Workflow (post.yml)                         |
 |                                                              |
+|  Triggers: Cron 9am + 6pm EDT (1hr after ingest), manual     |
+|  Secrets: OPENROUTER, IG, FB, Spotify keys                   |
+|  Concurrency: instagram-posts                                |
+|                                                              |
+|  1. Checkout code                                            |
+|  2. Install uv -> Python 3.12 -> deps -> Playwright          |
+|  3. Refresh Instagram token (auto-extend long-lived)         |
+|  4. python main.py --post --post-limit N                     |
+|  5. WAL checkpoint -> commit events.db + docs/ -> push       |
+|  6. Upload docs/ as Pages artifact                           |
 |  +----------------------------------------------------------+|
 |  | Job: deploy-pages (needs: post)                          ||
 |  |   Deploy docs/ to GitHub Pages                           ||
 |  +----------------------------------------------------------+|
++-------------------------------------------------------------+
+
++-------------------------------------------------------------+
+|              Stories Workflow (stories.yml)                   |
+|                                                              |
+|  Triggers: Cron 3x daily, manual dispatch                    |
+|  Concurrency: instagram-stories                              |
+|                                                              |
+|  1. python main.py --stories-only                            |
 +-------------------------------------------------------------+
 ```
 
@@ -681,6 +701,7 @@ The pipeline uses a **Sulekha-first** approach with AI enhancement:
 | 9 | **Sulekha-first image strategy** | Always search web | Source images are the most relevant; picks best aspect ratio from all available URLs |
 | 10 | **AI image enhancement** (Gemini Flash) | Manual curation, raw source images | Removes text/watermarks, creates cinematic backgrounds, generates scenes when no photo exists |
 | 11 | **Countdown stories** | No stories, manual posting | Drives engagement for upcoming events; auto-deduplicates by day count so each countdown is posted once |
+| 12 | **Decoupled ingestion and posting** | Single monolithic pipeline | Independent schedules, faster feedback, cleaner failure isolation; DB is the only integration point; "ingest" abstraction allows future non-scraping sources (APIs, feeds) |
 
 ---
 
@@ -751,7 +772,7 @@ The pipeline uses a **Sulekha-first** approach with AI enhancement:
 #### Add a new event source (e.g. Eventbrite, BookMyShow)
 
 1. Create `scraper/new_source.py` with a `scrape_events() -> list[Event]` function
-2. Import and call it in `main.py` alongside `scrape_events()`
+2. Import and call it in the `ingest()` function in `main.py` alongside `scrape_events()`
 3. Use a unique `source` field (e.g. `"eventbrite"`) — the DB deduplicates by `(source, source_id)`
 
 #### Change what counts as "Indian"
@@ -787,10 +808,11 @@ Edit `image_generator/ai_enhance.py`:
 
 #### Change posting frequency or limits
 
-- **Schedule:** Edit cron expressions in `.github/workflows/post.yml` (lines 5-7)
-- **Posts per run:** Change `default: 2` on line 17, or pass `--post-limit N`
-- **Classification target:** The pipeline stops classifying after finding `post_limit` Indian events (see `main.py:141`)
-- **Story max days:** Change `max_days=5` in `main.py:94`
+- **Ingest schedule:** Edit cron expressions in `.github/workflows/ingest.yml`
+- **Post schedule:** Edit cron expressions in `.github/workflows/post.yml`
+- **Posts per run:** Change `default: 2` in `post.yml`, or pass `--post-limit N`
+- **Classification limit:** Change `default: 10` in `ingest.yml`, or pass `--classify-limit N`
+- **Story max days:** Change `max_days=5` in `main.py`
 
 #### Fix a scraping issue
 
@@ -820,7 +842,7 @@ Edit `publisher/linkinbio.py`. The HTML template is in `_build_page()` (line 29)
 #### Add a new publishing destination (e.g. Twitter/X, Threads)
 
 1. Create `publisher/new_platform.py` with a `publish(image_url, caption)` function
-2. Call it in `main.py` in the Step 5 publishing loop (around line 197)
+2. Call it in the `post()` function in `main.py` alongside the Instagram and Facebook publishing
 3. Add any new secrets to `.github/workflows/post.yml`
 
 #### Run the pipeline locally
@@ -832,27 +854,27 @@ export INSTAGRAM_ACCESS_TOKEN="..."
 export INSTAGRAM_USER_ID="..."
 # ... etc
 
-# Dry run (no publishing)
-uv run python main.py --post-limit 2
+# Ingest: scrape, classify, save to DB
+uv run python main.py --ingest
 
-# With publishing
-uv run python main.py --publish --post-limit 1
+# Post: generate images + publish unposted events
+uv run python main.py --post --post-limit 2
 
-# Publish previously generated events only
-uv run python main.py --publish-only --post-limit 1
+# Dry run (generate images, show captions, skip actual publishing)
+uv run python main.py --post --dry-run --post-limit 2
 
 # Publish countdown stories only
 uv run python main.py --stories-only
 
-# Skip stories during a full run
-uv run python main.py --publish --post-limit 2 --no-stories
+# Post but skip stories
+uv run python main.py --post --post-limit 2 --no-stories
 ```
 
 ### File Map
 
 ```
 .
-+-- main.py                              <- Pipeline orchestrator, GTA filter, dedup
++-- main.py                              <- Pipeline orchestrator (--ingest / --post), GTA filter, dedup
 +-- models.py                            <- Event dataclass (shared data model)
 +-- requirements.txt                     <- Python dependencies
 |
@@ -890,5 +912,7 @@ uv run python main.py --publish --post-limit 2 --no-stories
 |   +-- architecture/                    <- This documentation
 |
 +-- .github/workflows/
-    +-- post.yml                         <- GitHub Actions CI/CD
+    +-- ingest.yml                       <- Ingestion: scrape + classify + save to DB
+    +-- post.yml                         <- Posting: generate images + publish + link-in-bio
+    +-- stories.yml                      <- Countdown stories for upcoming events
 ```

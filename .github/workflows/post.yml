@@ -1,24 +1,16 @@
-name: Scrape & Post to Instagram + Facebook
+name: Post to Instagram + Facebook
 
 on:
   schedule:
-    # Twice daily: 8am and 5pm EDT (UTC-4). During EST these run at 7am and 4pm ET.
-    - cron: "0 12 * * *"
-    - cron: "0 21 * * *"
+    # Twice daily: 9am and 6pm EDT (offset 1hr from scrape to let it finish first)
+    - cron: "0 13 * * *"
+    - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
-      publish:
-        description: "Publish to Instagram"
-        type: boolean
-        default: true
       post_limit:
         description: "Max posts per run"
         type: number
         default: 2
-      publish_only:
-        description: "Only publish (skip scrape/generate)"
-        type: boolean
-        default: false
       dry_run:
         description: "Dry run (show what would be posted without publishing)"
         type: boolean
@@ -61,7 +53,7 @@ jobs:
           .venv/bin/playwright install chromium --with-deps
 
       - name: Refresh Instagram token
-        if: inputs.publish != false
+        if: inputs.dry_run != true
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
@@ -78,28 +70,24 @@ jobs:
             echo "::warning::Token refresh failed: $RESPONSE (continuing with current token)"
           fi
 
-      - name: Run pipeline
+      - name: Generate images and publish
         run: |
           POST_LIMIT=${{ inputs.post_limit || 2 }}
           POST_LIMIT=${POST_LIMIT%.*}
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            .venv/bin/python main.py --dry-run --no-stories --post-limit $POST_LIMIT
-          elif [ "${{ inputs.publish_only }}" = "true" ]; then
-            .venv/bin/python main.py --publish-only --no-stories --post-limit $POST_LIMIT
-          elif [ "${{ inputs.publish }}" = "false" ]; then
-            .venv/bin/python main.py --no-stories --post-limit $POST_LIMIT
+            .venv/bin/python main.py --post --dry-run --no-stories --post-limit $POST_LIMIT
           else
-            .venv/bin/python main.py --publish --no-stories --post-limit $POST_LIMIT
+            .venv/bin/python main.py --post --no-stories --post-limit $POST_LIMIT
           fi
 
-      - name: Commit updated database
+      - name: Commit updated database and link-in-bio
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
           git add data/events.db docs/
-          git diff --cached --quiet && echo "No changes" || git commit -m "Update events database and link-in-bio [skip ci]"
+          git diff --cached --quiet && echo "No changes" || git commit -m "Update events database and link-in-bio (post) [skip ci]"
           git push
 
       - name: Deploy to GitHub Pages
