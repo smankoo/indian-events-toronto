@@ -191,7 +191,6 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
         # Generate image
         try:
             path = create_post_image(event, style="B")
-            print(f"    -> Image: {path.name}")
         except Exception as e:
             print(f"    -> IMAGE ERROR: {e}")
             continue
