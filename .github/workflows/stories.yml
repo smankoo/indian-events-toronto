@@ -2,10 +2,9 @@ name: Publish Countdown Stories
 
 on:
   schedule:
-    # 3x daily: 10am, 3pm, 8pm EDT (UTC-4). During EST these run 1h earlier.
-    - cron: "0 14 * * *"
-    - cron: "0 19 * * *"
-    - cron: "0 0 * * *"
+    # Once daily at 1am EDT (5am UTC). Story expires ~1am next day,
+    # just as the new one posts — stale window is only midnight-1am.
+    - cron: "0 5 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
