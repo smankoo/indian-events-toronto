@@ -40,7 +40,6 @@ jobs:
         run: |
           uv venv
           uv pip install -r requirements.txt
-          .venv/bin/playwright install chromium --with-deps
 
       - name: Refresh Instagram token
         if: inputs.dry_run != true
