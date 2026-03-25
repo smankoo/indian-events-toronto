@@ -1,25 +1,91 @@
-"""Create Instagram Story countdown images (1080x1920) with multiple style options."""
+"""Create Instagram Story countdown images (1080x1920) using Pillow.
+
+Style C (neon frame) is the only production style.  The Playwright-based
+styles A/B/D have been removed — they were unused and Pillow gives us
+deterministic rendering without a headless browser.
+"""
 
 import io
-import tempfile
 from pathlib import Path
 
+import numpy as np
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 from models import Event
 from image_generator.create_post import FONTS_DIR, OUTPUT_DIR
 
 STORY_W = 1080
 STORY_H = 1920
-ACCENT_HEX = "#FF9933"
+ACCENT = (255, 153, 51)
+FONT_PATH = str(FONTS_DIR / "Montserrat.ttf")
 
 
-def _download_and_crop_posted_image(posted_image_url: str) -> Image.Image | None:
-    """Download the posted Instagram image and crop to the image-only portion.
+# ══════════════════════════════════════════════════════════════════
+# Helpers
+# ══════════════════════════════════════════════════════════════════
 
-    The posted image is 1080x1350 with a 5px saffron bar at top and info card below.
-    We extract the 900px image box (rows 5-905).
+def _font(size: int, weight: int = 400) -> ImageFont.FreeTypeFont:
+    f = ImageFont.truetype(FONT_PATH, size=size)
+    f.set_variation_by_axes([weight])
+    return f
+
+
+def _text_w(font: ImageFont.FreeTypeFont, text: str) -> int:
+    bbox = font.getbbox(text)
+    return bbox[2] - bbox[0]
+
+
+def _text_h(font: ImageFont.FreeTypeFont, text: str) -> int:
+    bbox = font.getbbox(text)
+    return bbox[3] - bbox[1]
+
+
+def _center_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont,
+                 y: int, fill) -> None:
+    tw = _text_w(font, text)
+    draw.text(((STORY_W - tw) // 2, y), text, fill=fill, font=font)
+
+
+def _wrap_lines(text: str, font: ImageFont.FreeTypeFont, max_w: int) -> list[str]:
+    words = text.split()
+    lines: list[str] = []
+    cur = ""
+    for w in words:
+        test = f"{cur} {w}".strip()
+        if _text_w(font, test) <= max_w:
+            cur = test
+        else:
+            if cur:
+                lines.append(cur)
+            cur = w
+    if cur:
+        lines.append(cur)
+    return lines or [text]
+
+
+def _composite(canvas: Image.Image, layer: Image.Image) -> Image.Image:
+    """Alpha-composite an RGBA layer onto an RGB canvas, return RGB."""
+    return Image.alpha_composite(canvas.convert("RGBA"), layer).convert("RGB")
+
+
+def _make_glow(shape_fn, blur_radius: int) -> Image.Image:
+    """Create a glow RGBA layer at full story size."""
+    layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    shape_fn(ImageDraw.Draw(layer))
+    return layer.filter(ImageFilter.GaussianBlur(blur_radius))
+
+
+# ══════════════════════════════════════════════════════════════════
+# Background loading
+# ══════════════════════════════════════════════════════════════════
+
+def _download_and_prepare_bg(posted_image_url: str) -> Image.Image | None:
+    """Download the posted image and extract a clean background.
+
+    The posted image is 1080×1350 with possible light edges from contain-mode
+    blur.  We crop to the image box (rows 5–905), trim any bright borders,
+    then return the result for ImageOps.fit to cover the story canvas.
     """
     try:
         resp = requests.get(posted_image_url, timeout=30, headers={
@@ -27,364 +93,269 @@ def _download_and_crop_posted_image(posted_image_url: str) -> Image.Image | None
         })
         resp.raise_for_status()
         img = Image.open(io.BytesIO(resp.content)).convert("RGB")
-        # Crop to image box only: skip 5px top bar, take 900px
-        return img.crop((0, 5, 1080, 905))
+        box = img.crop((0, 5, 1080, 905))
+
+        # Trim light borders so cover-fit doesn't show white edges.
+        arr = np.array(box)
+        brightness = arr.mean(axis=2)
+        thresh = 200
+
+        top = 0
+        for y in range(arr.shape[0] // 2):
+            if brightness[y].mean() < thresh:
+                top = y
+                break
+
+        bot = arr.shape[0]
+        for y in range(arr.shape[0] - 1, arr.shape[0] // 2, -1):
+            if brightness[y].mean() < thresh:
+                bot = y + 1
+                break
+
+        left = 0
+        for x in range(arr.shape[1] // 2):
+            if brightness[:, x].mean() < thresh:
+                left = x
+                break
+
+        right = arr.shape[1]
+        for x in range(arr.shape[1] - 1, arr.shape[1] // 2, -1):
+            if brightness[:, x].mean() < thresh:
+                right = x + 1
+                break
+
+        trimmed = box.crop((left, top, right, bot))
+        if trimmed.width < 200 or trimmed.height < 200:
+            return box
+        return trimmed
     except Exception as e:
         print(f"    Warning: could not download posted image: {e}")
         return None
 
 
-def _save_bg_image(bg_img: Image.Image | None) -> str | None:
-    """Save background image to temp file, return path."""
-    if not bg_img:
-        return None
-    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-    bg_img.save(tmp.name, "JPEG", quality=95)
-    return tmp.name
+# ══════════════════════════════════════════════════════════════════
+# Style C — Neon frame
+# ══════════════════════════════════════════════════════════════════
+
+def _render_style_c(bg: Image.Image | None, days: int, title: str,
+                    date_text: str) -> Image.Image:
+    canvas = Image.new("RGB", (STORY_W, STORY_H), (0, 0, 0))
+
+    # ── Background: cover full canvas, darken + saturate ──
+    if bg:
+        bg_cover = ImageOps.fit(bg, (STORY_W, STORY_H), method=Image.LANCZOS)
+        bg_cover = ImageEnhance.Brightness(bg_cover).enhance(0.35)
+        bg_cover = ImageEnhance.Color(bg_cover).enhance(1.5)
+        canvas.paste(bg_cover)
+
+    draw = ImageDraw.Draw(canvas)
+
+    # ── Saffron bars ──
+    draw.rectangle([0, 0, STORY_W, 6], fill=ACCENT)
+    draw.rectangle([0, STORY_H - 6, STORY_W, STORY_H], fill=ACCENT)
+
+    # ── Ticker ──
+    ticker_font = _font(16, 700)
+    _center_text(draw, "COMING SOON   \u2022   COMING SOON   \u2022   COMING SOON",
+                 ticker_font, 38, (255, 153, 51, 128))
+
+    # ── Neon frame geometry ──
+    cx = STORY_W // 2
+    cy = int(STORY_H * 0.39)
+    hw, hh = 200, 185  # half-width, half-height
+    fx1, fy1 = cx - hw, cy - hh
+    fx2, fy2 = cx + hw, cy + hh
+
+    # ── Neon glow (3 layers: wide halo → medium → tight hot edge) ──
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.rectangle([fx1 - 6, fy1 - 6, fx2 + 6, fy2 + 6],
+                              outline=(255, 153, 51, 70), width=12),
+        blur_radius=100,
+    ))
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.rectangle([fx1 - 4, fy1 - 4, fx2 + 4, fy2 + 4],
+                              outline=(255, 153, 51, 130), width=10),
+        blur_radius=40,
+    ))
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.rectangle([fx1 - 1, fy1 - 1, fx2 + 1, fy2 + 1],
+                              outline=(255, 180, 80, 180), width=6),
+        blur_radius=12,
+    ))
+
+    # ── Subtle inner fill ──
+    fill_layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    ImageDraw.Draw(fill_layer).rectangle([fx1, fy1, fx2, fy2], fill=(255, 153, 51, 8))
+    canvas = _composite(canvas, fill_layer)
+
+    # ── Frame borders (solid outer + subtle inner hairline) ──
+    draw = ImageDraw.Draw(canvas)
+    draw.rectangle([fx1, fy1, fx2, fy2], outline=ACCENT, width=4)
+    border_layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    ImageDraw.Draw(border_layer).rectangle(
+        [fx1 + 8, fy1 + 8, fx2 - 8, fy2 - 8], outline=(255, 153, 51, 65), width=1,
+    )
+    canvas = _composite(canvas, border_layer)
+
+    # ── Number with saffron glow ──
+    num_font = _font(220, 900)
+    num_text = str(days)
+    num_x = (STORY_W - _text_w(num_font, num_text)) // 2
+    num_y = fy1 + 25
+
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.text((num_x, num_y), num_text, fill=(255, 153, 51, 130), font=num_font),
+        blur_radius=80,
+    ))
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.text((num_x, num_y), num_text, fill=(255, 153, 51, 50), font=num_font),
+        blur_radius=160,
+    ))
+    draw = ImageDraw.Draw(canvas)
+    draw.text((num_x, num_y), num_text, fill=ACCENT, font=num_font)
+
+    # ── DAYS / TO GO ──
+    _center_text(draw, "DAY" if days == 1 else "DAYS", _font(50, 800), fy2 - 120, WHITE)
+    togo_layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    togo_font = _font(36, 700)
+    ImageDraw.Draw(togo_layer).text(
+        ((STORY_W - _text_w(togo_font, "TO GO")) // 2, fy2 - 62),
+        "TO GO", fill=(255, 255, 255, 153), font=togo_font,
+    )
+    canvas = _composite(canvas, togo_layer)
+
+    # ── Event title (centered, with saffron text shadow) ──
+    title_font = _font(50, 800)
+    title_lines = _wrap_lines(title, title_font, 960)
+    y = fy2 + 55
+    for line in title_lines:
+        lw = _text_w(title_font, line)
+        lx = (STORY_W - lw) // 2
+        canvas = _composite(canvas, _make_glow(
+            lambda d, _lx=lx, _y=y, _l=line: d.text(
+                (_lx, _y), _l, fill=(255, 153, 51, 77), font=title_font),
+            blur_radius=30,
+        ))
+        draw = ImageDraw.Draw(canvas)
+        draw.text((lx, y), line, fill=WHITE, font=title_font)
+        y += int(50 * 1.15)
+
+    # ── Date ──
+    _center_text(draw, date_text, _font(28, 600), y + 12, ACCENT)
+
+    # ── CTA gradient backdrop ──
+    grad_h = 380
+    grad_arr = np.zeros((grad_h, STORY_W, 4), dtype=np.uint8)
+    t = np.linspace(0, 1, grad_h).reshape(-1, 1)
+    grad_arr[:, :, 3] = np.broadcast_to(
+        (t * t * 242).clip(0, 242).astype(np.uint8), (grad_h, STORY_W),
+    )
+    canvas_rgba = canvas.convert("RGBA")
+    gradient = Image.fromarray(grad_arr, "RGBA")
+    canvas_rgba.paste(gradient, (0, STORY_H - grad_h), gradient)
+    canvas = canvas_rgba.convert("RGB")
+
+    # ── CTA pill ──
+    pill_font = _font(34, 800)
+    pill_text = "GET TICKETS"
+    pill_tw, pill_th = _text_w(pill_font, pill_text), _text_h(pill_font, pill_text)
+    px, py = 60, 22  # padding
+    pw, ph = pill_tw + px * 2, pill_th + py * 2
+    pill_x = (STORY_W - pw) // 2
+    pill_y = STORY_H - 260
+
+    # Pill glow
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.rounded_rectangle(
+            [pill_x - 10, pill_y - 10, pill_x + pw + 10, pill_y + ph + 10],
+            radius=ph, fill=(255, 153, 51, 90)),
+        blur_radius=30,
+    ))
+    canvas = _composite(canvas, _make_glow(
+        lambda d: d.rounded_rectangle(
+            [pill_x - 20, pill_y - 20, pill_x + pw + 20, pill_y + ph + 20],
+            radius=ph, fill=(255, 153, 51, 30)),
+        blur_radius=60,
+    ))
+
+    # Pill fill + border
+    pfill = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    ImageDraw.Draw(pfill).rounded_rectangle(
+        [pill_x, pill_y, pill_x + pw, pill_y + ph],
+        radius=ph, fill=(255, 153, 51, 20),
+    )
+    canvas = _composite(canvas, pfill)
+    draw = ImageDraw.Draw(canvas)
+    draw.rounded_rectangle(
+        [pill_x, pill_y, pill_x + pw, pill_y + ph],
+        radius=ph, outline=ACCENT, width=3,
+    )
+
+    # Pill text
+    pill_bbox = pill_font.getbbox(pill_text)
+    draw.text((pill_x + px, pill_y + py - pill_bbox[1]), pill_text, fill=ACCENT, font=pill_font)
+
+    # ── CTA subtitle ──
+    sub_font = _font(22, 700)
+    sub_text = "TAP OUR PROFILE \u2022 LINK IN BIO"
+    sub_layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    ImageDraw.Draw(sub_layer).text(
+        ((STORY_W - _text_w(sub_font, sub_text)) // 2, pill_y + ph + 18),
+        sub_text, fill=(255, 255, 255, 190), font=sub_font,
+    )
+    canvas = _composite(canvas, sub_layer)
+
+    # ── Handle ──
+    handle_layer = Image.new("RGBA", (STORY_W, STORY_H), (0, 0, 0, 0))
+    hfont = _font(22, 600)
+    htxt = "@indian.events.toronto"
+    ImageDraw.Draw(handle_layer).text(
+        ((STORY_W - _text_w(hfont, htxt)) // 2, STORY_H - 58),
+        htxt, fill=(255, 255, 255, 115), font=hfont,
+    )
+    canvas = _composite(canvas, handle_layer)
+
+    # ── Final bars (ensure gradient didn't cover them) ──
+    draw = ImageDraw.Draw(canvas)
+    draw.rectangle([0, 0, STORY_W, 6], fill=ACCENT)
+    draw.rectangle([0, STORY_H - 6, STORY_W, STORY_H], fill=ACCENT)
+
+    return canvas
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Shared CSS + HTML fragments
-# ═══════════════════════════════════════════════════════════════════
-
-def _cta_css():
-    """CTA 2 (outlined pill) CSS with dark gradient backdrop."""
-    return f"""
-  /* Dark gradient behind CTA area */
-  .cta-backdrop {{
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 380px;
-    background: linear-gradient(
-      to bottom,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.6) 30%,
-      rgba(0,0,0,0.85) 70%,
-      rgba(0,0,0,0.95) 100%
-    );
-    z-index: 11;
-  }}
-
-  .cta-container {{
-    position: absolute;
-    bottom: 110px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 12;
-    text-align: center;
-  }}
-
-  .cta-pill {{
-    display: inline-block;
-    border: 3px solid {ACCENT_HEX};
-    border-radius: 100px;
-    padding: 22px 60px;
-    box-shadow: 0 0 30px rgba(255, 153, 51, 0.35), 0 0 60px rgba(255, 153, 51, 0.12);
-    background: rgba(255, 153, 51, 0.08);
-  }}
-
-  .cta-pill-text {{
-    font-size: 34px;
-    font-weight: 800;
-    color: {ACCENT_HEX};
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    text-shadow: 0 0 15px rgba(255, 153, 51, 0.3);
-  }}
-
-  .cta-sub {{
-    margin-top: 18px;
-    font-size: 22px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 2px;
-  }}
-
-  .handle {{
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 22px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.45);
-    z-index: 12;
-    letter-spacing: 2px;
-  }}
-"""
+# White constant used by the renderer
+WHITE = (255, 255, 255)
 
 
-def _cta_html():
-    """CTA 2 (outlined pill) HTML."""
-    return """
-  <div class="cta-backdrop"></div>
-  <div class="cta-container">
-    <div class="cta-pill">
-      <span class="cta-pill-text">GET TICKETS</span>
-    </div>
-    <div class="cta-sub">TAP OUR PROFILE &bull; LINK IN BIO</div>
-  </div>
-  <div class="handle">@indian.events.toronto</div>
-"""
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Style A — Giant saffron circle badge
-# ═══════════════════════════════════════════════════════════════════
-
-def _style_a_html(font_path: str, bg_path: str | None, days: int, title: str, date_text: str) -> str:
-    bg_url = f"url('file://{bg_path}')" if bg_path else "none"
-    bg_filter = "filter: brightness(0.45) saturate(1.3);" if bg_path else ""
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><style>
-  @font-face {{ font-family: 'Montserrat'; src: url('file://{font_path}'); font-weight: 100 900; }}
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
-  body {{ width:{STORY_W}px; height:{STORY_H}px; overflow:hidden; font-family:'Montserrat',sans-serif; background:#000; }}
-  .bg {{ position:absolute; inset:0; background-image:{bg_url}; background-size:cover; background-position:center; {bg_filter} }}
-  .bar {{ position:absolute; left:0; right:0; height:6px; background:{ACCENT_HEX}; z-index:10; }}
-  .bar.top {{ top:0; }} .bar.bottom {{ bottom:0; }}
-  .content {{ position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; }}
-  .countdown-badge {{ position:relative; width:480px; height:480px; display:flex; flex-direction:column; justify-content:center; align-items:center; margin-bottom:80px; }}
-  .countdown-badge::before {{ content:''; position:absolute; inset:0; background:{ACCENT_HEX}; border-radius:50%; box-shadow:0 0 100px rgba(255,153,51,0.6),0 0 200px rgba(255,153,51,0.2); }}
-  .number {{ position:relative; font-size:200px; font-weight:900; color:#fff; line-height:1; text-shadow:0 4px 20px rgba(0,0,0,0.3); }}
-  .days-text {{ position:relative; font-size:48px; font-weight:800; color:#fff; letter-spacing:14px; margin-top:-5px; }}
-  .to-go {{ position:relative; font-size:32px; font-weight:600; color:rgba(255,255,255,0.85); letter-spacing:8px; margin-top:4px; }}
-  .event-info {{ position:absolute; bottom:280px; text-align:center; z-index:2; padding:0 60px; }}
-  .event-title {{ font-size:46px; font-weight:800; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,0.8); margin-bottom:12px; line-height:1.15; }}
-  .event-date {{ font-size:28px; font-weight:600; color:{ACCENT_HEX}; letter-spacing:4px; text-shadow:0 2px 10px rgba(0,0,0,0.8); }}
-  {_cta_css()}
-</style></head>
-<body>
-  <div class="bg"></div>
-  <div class="bar top"></div><div class="bar bottom"></div>
-  <div class="content">
-    <div class="countdown-badge">
-      <div class="number">{days}</div>
-      <div class="days-text">{"DAY" if days == 1 else "DAYS"}</div>
-      <div class="to-go">TO GO</div>
-    </div>
-  </div>
-  <div class="event-info">
-    <div class="event-title">{title}</div>
-    <div class="event-date">{date_text}</div>
-  </div>
-  {_cta_html()}
-</body></html>"""
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Style B — Cinematic gradient, countdown at bottom
-# ═══════════════════════════════════════════════════════════════════
-
-def _style_b_html(font_path: str, bg_path: str | None, days: int, title: str, date_text: str) -> str:
-    bg_url = f"url('file://{bg_path}')" if bg_path else "none"
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><style>
-  @font-face {{ font-family: 'Montserrat'; src: url('file://{font_path}'); font-weight: 100 900; }}
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
-  body {{ width:{STORY_W}px; height:{STORY_H}px; overflow:hidden; font-family:'Montserrat',sans-serif; background:#0a0a0e; }}
-  .bg {{ position:absolute; top:0; left:0; right:0; height:1300px; background-image:{bg_url}; background-size:cover; background-position:center; }}
-  .gradient {{ position:absolute; top:0; left:0; right:0; height:1300px; background:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.3) 60%, rgba(10,10,14,0.9) 80%, rgba(10,10,14,1) 100%); z-index:1; }}
-  .bar {{ position:absolute; left:0; right:0; height:6px; background:{ACCENT_HEX}; z-index:10; }}
-  .bar.top {{ top:0; }} .bar.bottom {{ bottom:0; }}
-  .handle-top {{ position:absolute; top:40px; right:50px; font-size:22px; font-weight:600; color:rgba(255,255,255,0.7); z-index:5; text-shadow:0 2px 10px rgba(0,0,0,0.9); }}
-  .content {{ position:absolute; bottom:280px; left:0; right:0; z-index:2; padding:0 70px; }}
-  .countdown-row {{ display:flex; align-items:baseline; gap:20px; margin-bottom:30px; }}
-  .number {{ font-size:180px; font-weight:900; color:{ACCENT_HEX}; line-height:1; text-shadow:0 0 60px rgba(255,153,51,0.4); }}
-  .days-label {{ display:flex; flex-direction:column; }}
-  .days-word {{ font-size:64px; font-weight:900; color:#fff; line-height:1; letter-spacing:4px; }}
-  .to-go {{ font-size:64px; font-weight:900; color:#fff; line-height:1; letter-spacing:4px; }}
-  .event-title {{ font-size:44px; font-weight:700; color:#fff; margin-bottom:8px; line-height:1.2; }}
-  .event-date {{ font-size:26px; font-weight:600; color:rgba(255,255,255,0.6); letter-spacing:3px; }}
-  {_cta_css()}
-</style></head>
-<body>
-  <div class="bg"></div>
-  <div class="gradient"></div>
-  <div class="bar top"></div><div class="bar bottom"></div>
-  <div class="handle-top">@indian.events.toronto</div>
-  <div class="content">
-    <div class="countdown-row">
-      <div class="number">{days}</div>
-      <div class="days-label">
-        <span class="days-word">{"DAY" if days == 1 else "DAYS"}</span>
-        <span class="to-go">TO GO</span>
-      </div>
-    </div>
-    <div class="event-title">{title}</div>
-    <div class="event-date">{date_text}</div>
-  </div>
-  {_cta_html()}
-</body></html>"""
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Style C — Neon frame (DEFAULT)
-# ═══════════════════════════════════════════════════════════════════
-
-def _style_c_html(font_path: str, bg_path: str | None, days: int, title: str, date_text: str) -> str:
-    bg_url = f"url('file://{bg_path}')" if bg_path else "none"
-    bg_filter = "filter: brightness(0.35) saturate(1.5);" if bg_path else ""
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><style>
-  @font-face {{ font-family: 'Montserrat'; src: url('file://{font_path}'); font-weight: 100 900; }}
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
-  body {{ width:{STORY_W}px; height:{STORY_H}px; overflow:hidden; font-family:'Montserrat',sans-serif; background:#000; }}
-  .bg {{ position:absolute; inset:0; background-image:{bg_url}; background-size:cover; background-position:center; {bg_filter} }}
-  .bar {{ position:absolute; left:0; right:0; height:6px; background:{ACCENT_HEX}; z-index:10; }}
-  .bar.top {{ top:0; }} .bar.bottom {{ bottom:0; }}
-  .ticker {{ position:absolute; top:36px; left:0; right:0; z-index:8; text-align:center; }}
-  .ticker-text {{ font-size:16px; font-weight:700; color:rgba(255,153,51,0.5); letter-spacing:10px; text-transform:uppercase; }}
-  .center {{ position:absolute; top:44%; left:50%; transform:translate(-50%,-55%); z-index:5; text-align:center; }}
-  .frame {{ display:inline-block; padding:50px 90px; border:4px solid {ACCENT_HEX}; box-shadow:0 0 40px rgba(255,153,51,0.35),inset 0 0 40px rgba(255,153,51,0.08); position:relative; margin-bottom:50px; }}
-  .frame::after {{ content:''; position:absolute; inset:6px; border:1px solid rgba(255,153,51,0.25); }}
-  .number {{ font-size:220px; font-weight:900; color:{ACCENT_HEX}; line-height:1; text-shadow:0 0 80px rgba(255,153,51,0.5),0 0 160px rgba(255,153,51,0.2); }}
-  .days-text {{ font-size:50px; font-weight:800; color:#fff; letter-spacing:22px; margin-top:5px; }}
-  .to-go {{ font-size:36px; font-weight:700; color:rgba(255,255,255,0.6); letter-spacing:16px; margin-top:8px; }}
-  .event-title {{ font-size:50px; font-weight:800; color:#fff; text-shadow:0 0 30px rgba(255,153,51,0.3); margin-bottom:14px; line-height:1.15; }}
-  .event-date {{ font-size:28px; font-weight:600; color:{ACCENT_HEX}; letter-spacing:5px; }}
-  {_cta_css()}
-</style></head>
-<body>
-  <div class="bg"></div>
-  <div class="bar top"></div><div class="bar bottom"></div>
-  <div class="ticker">
-    <span class="ticker-text">COMING SOON &nbsp; &bull; &nbsp; COMING SOON &nbsp; &bull; &nbsp; COMING SOON</span>
-  </div>
-  <div class="center">
-    <div class="frame">
-      <div class="number">{days}</div>
-      <div class="days-text">{"DAY" if days == 1 else "DAYS"}</div>
-      <div class="to-go">TO GO</div>
-    </div>
-    <div>
-      <div class="event-title">{title}</div>
-      <div class="event-date">{date_text}</div>
-    </div>
-  </div>
-  {_cta_html()}
-</body></html>"""
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Style D — Split screen (original post + countdown banner)
-# ═══════════════════════════════════════════════════════════════════
-
-def _style_d_html(font_path: str, bg_path: str | None, days: int, title: str, date_text: str,
-                  original_post_path: str | None = None) -> str:
-    post_src = f"file://{original_post_path}" if original_post_path else ""
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><style>
-  @font-face {{ font-family: 'Montserrat'; src: url('file://{font_path}'); font-weight: 100 900; }}
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
-  body {{ width:{STORY_W}px; height:{STORY_H}px; overflow:hidden; font-family:'Montserrat',sans-serif; background:#0f0f12; display:flex; flex-direction:column; }}
-  .post-image {{ width:1080px; height:1350px; flex-shrink:0; position:relative; overflow:hidden; }}
-  .post-image img {{ width:100%; height:100%; object-fit:cover; }}
-  .post-image::after {{ content:''; position:absolute; bottom:0; left:0; right:0; height:80px; background:linear-gradient(to bottom,transparent,#0f0f12); }}
-  .countdown-section {{ flex:1; display:flex; align-items:center; justify-content:center; gap:28px; position:relative; padding:0 60px; }}
-  .countdown-section::before {{ content:''; position:absolute; top:0; left:70px; right:70px; height:4px; background:linear-gradient(to right,transparent,{ACCENT_HEX},transparent); }}
-  .number {{ font-size:200px; font-weight:900; color:{ACCENT_HEX}; line-height:1; text-shadow:0 0 40px rgba(255,153,51,0.3); }}
-  .text-block {{ display:flex; flex-direction:column; }}
-  .days-word {{ font-size:80px; font-weight:900; color:#fff; line-height:1; letter-spacing:6px; }}
-  .to-go {{ font-size:80px; font-weight:900; color:#fff; line-height:1; letter-spacing:6px; }}
-  .handle {{ position:absolute; bottom:25px; right:50px; font-size:20px; font-weight:600; color:{ACCENT_HEX}; }}
-  .bar {{ position:absolute; left:0; right:0; height:5px; background:{ACCENT_HEX}; z-index:10; }}
-  .bar.top {{ top:0; }} .bar.bottom {{ bottom:0; height:4px; }}
-</style></head>
-<body>
-  <div class="bar top"></div>
-  <div class="post-image">
-    {"<img src='" + post_src + "' />" if post_src else ""}
-  </div>
-  <div class="countdown-section">
-    <div class="number">{days}</div>
-    <div class="text-block">
-      <span class="days-word">{"DAY" if days == 1 else "DAYS"}</span>
-      <span class="to-go">TO GO</span>
-    </div>
-    <div class="handle">@indian.events.toronto</div>
-  </div>
-  <div class="bar bottom"></div>
-</body></html>"""
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Main entry point
-# ═══════════════════════════════════════════════════════════════════
-
-_STYLE_BUILDERS = {
-    "A": _style_a_html,
-    "B": _style_b_html,
-    "C": _style_c_html,
-    "D": _style_d_html,
-}
-
+# ══════════════════════════════════════════════════════════════════
+# Public API
+# ══════════════════════════════════════════════════════════════════
 
 def create_story_image(event: Event, days_left: int, style: str = "C") -> Path:
-    """Create a 1080x1920 Instagram Story countdown image.
+    """Create a 1080×1920 Instagram Story countdown image.
 
     Args:
-        event: The event to create a story for (must have posted_image_url set).
+        event: The event (must have posted_image_url set).
         days_left: Number of days until the event.
-        style: Visual style — "A" (circle), "B" (cinematic), "C" (neon frame), "D" (split).
+        style: Ignored (only Style C is supported). Kept for API compat.
 
     Returns:
         Path to the generated PNG file.
     """
-    from playwright.sync_api import sync_playwright
-
     OUTPUT_DIR.mkdir(exist_ok=True)
-    font_path = str(FONTS_DIR / "Montserrat.ttf")
+
     title = event.title
     date_text = event.date.strftime("%A, %B %-d").upper()
 
-    # Download and crop the posted image to get the background
-    bg_img = _download_and_crop_posted_image(event.posted_image_url)
-    bg_path = _save_bg_image(bg_img)
+    bg = _download_and_prepare_bg(event.posted_image_url)
+    canvas = _render_style_c(bg, days_left, title, date_text)
 
-    # Build HTML
-    builder = _STYLE_BUILDERS.get(style.upper(), _style_c_html)
-    if style.upper() == "D":
-        # Style D needs the full original post image, not the cropped version
-        # Download and save the full post image
-        original_path = None
-        if event.posted_image_url:
-            try:
-                resp = requests.get(event.posted_image_url, timeout=30, headers={
-                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
-                })
-                resp.raise_for_status()
-                tmp_orig = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-                tmp_orig.write(resp.content)
-                tmp_orig.close()
-                original_path = tmp_orig.name
-            except Exception:
-                pass
-        html = builder(font_path, bg_path, days_left, title, date_text, original_post_path=original_path)
-    else:
-        html = builder(font_path, bg_path, days_left, title, date_text)
-
-    # Render with Playwright
-    safe_title = "".join(c if c.isalnum() or c in "-_ " else "" for c in event.title)[:50].strip().replace(" ", "_")
+    safe_title = "".join(
+        c if c.isalnum() or c in "-_ " else "" for c in event.title
+    )[:50].strip().replace(" ", "_")
     date_str = event.date.strftime("%Y%m%d")
     output_path = OUTPUT_DIR / f"story_{date_str}_{safe_title}_{days_left}d.png"
-
-    tmp_html = tempfile.NamedTemporaryFile(suffix=".html", delete=False, mode="w", encoding="utf-8")
-    tmp_html.write(html)
-    tmp_html.close()
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(args=["--allow-file-access-from-files"])
-        ctx = browser.new_context(viewport={"width": STORY_W, "height": STORY_H})
-        page = ctx.new_page()
-        page.goto(f"file://{tmp_html.name}", wait_until="networkidle")
-        page.screenshot(path=str(output_path))
-        ctx.close()
-        browser.close()
-
-    # Cleanup temp files
-    Path(tmp_html.name).unlink(missing_ok=True)
-    if bg_path:
-        Path(bg_path).unlink(missing_ok=True)
+    canvas.save(str(output_path), "PNG")
+    print(f"    -> Story: {output_path.name}")
 
     return output_path
