@@ -53,10 +53,11 @@ The pipeline has two independent stages:
 3. **Classifies** each event as "Indian" or not using Gemini Flash Lite with detailed cultural rules
 
 **Posting** (twice daily, 9 AM and 6 PM EDT):
-4. **Enhances** images using AI — replaces backgrounds for artists, generates cinematic scenes for events
-5. **Renders** professional 1080x1350 Instagram posts via Playwright (HTML/CSS -> screenshot)
-6. **Publishes** to Instagram, cross-posts to Facebook, and updates a static [link-in-bio](docs/index.html) page
-7. **Publishes** countdown stories (1080x1920) for events happening within 5 days
+4. **Reconciles** DB with live Instagram posts via alt_text event keys
+5. **Enhances** images using AI — replaces backgrounds for artists, generates cinematic scenes for events
+6. **Renders** professional 1080x1350 Instagram posts with Pillow (saffron/dark theme)
+7. **Publishes** to Instagram (with alt_text tracking), cross-posts to Facebook, and updates a static [link-in-bio](docs/index.html) page
+8. **Publishes** countdown stories (1080x1920) for events happening within 5 days
 
 ---
 
@@ -229,6 +230,7 @@ uv run python main.py --post --post-limit 2 --no-stories
 | `--classify-limit N` | Max events to classify per ingest (default: 10) |
 | `--stories-only` | Only publish countdown stories |
 | `--no-stories` | Skip countdown story publishing |
+| `--reconcile` | Sync DB posted status with live Instagram posts (via alt_text keys) |
 | `--dry-run` | Generate images and show captions but skip actual publishing |
 
 ---

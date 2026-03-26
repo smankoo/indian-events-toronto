@@ -715,8 +715,8 @@ The pipeline uses a **Sulekha-first** approach with AI enhancement:
 | Text-overlaid image | Event poster with dates/venue | Vision API rejects image; AI enhancement removes text; fallback to next source | No images with conflicting text overlay |
 | Sulekha down | Listing page returns error | Retry 3x with backoff; pipeline exits cleanly | No corrupt data; next run retries |
 | Instagram token expired | API returns 401 | Workflow auto-refreshes token before pipeline runs | Transparent recovery |
-| Duplicate event | Same event scraped twice | DB primary key (source, source_id) prevents duplicates | Zero duplicate posts |
-| Near-duplicate events | Same concert at 3pm and 7pm | Fuzzy dedup (>70% title similarity on same date) | One post per event |
+| Duplicate event | Same event scraped twice | DB primary key (source, source_id) prevents duplicates; reconcile uses alt_text keys (`has_alt_text` flag) to track posts | Zero duplicate posts |
+| Near-duplicate events | Same concert at 3pm and 7pm | Fuzzy dedup (>70% title similarity on same date) at ingest + post time | One post per event |
 | Duplicate story | Same countdown already posted | `story_days_posted` tracks which day-counts are done | One story per event per day-count |
 | AI enhancement fails | OpenRouter returns error | Falls back to Sulekha image or web search | Pipeline continues without AI images |
 
