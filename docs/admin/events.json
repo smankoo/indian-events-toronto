@@ -165,8 +165,8 @@
     "price": "CAD 17.55",
     "price_val": 17.55,
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qQb4PN1.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -205,8 +205,8 @@
     "price": "CAD 45.00",
     "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qQbQJMF.png",
     "story_days_posted": "",
     "artists": [
       {
