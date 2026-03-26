@@ -326,7 +326,8 @@ def reconcile(dry_run: bool = False):
     alt_text keys (format "iet::source::source_id"), and marks any DB events
     as unposted if they're no longer on Instagram (e.g. manually deleted).
 
-    For legacy posts without alt_text keys, falls back to caption title matching.
+    Only acts on events with has_alt_text=1 (posted with the tracking system).
+    Legacy posts are left alone — caption matching is too brittle.
     """
     from publisher.instagram import fetch_posted_media
     from data.store import get_connection
@@ -338,40 +339,43 @@ def reconcile(dry_run: bool = False):
     ig_media = fetch_posted_media(limit=200)
     print(f"  Found {len(ig_media)} posts on Instagram")
 
-    # Build lookup sets
-    ig_keys = set()       # event keys from alt_text (reliable)
-    ig_captions = set()   # first line of captions (fallback for legacy)
+    # Build lookup: event keys from alt_text (the only reliable matching method)
+    ig_keys = set()
     for m in ig_media:
         if m["event_key"]:
             ig_keys.add(m["event_key"])
-        caption = m.get("caption", "") or ""
-        first_line = caption.split("\n")[0].strip()
-        if first_line:
-            ig_captions.add(first_line.lower())
+    print(f"  {len(ig_keys)} posts have alt_text event keys")
+
+    # Backfill has_alt_text for events found on IG with alt_text keys
+    if ig_keys:
+        conn = get_connection()
+        for key in ig_keys:
+            parts = key.split("::", 1)
+            if len(parts) == 2:
+                conn.execute(
+                    "UPDATE processed_events SET has_alt_text = 1 WHERE source = ? AND source_id = ?",
+                    (parts[0], parts[1]),
+                )
+        conn.commit()
+        conn.close()
 
     # Step 2: Check DB events marked as posted (future events only)
+    # Only check events with has_alt_text=1 — these were posted with the
+    # alt_text tracking system so we can reliably match them. Legacy posts
+    # (has_alt_text=0) are left alone since caption matching is too brittle
+    # (titles can be cleaned/reformatted after posting).
     conn = get_connection()
     rows = conn.execute(
         "SELECT source, source_id, title FROM processed_events "
-        "WHERE posted = 1 AND is_indian = 1 AND date >= date('now')"
+        "WHERE posted = 1 AND is_indian = 1 AND has_alt_text = 1 AND date >= date('now')"
     ).fetchall()
-    print(f"  DB has {len(rows)} events marked as posted")
+    print(f"  DB has {len(rows)} trackable posted events (with alt_text)")
 
     missing = []
     for source, source_id, title in rows:
         key = f"{source}::{source_id}"
         if key in ig_keys:
-            continue  # found by alt_text key — confirmed on IG
-        if title.lower() in ig_captions:
-            continue  # found by caption match
-        # Only mark as missing if we can verify it was posted with alt_text keys.
-        # If its key isn't in ig_keys, it could be a legacy post that never had
-        # alt_text — we can't tell if it was deleted or just predates the feature.
-        # Safe heuristic: only reconcile if at least SOME posts have alt_text keys
-        # (meaning the feature is active) AND this event was posted recently enough
-        # to have had one.
-        if not ig_keys:
-            continue  # no alt_text keys on any post yet — can't reconcile safely
+            continue  # confirmed on IG via alt_text
         missing.append((source, source_id, title))
 
     if not missing:

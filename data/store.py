@@ -47,6 +47,8 @@ def get_connection() -> sqlite3.Connection:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_days_posted TEXT DEFAULT ''")
     if "image_urls" not in cols:
         conn.execute("ALTER TABLE processed_events ADD COLUMN image_urls TEXT DEFAULT ''")
+    if "has_alt_text" not in cols:
+        conn.execute("ALTER TABLE processed_events ADD COLUMN has_alt_text INTEGER DEFAULT 0")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS instagram_handles (
             artist_name TEXT PRIMARY KEY,
@@ -155,7 +157,7 @@ def save_event(event: Event, is_indian: bool, classification_reason: str = ""):
 def mark_posted(source: str, source_id: str, posted_image_url: str = ""):
     conn = get_connection()
     conn.execute(
-        "UPDATE processed_events SET posted = 1, posted_image_url = ? WHERE source = ? AND source_id = ?",
+        "UPDATE processed_events SET posted = 1, posted_image_url = ?, has_alt_text = 1 WHERE source = ? AND source_id = ?",
         (posted_image_url, source, source_id),
     )
     conn.commit()
