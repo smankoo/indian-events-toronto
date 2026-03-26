@@ -18,21 +18,36 @@ CACHE_DIR = Path(__file__).parent.parent / "data" / "image_cache"
 MODEL = "google/gemini-2.5-flash-image"
 
 
-def _autocrop_black(img: Image.Image, threshold: int = 15) -> Image.Image:
-    """Trim near-black borders that AI models sometimes add around the content."""
+def _autocrop_borders(img: Image.Image, threshold: int = 15) -> Image.Image:
+    """Trim near-black or near-white borders that AI models sometimes add."""
     import numpy as np
     arr = np.array(img)
-    # Per-row and per-col max brightness
+    h, w = img.height, img.width
+
+    # Detect black borders: rows/cols where max brightness is below threshold
     row_max = arr.max(axis=(1, 2))  # shape: (H,)
     col_max = arr.max(axis=(0, 2))  # shape: (W,)
-    rows = np.where(row_max > threshold)[0]
-    cols = np.where(col_max > threshold)[0]
-    if len(rows) == 0 or len(cols) == 0:
-        return img  # all black or all content, don't crop
-    top, bottom = int(rows[0]), int(rows[-1]) + 1
-    left, right = int(cols[0]), int(cols[-1]) + 1
+    black_rows = row_max > threshold
+    black_cols = col_max > threshold
+
+    # Detect white borders: rows/cols where min brightness is above (255-threshold)
+    white_thresh = 255 - threshold
+    row_min = arr.min(axis=(1, 2))  # shape: (H,)
+    col_min = arr.min(axis=(0, 2))  # shape: (W,)
+    white_rows = row_min < white_thresh
+    white_cols = col_min < white_thresh
+
+    # A row/col has content if it's not black AND not white
+    content_rows = np.where(black_rows & white_rows)[0]
+    content_cols = np.where(black_cols & white_cols)[0]
+
+    if len(content_rows) == 0 or len(content_cols) == 0:
+        return img  # all uniform or all content, don't crop
+
+    top, bottom = int(content_rows[0]), int(content_rows[-1]) + 1
+    left, right = int(content_cols[0]), int(content_cols[-1]) + 1
+
     # Only crop if we're removing a meaningful border (>2% per side)
-    h, w = img.height, img.width
     if (top / h > 0.02 or (h - bottom) / h > 0.02 or
             left / w > 0.02 or (w - right) / w > 0.02):
         cropped = img.crop((left, top, right, bottom))
@@ -92,7 +107,7 @@ def _call_openrouter_image(prompt: str, source_img: Image.Image | None = None) -
             if url.startswith("data:"):
                 _, b64 = url.split(",", 1)
                 raw = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
-                return _autocrop_black(raw)
+                return _autocrop_borders(raw)
 
         print("    AI enhance: no image in response")
         return None
@@ -107,6 +122,11 @@ def _get_ai_cached(cache_key: str) -> Image.Image | None:
     if path.exists():
         try:
             img = Image.open(path).convert("RGB")
+            # Re-autocrop cached images in case they were saved with borders
+            cropped = _autocrop_borders(img)
+            if cropped.size != img.size:
+                _save_ai_cache(cache_key, cropped)
+                img = cropped
             print(f"    AI enhance: using cached {img.width}x{img.height}")
             return img
         except Exception:
