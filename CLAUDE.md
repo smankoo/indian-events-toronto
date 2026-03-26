@@ -71,10 +71,14 @@ All rendering is Pillow-based (not Playwright). Images cached by title hash in `
 ## Database
 
 SQLite at `data/events.db` with WAL mode, committed to git. Two tables:
-- `processed_events` — PK: `(source, source_id)`, tracks classification, posting status, story status
+- `processed_events` — PK: `(source, source_id)`, tracks classification, posting status, story status, `has_alt_text` flag
 - `instagram_handles` — PK: `artist_name`, 30-day TTL cache for handle lookups
 
 Schema auto-migrates in `data/store.py:get_connection()`.
+
+## Reconciliation (`--reconcile`)
+
+Runs before `--post` in the posting workflow. Matches DB events to live IG posts via alt_text keys (`iet::source::source_id`). Only acts on events with `has_alt_text=1` — legacy posts (pre-alt_text) are left alone because caption-based matching is too brittle (titles can be cleaned after posting).
 
 ## Environment Variables
 
