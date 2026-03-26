@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399108",
     "posted": true,
     "posted_image_url": "https://iili.io/qruIuJ1.png",
-    "story_days_posted": "3,2",
+    "story_days_posted": "3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/brampton-on-a-curated-speed-dating-evening-for-south-asians-ages-30-40_event-in_brampton-on_398551",
     "posted": true,
     "posted_image_url": "https://iili.io/qruTDG4.png",
-    "story_days_posted": "4,3",
+    "story_days_posted": "4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,12 +50,32 @@
     "event_url": "https://events.sulekha.com/socials-2026-dopamine-bollywood-x-latin-x-hip-hop_event-in_toronto-on_398885",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYUipp.png",
-    "story_days_posted": "4",
+    "story_days_posted": "4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Dance Classes",
+    "date": "2026-04-02T19:30:00-05:00",
+    "time": "7:30 PM",
+    "venue": "The Golden Nails Salon",
+    "city": "North York",
+    "price": "CAD 28.25",
+    "price_val": 28.25,
+    "event_url": "https://events.sulekha.com/bollywood-dance-classes_event-in_north-york-on_399314",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qLDQCan.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   },
@@ -120,7 +140,7 @@
     "price_val": 76.37,
     "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
     "posted": true,
-    "posted_image_url": "https://iili.io/qsOmghG.png",
+    "posted_image_url": "https://iili.io/qLDmf71.png",
     "story_days_posted": "",
     "artists": [
       {
@@ -133,6 +153,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "The Desi Comedy Showcase",
+    "date": "2026-04-11T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "The Rec Room Square One",
+    "city": "Mississauga",
+    "price": "CAD 17.55",
+    "price_val": 17.55,
+    "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   },
@@ -165,8 +205,8 @@
     "price": "CAD 45.00",
     "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qse9Iet.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
@@ -206,6 +246,26 @@
       "total_followers": 369000,
       "venue_class": "major",
       "event_format": "performance"
+    }
+  },
+  {
+    "title": "Bollywood Bingo Night",
+    "date": "2026-04-20T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Desi Bar & Grill",
+    "city": "Brampton",
+    "price": "CAD 12.19",
+    "price_val": 12.19,
+    "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
     }
   },
   {
@@ -281,6 +341,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Desi Singles Night: Bollywood X Bhangra Edition",
+    "date": "2026-04-25T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Dine & Dim",
+    "city": "Toronto",
+    "price": "CAD 11.00",
+    "price_val": 11.0,
+    "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   },
