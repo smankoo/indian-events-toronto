@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/brampton-on-a-curated-speed-dating-evening-for-south-asians-ages-30-40_event-in_brampton-on_398551",
     "posted": true,
     "posted_image_url": "https://iili.io/qruTDG4.png",
-    "story_days_posted": "4,3,2",
+    "story_days_posted": "4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,7 +50,7 @@
     "event_url": "https://events.sulekha.com/socials-2026-dopamine-bollywood-x-latin-x-hip-hop_event-in_toronto-on_398885",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYUipp.png",
-    "story_days_posted": "4,3",
+    "story_days_posted": "4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -147,13 +147,18 @@
         "name": "Bismil Ki Mehfil",
         "handle": null,
         "followers": 0
+      },
+      {
+        "name": "Bismil",
+        "handle": "bismil.live",
+        "followers": 2000000
       }
     ],
     "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
+      "max_followers": 2000000,
+      "total_followers": 2000000,
       "venue_class": "mid",
-      "event_format": "social"
+      "event_format": "performance"
     }
   },
   {
@@ -257,8 +262,8 @@
     "price": "CAD 12.19",
     "price_val": 12.19,
     "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qtOc5J9.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -277,8 +282,8 @@
     "price": "CAD 27.96",
     "price_val": 27.96,
     "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qtOEZu9.png",
     "story_days_posted": "",
     "artists": [
       {
