@@ -430,8 +430,8 @@
     "price": "CAD 40.00",
     "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toxic-abhishek-upmanyu-live-in-toronto_event-in_toronto-on_398779",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qpxNcD7.png",
     "story_days_posted": "",
     "artists": [
       {
@@ -456,8 +456,8 @@
     "price": "CAD 23.18",
     "price_val": 23.18,
     "event_url": "https://events.sulekha.com/bollywood-moves-grooves-with-sudipta-ghosh_event-in_mississauga-on_399288",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qpx8Eas.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
