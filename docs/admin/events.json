@@ -1,25 +1,5 @@
 [
   {
-    "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
-    "date": "2026-03-27T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399108",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qruIuJ1.png",
-    "story_days_posted": "3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "A Curated Speed Dating Evening For South Asians (ages 30-40)",
     "date": "2026-03-28T19:00:00-04:00",
     "time": "7:00 PM",
@@ -50,7 +30,7 @@
     "event_url": "https://events.sulekha.com/socials-2026-dopamine-bollywood-x-latin-x-hip-hop_event-in_toronto-on_398885",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYUipp.png",
-    "story_days_posted": "4,3,2",
+    "story_days_posted": "4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -70,7 +50,7 @@
     "event_url": "https://events.sulekha.com/bollywood-dance-classes_event-in_north-york-on_399314",
     "posted": true,
     "posted_image_url": "https://iili.io/qLDQCan.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -398,8 +378,8 @@
     "price": "CAD 79.00",
     "price_val": 79.0,
     "event_url": "https://events.sulekha.com/sanam-north-american-tour-2026-toronto-on_event-in_toronto-on_398647",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qmCm3NV.png",
     "story_days_posted": "",
     "artists": [
       {
@@ -424,8 +404,8 @@
     "price": "CAD 40.00",
     "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toronto-hoemonal-sumuki-suresh-standup-comedy-live-2026_event-in_toronto-on_397947",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/qmn9Lge.png",
     "story_days_posted": "",
     "artists": [
       {
