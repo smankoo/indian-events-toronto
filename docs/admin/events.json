@@ -1,65 +1,5 @@
 [
   {
-    "title": "A Curated Speed Dating Evening For South Asians (ages 30-40)",
-    "date": "2026-03-28T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Desi Bar & Grill",
-    "city": "Brampton",
-    "price": "CAD 22.63",
-    "price_val": 22.63,
-    "event_url": "https://events.sulekha.com/brampton-on-a-curated-speed-dating-evening-for-south-asians-ages-30-40_event-in_brampton-on_398551",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qruTDG4.png",
-    "story_days_posted": "4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Socials 2026 Dopamine, Bollywood X Latin X Hip Hop",
-    "date": "2026-03-29T20:00:00-04:00",
-    "time": "8:00 PM",
-    "venue": "The Dopamine - Pub & Lounge",
-    "city": "Toronto",
-    "price": "CAD 26.11",
-    "price_val": 26.11,
-    "event_url": "https://events.sulekha.com/socials-2026-dopamine-bollywood-x-latin-x-hip-hop_event-in_toronto-on_398885",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qiYUipp.png",
-    "story_days_posted": "4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Dance Classes",
-    "date": "2026-04-02T19:30:00-05:00",
-    "time": "7:30 PM",
-    "venue": "The Golden Nails Salon",
-    "city": "North York",
-    "price": "CAD 28.25",
-    "price_val": 28.25,
-    "event_url": "https://events.sulekha.com/bollywood-dance-classes_event-in_north-york-on_399314",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qLDQCan.png",
-    "story_days_posted": "5",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Sabri Ki Mehfil By Farhan Sabri & Priyanzah Belange",
     "date": "2026-04-03T18:30:00-05:00",
     "time": "6:30 PM",
@@ -70,7 +10,7 @@
     "event_url": "https://events.sulekha.com/sabri-ki-mehfil-by-farhan-sabri-priyanzah-belange-in-toronto_event-in_mississauga-on_397683",
     "posted": true,
     "posted_image_url": "https://iili.io/qiYZGAg.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [
       {
         "name": "Farhan Sabri",
@@ -101,7 +41,7 @@
     "event_url": "https://events.sulekha.com/bollywood-after-dark_event-in_toronto-on_399194",
     "posted": true,
     "posted_image_url": "https://iili.io/q6jI7HJ.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -124,14 +64,14 @@
     "story_days_posted": "",
     "artists": [
       {
-        "name": "Bismil Ki Mehfil",
-        "handle": null,
-        "followers": 0
-      },
-      {
         "name": "Bismil",
         "handle": "bismil.live",
         "followers": 2000000
+      },
+      {
+        "name": "Bismil Ki Mehfil",
+        "handle": "bismilkimehfilsurat",
+        "followers": 0
       }
     ],
     "signals": {
@@ -139,6 +79,46 @@
       "total_followers": 2000000,
       "venue_class": "mid",
       "event_format": "performance"
+    }
+  },
+  {
+    "title": "Bollywood Pulse - Bollywood Madness",
+    "date": "2026-04-10T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Mia Toronto",
+    "city": "Toronto",
+    "price": "CAD 15.94",
+    "price_val": 15.94,
+    "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-madness_event-in_toronto-on_399419",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BoqxgGS.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Namak Ishq Ka | Semi Classical Dance Workshop",
+    "date": "2026-04-11T11:30:00-05:00",
+    "time": "11:30 AM",
+    "venue": "Dance Arts Studio",
+    "city": "Toronto",
+    "price": "CAD 21.83",
+    "price_val": 21.83,
+    "event_url": "https://events.sulekha.com/namak-ishq-ka-semi-classical-dance-workshop_event-in_toronto-on_399429",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BoqAf5X.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
     }
   },
   {
@@ -152,6 +132,66 @@
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
     "posted": true,
     "posted_image_url": "https://iili.io/qQb4PN1.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "TJC x Desi Nights - Indoor Jam Night + DJ After Party",
+    "date": "2026-04-11T21:00:00-05:00",
+    "time": "9:00 PM",
+    "venue": "Shahi Manjil - Authentic Indian Cuisine | Fine Dining Restaurant in Toronto",
+    "city": "North York",
+    "price": "CAD 17.31",
+    "price_val": 17.31,
+    "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Monster Mashup",
+    "date": "2026-04-15T16:00:00-05:00",
+    "time": "4:00 PM",
+    "venue": "Mississauga Celebration Square",
+    "city": "Mississauga",
+    "price": "CAD 200.00",
+    "price_val": 200.0,
+    "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "major",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Boom Friday Night",
+    "date": "2026-04-17T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "Bombae Social",
+    "city": "Concord",
+    "price": "CAD 11.98",
+    "price_val": 11.98,
+    "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -290,6 +330,26 @@
     }
   },
   {
+    "title": "Bollywood Fitness Dance Workshop",
+    "date": "2026-04-25T12:00:00-05:00",
+    "time": "12:00 PM",
+    "venue": "Daniels Spectrum: Regent Park arts and Cultural Centre",
+    "city": "Toronto",
+    "price": "CAD 19.53",
+    "price_val": 19.53,
+    "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Bollywood Desi Night: Bollywood & Indo House Party",
     "date": "2026-04-25T22:00:00-05:00",
     "time": "10:00 PM",
@@ -340,6 +400,46 @@
     "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
     "posted": true,
     "posted_image_url": "https://iili.io/qDvmYOl.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
+    "date": "2026-04-25T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "The Dopamine Lounge",
+    "city": "Toronto",
+    "price": "CAD 22.90",
+    "price_val": 22.9,
+    "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Women's Friendship Night Social",
+    "date": "2026-04-26T15:00:00-05:00",
+    "time": "3:00 PM",
+    "venue": "FreshCo Bathurst & Nassau",
+    "city": "Toronto",
+    "price": "CAD 17.55",
+    "price_val": 17.55,
+    "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
