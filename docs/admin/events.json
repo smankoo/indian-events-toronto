@@ -150,8 +150,8 @@
     "price": "CAD 17.31",
     "price_val": 17.31,
     "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BxHUgcv.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -170,8 +170,8 @@
     "price": "CAD 200.00",
     "price_val": 200.0,
     "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BxH6CUG.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -548,6 +548,26 @@
     }
   },
   {
+    "title": "South Asian Singles Mixer",
+    "date": "2026-05-27T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Mossop-s Social House",
+    "city": "Toronto",
+    "price": "CAD 33.28",
+    "price_val": 33.28,
+    "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Bollywood Moves & Grooves With Sudipta Ghosh",
     "date": "2026-05-28T19:00:00-05:00",
     "time": "7:00 PM",
@@ -564,6 +584,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "The Rampage Tour - Arjun Rampal - Sundowner - Outdoor Event",
+    "date": "2026-06-07T17:00:00-04:00",
+    "time": "5:00 PM",
+    "venue": "Ascott Parc Event Centre",
+    "city": "Concord",
+    "price": "CAD 51.99",
+    "price_val": 51.99,
+    "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   }
