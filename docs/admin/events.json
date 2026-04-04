@@ -1,36 +1,5 @@
 [
   {
-    "title": "Sabri Ki Mehfil By Farhan Sabri & Priyanzah Belange",
-    "date": "2026-04-03T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "IKON Event Space",
-    "city": "Mississauga",
-    "price": "CAD 125.00",
-    "price_val": 125.0,
-    "event_url": "https://events.sulekha.com/sabri-ki-mehfil-by-farhan-sabri-priyanzah-belange-in-toronto_event-in_mississauga-on_397683",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qiYZGAg.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [
-      {
-        "name": "Farhan Sabri",
-        "handle": "farhansabriofficial",
-        "followers": 115000
-      },
-      {
-        "name": "Priyanzah Belange",
-        "handle": "priyanzah_belange",
-        "followers": 185
-      }
-    ],
-    "signals": {
-      "max_followers": 115000,
-      "total_followers": 115185,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
     "title": "Bollywood After Dark",
     "date": "2026-04-04T22:00:00-05:00",
     "time": "10:00 PM",
@@ -190,8 +159,8 @@
     "price": "CAD 11.98",
     "price_val": 11.98,
     "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Bz5jBF2.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -338,8 +307,8 @@
     "price": "CAD 19.53",
     "price_val": 19.53,
     "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Bz5O5Pf.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
