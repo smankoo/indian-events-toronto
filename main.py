@@ -168,18 +168,19 @@ def _scrape(classify_limit: int = 10):
 
 
 def _enrich():
-    """Enrich ALL future Indian events: look up artist IG handles and followers.
+    """Enrich ALL future Indian events: look up artist + venue IG handles.
 
     Runs on every event, not just new ones — the handle cache ensures
-    already-looked-up artists are instant (no API calls).
+    already-looked-up artists/venues are instant (no API calls).
     """
     from image_generator.image_search import classify_event as classify_performer
     from publisher.instagram_handle import lookup_instagram_handle
+    from publisher.venue_handle import lookup_venue_handle
     from data.store import get_connection
 
     conn = get_connection()
     rows = conn.execute(
-        """SELECT title, description FROM processed_events
+        """SELECT title, description, venue, city FROM processed_events
            WHERE is_indian = 1 AND date >= date('now')
            ORDER BY date ASC"""
     ).fetchall()
@@ -187,12 +188,11 @@ def _enrich():
 
     print(f"\n=== Enriching {len(rows)} future Indian events ===")
     enriched = 0
-    for title, description in rows:
+    venues_enriched = 0
+    for title, description, venue, city in rows:
         try:
             info = classify_performer(title, description or "")
             artists = info.get("artist_names", [])
-            if not artists:
-                continue
             for artist_name in artists:
                 try:
                     lookup_instagram_handle(artist_name, info["type"])
@@ -202,7 +202,15 @@ def _enrich():
         except Exception as e:
             print(f"    Classification error for '{title[:50]}': {e}")
 
-    print(f"  Enrichment done ({enriched} artist lookups)")
+        # Venue handle lookup
+        if venue:
+            try:
+                lookup_venue_handle(venue, city or "")
+                venues_enriched += 1
+            except Exception as e:
+                print(f"    Venue handle lookup error for '{venue}': {e}")
+
+    print(f"  Enrichment done ({enriched} artist lookups, {venues_enriched} venue lookups)")
 
 
 def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
@@ -211,6 +219,7 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
     from image_generator.image_search import classify_event as classify_performer
     from publisher.instagram import publish_post, build_caption
     from publisher.instagram_handle import lookup_instagram_handle
+    from publisher.venue_handle import lookup_venue_handle
     from publisher.facebook import publish_to_facebook, build_fb_caption
     from publisher.linkinbio import generate_linkinbio
 
@@ -259,13 +268,21 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
         except Exception as e:
             print(f"    -> Classification error (continuing): {e}")
 
-        caption = build_caption(event, instagram_handles=ig_handles)
+        # Look up Instagram handle for venue
+        venue_handle = None
+        try:
+            venue_handle = lookup_venue_handle(event.venue, event.city)
+        except Exception as e:
+            print(f"    -> Venue handle lookup error (continuing): {e}")
+
+        caption = build_caption(event, instagram_handles=ig_handles, venue_handle=venue_handle)
 
         if dry_run:
             if ig_handles:
                 print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles)}")
             else:
                 print(f"    -> Artist tags: none")
+            print(f"    -> Venue tag: {'@' + venue_handle if venue_handle else 'none'}")
             print(f"    -> Caption preview:")
             for line in caption.split('\n')[:6]:
                 print(f"       {line}")
@@ -275,7 +292,8 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
             try:
                 event_key = f"{event.source}::{event.source_id}"
                 media_id, posted_image_url = publish_post(
-                    path, caption, instagram_handles=ig_handles, event_key=event_key,
+                    path, caption, instagram_handles=ig_handles,
+                    venue_handle=venue_handle, event_key=event_key,
                 )
                 mark_posted(event.source, event.source_id, posted_image_url)
                 posted += 1
@@ -283,7 +301,8 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
 
                 # Cross-post to Facebook using the same uploaded image
                 try:
-                    fb_caption = build_fb_caption(event, instagram_handles=ig_handles)
+                    fb_caption = build_fb_caption(event, instagram_handles=ig_handles,
+                                                  venue_handle=venue_handle)
                     fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
                     print(f"    -> Facebook published (post_id: {fb_post_id})")
                 except Exception as e:

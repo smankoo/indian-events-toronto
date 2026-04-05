@@ -15,7 +15,8 @@ def _get_env(name: str) -> str:
 
 
 def build_fb_caption(event, instagram_handle: str | None = None,
-                     instagram_handles: list[str] | None = None) -> str:
+                     instagram_handles: list[str] | None = None,
+                     venue_handle: str | None = None) -> str:
     """Build a Facebook caption — includes a direct event link (unlike Instagram)."""
     lines = []
     lines.append(event.title)
@@ -26,7 +27,10 @@ def build_fb_caption(event, instagram_handle: str | None = None,
     lines.append(f"📅 {event.date.strftime('%A, %B %-d, %Y')}")
     if event.time_str:
         lines.append(f"🕐 {event.time_str}")
-    lines.append(f"📍 {event.venue}")
+    venue_line = f"📍 {event.venue}"
+    if venue_handle:
+        venue_line += f" (@{venue_handle})"
+    lines.append(venue_line)
     if event.city:
         lines.append(f"   {event.city}")
     if event.price:
