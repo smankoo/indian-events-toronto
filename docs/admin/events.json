@@ -1,25 +1,5 @@
 [
   {
-    "title": "Bollywood After Dark",
-    "date": "2026-04-04T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Oria on King",
-    "city": "Toronto",
-    "price": "CAD 9.31",
-    "price_val": 9.31,
-    "event_url": "https://events.sulekha.com/bollywood-after-dark_event-in_toronto-on_399194",
-    "posted": true,
-    "posted_image_url": "https://iili.io/q6jI7HJ.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bismil Ki Mehfil - Main Hoon Sufi",
     "date": "2026-04-10T19:00:00-04:00",
     "time": "7:00 PM",
@@ -29,144 +9,19 @@
     "price_val": 76.37,
     "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
     "posted": true,
-    "posted_image_url": "https://iili.io/qLDmf71.png",
+    "posted_image_url": "https://iili.io/q6jRTzv.png",
     "story_days_posted": "",
     "artists": [
       {
-        "name": "Bismil",
-        "handle": "bismil.live",
-        "followers": 2000000
-      },
-      {
         "name": "Bismil Ki Mehfil",
-        "handle": "bismilkimehfilsurat",
+        "handle": null,
         "followers": 0
       }
     ],
     "signals": {
-      "max_followers": 2000000,
-      "total_followers": 2000000,
+      "max_followers": 0,
+      "total_followers": 0,
       "venue_class": "mid",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Pulse - Bollywood Madness",
-    "date": "2026-04-10T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Mia Toronto",
-    "city": "Toronto",
-    "price": "CAD 15.94",
-    "price_val": 15.94,
-    "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-madness_event-in_toronto-on_399419",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BoqxgGS.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Namak Ishq Ka | Semi Classical Dance Workshop",
-    "date": "2026-04-11T11:30:00-05:00",
-    "time": "11:30 AM",
-    "venue": "Dance Arts Studio",
-    "city": "Toronto",
-    "price": "CAD 21.83",
-    "price_val": 21.83,
-    "event_url": "https://events.sulekha.com/namak-ishq-ka-semi-classical-dance-workshop_event-in_toronto-on_399429",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BoqAf5X.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "The Desi Comedy Showcase",
-    "date": "2026-04-11T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "The Rec Room Square One",
-    "city": "Mississauga",
-    "price": "CAD 17.55",
-    "price_val": 17.55,
-    "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qQb4PN1.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "TJC x Desi Nights - Indoor Jam Night + DJ After Party",
-    "date": "2026-04-11T21:00:00-05:00",
-    "time": "9:00 PM",
-    "venue": "Shahi Manjil - Authentic Indian Cuisine | Fine Dining Restaurant in Toronto",
-    "city": "North York",
-    "price": "CAD 17.31",
-    "price_val": 17.31,
-    "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BxHUgcv.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Monster Mashup",
-    "date": "2026-04-15T16:00:00-05:00",
-    "time": "4:00 PM",
-    "venue": "Mississauga Celebration Square",
-    "city": "Mississauga",
-    "price": "CAD 200.00",
-    "price_val": 200.0,
-    "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BxH6CUG.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Boom Friday Night",
-    "date": "2026-04-17T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "Bombae Social",
-    "city": "Concord",
-    "price": "CAD 11.98",
-    "price_val": 11.98,
-    "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Bz5jBF2.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
       "event_format": "social"
     }
   },
@@ -199,8 +54,8 @@
     "price": "CAD 45.00",
     "price_val": 45.0,
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qQbQJMF.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
@@ -243,26 +98,6 @@
     }
   },
   {
-    "title": "Bollywood Bingo Night",
-    "date": "2026-04-20T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Desi Bar & Grill",
-    "city": "Brampton",
-    "price": "CAD 12.19",
-    "price_val": 12.19,
-    "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qtOc5J9.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Afusic X Jani Ft. Ali Soomro",
     "date": "2026-04-24T19:00:00-04:00",
     "time": "7:00 PM",
@@ -272,7 +107,7 @@
     "price_val": 27.96,
     "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
     "posted": true,
-    "posted_image_url": "https://iili.io/qtOEZu9.png",
+    "posted_image_url": "https://iili.io/qiGLTt1.png",
     "story_days_posted": "",
     "artists": [
       {
@@ -296,26 +131,6 @@
       "total_followers": 225451,
       "venue_class": "unknown",
       "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Fitness Dance Workshop",
-    "date": "2026-04-25T12:00:00-05:00",
-    "time": "12:00 PM",
-    "venue": "Daniels Spectrum: Regent Park arts and Cultural Centre",
-    "city": "Toronto",
-    "price": "CAD 19.53",
-    "price_val": 19.53,
-    "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Bz5O5Pf.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
     }
   },
   {
@@ -359,66 +174,6 @@
     }
   },
   {
-    "title": "Desi Singles Night: Bollywood X Bhangra Edition",
-    "date": "2026-04-25T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Dine & Dim",
-    "city": "Toronto",
-    "price": "CAD 11.00",
-    "price_val": 11.0,
-    "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qDvmYOl.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
-    "date": "2026-04-25T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BIC0Jcb.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Women's Friendship Night Social",
-    "date": "2026-04-26T15:00:00-05:00",
-    "time": "3:00 PM",
-    "venue": "FreshCo Bathurst & Nassau",
-    "city": "Toronto",
-    "price": "CAD 17.55",
-    "price_val": 17.55,
-    "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BICMyan.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Nari In Sari",
     "date": "2026-05-01T19:30:00-05:00",
     "time": "7:30 PM",
@@ -427,8 +182,8 @@
     "price": "CAD 38.95",
     "price_val": 38.95,
     "event_url": "https://events.sulekha.com/nari-in-sari_event-in_mississauga-on_399122",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qD8dqRs.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -447,8 +202,8 @@
     "price": "CAD 79.00",
     "price_val": 79.0,
     "event_url": "https://events.sulekha.com/sanam-north-american-tour-2026-toronto-on_event-in_toronto-on_398647",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qmCm3NV.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
@@ -473,8 +228,8 @@
     "price": "CAD 40.00",
     "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toronto-hoemonal-sumuki-suresh-standup-comedy-live-2026_event-in_toronto-on_397947",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qmn9Lge.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
@@ -499,8 +254,8 @@
     "price": "CAD 40.00",
     "price_val": 40.0,
     "event_url": "https://events.sulekha.com/toxic-abhishek-upmanyu-live-in-toronto_event-in_toronto-on_398779",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qpxNcD7.png",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [
       {
@@ -517,26 +272,6 @@
     }
   },
   {
-    "title": "South Asian Singles Mixer",
-    "date": "2026-05-27T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Mossop-s Social House",
-    "city": "Toronto",
-    "price": "CAD 33.28",
-    "price_val": 33.28,
-    "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
-    "posted": false,
-    "posted_image_url": "",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Moves & Grooves With Sudipta Ghosh",
     "date": "2026-05-28T19:00:00-05:00",
     "time": "7:00 PM",
@@ -545,26 +280,6 @@
     "price": "CAD 23.18",
     "price_val": 23.18,
     "event_url": "https://events.sulekha.com/bollywood-moves-grooves-with-sudipta-ghosh_event-in_mississauga-on_399288",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qpx8Eas.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "The Rampage Tour - Arjun Rampal - Sundowner - Outdoor Event",
-    "date": "2026-06-07T17:00:00-04:00",
-    "time": "5:00 PM",
-    "venue": "Ascott Parc Event Centre",
-    "city": "Concord",
-    "price": "CAD 51.99",
-    "price_val": 51.99,
-    "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
@@ -572,7 +287,7 @@
     "signals": {
       "max_followers": 0,
       "total_followers": 0,
-      "venue_class": "mid",
+      "venue_class": "unknown",
       "event_format": "social"
     }
   }

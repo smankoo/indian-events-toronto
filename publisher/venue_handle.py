@@ -33,6 +33,9 @@ def lookup_venue_handle(venue_name: str, city: str = "") -> str | None:
     """Find a venue's Instagram handle. Returns None if not found."""
     if not venue_name:
         return None
+    # Skip placeholder venues
+    if venue_name.lower().strip() in ("to be announced", "tba", "tbd", "to be decided"):
+        return None
 
     from data.store import get_cached_handle, save_handle_cache
 
