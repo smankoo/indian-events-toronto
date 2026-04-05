@@ -38,6 +38,7 @@ def upload_image(image_path: Path) -> str:
 
 def publish_post(image_path: Path, caption: str, instagram_handle: str | None = None,
                  instagram_handles: list[str] | None = None,
+                 venue_handle: str | None = None,
                  event_key: str | None = None) -> tuple[str, str]:
     """
     Publish a single-image post to Instagram.
@@ -64,9 +65,12 @@ def publish_post(image_path: Path, caption: str, instagram_handle: str | None = 
     if event_key:
         container_data["alt_text"] = f"iet::{event_key}"
     handles_to_tag = instagram_handles or ([instagram_handle] if instagram_handle else [])
-    if handles_to_tag:
+    all_tags = list(handles_to_tag)
+    if venue_handle:
+        all_tags.append(venue_handle)
+    if all_tags:
         tags = []
-        for idx, h in enumerate(handles_to_tag):
+        for idx, h in enumerate(all_tags):
             x = 0.3 + (idx * 0.2)  # spread tags horizontally: 0.3, 0.5, 0.7, ...
             x = min(x, 0.9)
             tags.append({"username": h, "x": x, "y": 0.8})
@@ -77,7 +81,7 @@ def publish_post(image_path: Path, caption: str, instagram_handle: str | None = 
         timeout=30,
     )
     # If user_tags caused an error, retry without them
-    if not resp.ok and handles_to_tag:
+    if not resp.ok and all_tags:
         print(f"    user_tags rejected, retrying without tags...")
         container_data.pop("user_tags", None)
         resp = requests.post(
@@ -224,7 +228,8 @@ def fetch_posted_media(limit: int = 100) -> list[dict]:
 
 
 def build_caption(event, instagram_handle: str | None = None,
-                  instagram_handles: list[str] | None = None) -> str:
+                  instagram_handles: list[str] | None = None,
+                  venue_handle: str | None = None) -> str:
     """Build an Instagram caption from an Event object."""
     lines = []
     lines.append(event.title)
@@ -235,7 +240,10 @@ def build_caption(event, instagram_handle: str | None = None,
     lines.append(f"📅 {event.date.strftime('%A, %B %-d, %Y')}")
     if event.time_str:
         lines.append(f"🕐 {event.time_str}")
-    lines.append(f"📍 {event.venue}")
+    venue_line = f"📍 {event.venue}"
+    if venue_handle:
+        venue_line += f" (@{venue_handle})"
+    lines.append(venue_line)
     if event.city:
         lines.append(f"   {event.city}")
     if event.price:
