@@ -74,8 +74,8 @@
     "price": "CAD 17.55",
     "price_val": 17.55,
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BuR8p8Q.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -94,8 +94,8 @@
     "price": "CAD 17.31",
     "price_val": 17.31,
     "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BuRrJN2.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -334,6 +334,66 @@
     }
   },
   {
+    "title": "Desi Singles Night: Bollywood X Bhangra Edition",
+    "date": "2026-04-25T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Dine & Dim",
+    "city": "Toronto",
+    "price": "CAD 11.00",
+    "price_val": 11.0,
+    "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
+    "date": "2026-04-25T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "The Dopamine Lounge",
+    "city": "Toronto",
+    "price": "CAD 22.90",
+    "price_val": 22.9,
+    "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Womens Friendship Night Social",
+    "date": "2026-04-26T15:00:00-05:00",
+    "time": "3:00 PM",
+    "venue": "FreshCo Bathurst & Nassau",
+    "city": "Toronto",
+    "price": "CAD 17.55",
+    "price_val": 17.55,
+    "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Nari In Sari",
     "date": "2026-05-01T19:30:00-05:00",
     "time": "7:30 PM",
@@ -432,6 +492,26 @@
     }
   },
   {
+    "title": "South Asian Singles Mixer (Ages 25-45)",
+    "date": "2026-05-27T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Mossop-s Social House",
+    "city": "Toronto",
+    "price": "CAD 33.28",
+    "price_val": 33.28,
+    "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Bollywood Moves & Grooves With Sudipta Ghosh",
     "date": "2026-05-28T19:00:00-05:00",
     "time": "7:00 PM",
@@ -448,6 +528,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "The Rampage Tour - Arjun Rampal - Sundowner - Outdoor Event",
+    "date": "2026-06-07T17:00:00-04:00",
+    "time": "5:00 PM",
+    "venue": "Ascott Parc Event Centre",
+    "city": "Concord",
+    "price": "CAD 51.99",
+    "price_val": 51.99,
+    "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   }
