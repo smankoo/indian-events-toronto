@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
     "posted": true,
     "posted_image_url": "https://iili.io/q6jRTzv.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [
       {
         "name": "Bismil Ki Mehfil",
@@ -36,7 +36,7 @@
     "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-madness_event-in_toronto-on_399419",
     "posted": true,
     "posted_image_url": "https://iili.io/BTVdfe4.png",
-    "story_days_posted": "",
+    "story_days_posted": "4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -56,6 +56,26 @@
     "event_url": "https://events.sulekha.com/namak-ishq-ka-semi-classical-dance-workshop_event-in_toronto-on_399429",
     "posted": true,
     "posted_image_url": "https://iili.io/BTVFchl.png",
+    "story_days_posted": "5",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Nazia Iqbal",
+    "date": "2026-04-11T18:00:00-05:00",
+    "time": "6:00 PM",
+    "venue": "Toronto Pavilion",
+    "city": "North York",
+    "price": "CAD 54.73",
+    "price_val": 54.73,
+    "event_url": "https://events.sulekha.com/nazia-iqbal_event-in_north-york-on_399475",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BA6ZDSn.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -76,7 +96,7 @@
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
     "posted": true,
     "posted_image_url": "https://iili.io/BuR8p8Q.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -96,7 +116,7 @@
     "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
     "posted": true,
     "posted_image_url": "https://iili.io/BuRrJN2.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -114,8 +134,8 @@
     "price": "CAD 200.00",
     "price_val": 200.0,
     "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BA6pdmu.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -134,6 +154,26 @@
     "price": "CAD 11.98",
     "price_val": 11.98,
     "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Laugh & Learn: Smart Lectures + Stand-up Comedy",
+    "date": "2026-04-18T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Society Clubhouse",
+    "city": "Toronto",
+    "price": "CAD 22.63",
+    "price_val": 22.63,
+    "event_url": "https://events.sulekha.com/laugh-learn-smart-lectures-stand-up-comedy-in-toronto_event-in_toronto-on_399477",
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
@@ -374,6 +414,26 @@
     }
   },
   {
+    "title": "Hindu Heritage Fashion Week - Model Casting Call 2026",
+    "date": "2026-04-26T13:00:00-05:00",
+    "time": "1:00 PM",
+    "venue": "10 Thornmount Dr",
+    "city": "Scarborough",
+    "price": "CAD 100.00",
+    "price_val": 100.0,
+    "event_url": "https://events.sulekha.com/hindu-heritage-fashion-week-model-casting-call-2026_event-in_scarborough-on_399478",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Bollywood Womens Friendship Night Social",
     "date": "2026-04-26T15:00:00-05:00",
     "time": "3:00 PM",
@@ -437,6 +497,32 @@
       "total_followers": 104000,
       "venue_class": "major",
       "event_format": "performance"
+    }
+  },
+  {
+    "title": "The Unplugged Baithak - A Grand Piano & Vocal Recital Of Bollywood Classics",
+    "date": "2026-05-09T15:30:00-05:00",
+    "time": "3:30 PM",
+    "venue": "Westminster United Church",
+    "city": "Mississauga",
+    "price": "CAD 12.19",
+    "price_val": 12.19,
+    "event_url": "https://events.sulekha.com/the-unplugged-baithak-a-grand-piano-vocal-recital-of-bollywood-classics_event-in_mississauga-on_399479",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Bollywood Classics",
+        "handle": "bollywood_classics",
+        "followers": 0
+      }
+    ],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
     }
   },
   {
