@@ -16,11 +16,16 @@
         "name": "Bismil Ki Mehfil",
         "handle": "bismilkimehfilsurat",
         "followers": 1124
+      },
+      {
+        "name": "Bismil",
+        "handle": "bismil.live",
+        "followers": 2000000
       }
     ],
     "signals": {
-      "max_followers": 1124,
-      "total_followers": 1124,
+      "max_followers": 2000000,
+      "total_followers": 2001124,
       "venue_class": "mid",
       "event_format": "performance"
     }
@@ -266,8 +271,8 @@
     "price": "CAD 12.19",
     "price_val": 12.19,
     "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BYAqX4I.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -322,8 +327,8 @@
     "price": "CAD 19.53",
     "price_val": 19.53,
     "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BYAxKJI.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
