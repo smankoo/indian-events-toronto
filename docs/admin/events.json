@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
     "posted": true,
     "posted_image_url": "https://iili.io/q6jRTzv.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [
       {
         "name": "Bismil Ki Mehfil",
@@ -41,7 +41,7 @@
     "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-madness_event-in_toronto-on_399419",
     "posted": true,
     "posted_image_url": "https://iili.io/BTVdfe4.png",
-    "story_days_posted": "4,3",
+    "story_days_posted": "4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -61,7 +61,7 @@
     "event_url": "https://events.sulekha.com/namak-ishq-ka-semi-classical-dance-workshop_event-in_toronto-on_399429",
     "posted": true,
     "posted_image_url": "https://iili.io/BTVFchl.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -81,7 +81,7 @@
     "event_url": "https://events.sulekha.com/nazia-iqbal_event-in_north-york-on_399475",
     "posted": true,
     "posted_image_url": "https://iili.io/BA6ZDSn.png",
-    "story_days_posted": "4",
+    "story_days_posted": "4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -101,7 +101,7 @@
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
     "posted": true,
     "posted_image_url": "https://iili.io/BuR8p8Q.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -121,7 +121,7 @@
     "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
     "posted": true,
     "posted_image_url": "https://iili.io/BuRrJN2.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -387,8 +387,8 @@
     "price": "CAD 11.00",
     "price_val": 11.0,
     "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BaL6ONe.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -407,8 +407,8 @@
     "price": "CAD 22.90",
     "price_val": 22.9,
     "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BaLDz4s.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
