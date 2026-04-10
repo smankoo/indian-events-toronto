@@ -61,7 +61,7 @@
     "event_url": "https://events.sulekha.com/namak-ishq-ka-semi-classical-dance-workshop_event-in_toronto-on_399429",
     "posted": true,
     "posted_image_url": "https://iili.io/BTVFchl.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -81,7 +81,7 @@
     "event_url": "https://events.sulekha.com/nazia-iqbal_event-in_north-york-on_399475",
     "posted": true,
     "posted_image_url": "https://iili.io/BA6ZDSn.png",
-    "story_days_posted": "4,3,2",
+    "story_days_posted": "4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -101,7 +101,7 @@
     "event_url": "https://events.sulekha.com/the-desi-comedy-showcase_event-in_mississauga-on_399323",
     "posted": true,
     "posted_image_url": "https://iili.io/BuR8p8Q.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -121,7 +121,7 @@
     "event_url": "https://events.sulekha.com/tjc-x-desi-nights-indoor-jam-night-dj-after-party_event-in_north-york-on_399427",
     "posted": true,
     "posted_image_url": "https://iili.io/BuRrJN2.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -141,7 +141,7 @@
     "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
     "posted": true,
     "posted_image_url": "https://iili.io/BA6pdmu.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -596,8 +596,8 @@
     "price": "CAD 33.28",
     "price_val": 33.28,
     "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BESwag2.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
