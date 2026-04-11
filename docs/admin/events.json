@@ -1,56 +1,5 @@
 [
   {
-    "title": "Bismil Ki Mehfil - Main Hoon Sufi",
-    "date": "2026-04-10T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Embassy Grand Convention Centre and Banquet Hall in Brampton",
-    "city": "Brampton",
-    "price": "CAD 76.37",
-    "price_val": 76.37,
-    "event_url": "https://events.sulekha.com/bismil-ki-mehfil-main-hoon-sufi-live-in-toronto_event-in_brampton-on_398563",
-    "posted": true,
-    "posted_image_url": "https://iili.io/q6jRTzv.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [
-      {
-        "name": "Bismil Ki Mehfil",
-        "handle": "bismilkimehfilsurat",
-        "followers": 1124
-      },
-      {
-        "name": "Bismil",
-        "handle": "bismil.live",
-        "followers": 2000000
-      }
-    ],
-    "signals": {
-      "max_followers": 2000000,
-      "total_followers": 2001124,
-      "venue_class": "mid",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Pulse - Bollywood Madness",
-    "date": "2026-04-10T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Mia Toronto",
-    "city": "Toronto",
-    "price": "CAD 15.94",
-    "price_val": 15.94,
-    "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-madness_event-in_toronto-on_399419",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BTVdfe4.png",
-    "story_days_posted": "4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Namak Ishq Ka | Semi Classical Dance Workshop",
     "date": "2026-04-11T11:30:00-05:00",
     "time": "11:30 AM",
@@ -141,7 +90,7 @@
     "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
     "posted": true,
     "posted_image_url": "https://iili.io/BA6pdmu.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -636,8 +585,8 @@
     "price": "CAD 51.99",
     "price_val": 51.99,
     "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BMpFfKQ.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
