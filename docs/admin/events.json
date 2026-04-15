@@ -322,8 +322,8 @@
     "price": "CAD 19.14",
     "price_val": 19.14,
     "event_url": "https://events.sulekha.com/bollywood-bliss-an-upscale-exclusive-affair-season-finale-toronto_event-in_toronto-on_399615",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BvhC8cF.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -362,8 +362,8 @@
     "price": "CAD 17.31",
     "price_val": 17.31,
     "event_url": "https://events.sulekha.com/velvet-vibe-elevated-bollywood-night-shisha-indoor-heated-patio_event-in_toronto-on_399614",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BvhIWQf.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -481,6 +481,11 @@
         "name": "Grand Piano",
         "handle": "ilgrandepiano",
         "followers": 15000
+      },
+      {
+        "name": "The Unplugged Baithak",
+        "handle": null,
+        "followers": 0
       }
     ],
     "signals": {
