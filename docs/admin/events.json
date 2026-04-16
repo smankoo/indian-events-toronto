@@ -1,25 +1,5 @@
 [
   {
-    "title": "Bollywood Monster Mashup",
-    "date": "2026-04-15T16:00:00-05:00",
-    "time": "4:00 PM",
-    "venue": "Mississauga Celebration Square",
-    "city": "Mississauga",
-    "price": "CAD 200.00",
-    "price_val": 200.0,
-    "event_url": "https://events.sulekha.com/sell-goods-or-promote-services-at-bollywoodmonster-mashup-july-24-26-2026_event-in_mississauga-on_399430",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BA6pdmu.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Boom Friday Night",
     "date": "2026-04-17T22:30:00-05:00",
     "time": "10:30 PM",
@@ -30,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
     "posted": true,
     "posted_image_url": "https://iili.io/BR6bZvf.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,7 +30,7 @@
     "event_url": "https://events.sulekha.com/laugh-learn-smart-lectures-stand-up-comedy-in-toronto_event-in_toronto-on_399477",
     "posted": true,
     "posted_image_url": "https://iili.io/BRP9eMN.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -70,7 +50,7 @@
     "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399303",
     "posted": true,
     "posted_image_url": "https://iili.io/qiGOQgn.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +70,7 @@
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
     "posted": true,
     "posted_image_url": "https://iili.io/B75madF.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [
       {
         "name": "Amit Tandon",
@@ -116,7 +96,7 @@
     "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto_event-in_toronto-on_396955",
     "posted": true,
     "posted_image_url": "https://iili.io/B779CJt.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [
       {
         "name": "Amit Tandon",
@@ -142,7 +122,7 @@
     "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
     "posted": true,
     "posted_image_url": "https://iili.io/BYAqX4I.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -250,6 +230,32 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Desi Gaslighters - A Stand Up Comedy Show",
+    "date": "2026-04-25T21:00:00-05:00",
+    "time": "9:00 PM",
+    "venue": "Chakhna | Indian & Hakka Bar",
+    "city": "Toronto",
+    "price": "CAD 9.52",
+    "price_val": 9.52,
+    "event_url": "https://events.sulekha.com/desi-gaslighters-a-stand-up-comedy-show_event-in_toronto-on_399650",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BSFnt5X.png",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Desi Gaslighters",
+        "handle": null,
+        "followers": 0
+      }
+    ],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
       "event_format": "social"
     }
   },
@@ -410,6 +416,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Kattanum Pattum \u2013 Mallu Jamming Night",
+    "date": "2026-04-26T16:00:00-05:00",
+    "time": "4:00 PM",
+    "venue": "The Dopamine - Pub & Lounge",
+    "city": "Toronto",
+    "price": "CAD 13.54",
+    "price_val": 13.54,
+    "event_url": "https://events.sulekha.com/kattanum-pattum-mallu-jamming-night-toronto_event-in_toronto-on_399644",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BSFThF4.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
       "event_format": "social"
     }
   },
