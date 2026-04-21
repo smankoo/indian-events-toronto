@@ -1,137 +1,5 @@
 [
   {
-    "title": "Bollywood Boom Friday Night",
-    "date": "2026-04-17T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "Bombae Social",
-    "city": "Concord",
-    "price": "CAD 11.98",
-    "price_val": 11.98,
-    "event_url": "https://events.sulekha.com/bollywood-boom-friday-night-tickets-redeemable-inside_event-in_concord-on_399420",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BR6bZvf.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Laugh & Learn: Smart Lectures + Stand-up Comedy",
-    "date": "2026-04-18T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Society Clubhouse",
-    "city": "Toronto",
-    "price": "CAD 22.63",
-    "price_val": 22.63,
-    "event_url": "https://events.sulekha.com/laugh-learn-smart-lectures-stand-up-comedy-in-toronto_event-in_toronto-on_399477",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BRP9eMN.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Desi Singles Comedy Show & Matchmaking",
-    "date": "2026-04-18T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Desi Food Junction | Indian Restaurant | Hakka | Momos | Bar",
-    "city": "Toronto",
-    "price": "CAD 6.66",
-    "price_val": 6.66,
-    "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399303",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qiGOQgn.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Halwa By Amit Tandon Stand Up Comedy",
-    "date": "2026-04-19T15:30:00-04:00",
-    "time": "3:30 PM",
-    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
-    "city": "Toronto",
-    "price": "CAD 45.00",
-    "price_val": 45.0,
-    "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto-4-00pm_event-in_toronto-on_398019",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B75madF.png",
-    "story_days_posted": "5,4,3",
-    "artists": [
-      {
-        "name": "Amit Tandon",
-        "handle": "amitandon17",
-        "followers": 369000
-      }
-    ],
-    "signals": {
-      "max_followers": 369000,
-      "total_followers": 369000,
-      "venue_class": "major",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Halwa By Amit Tandon Stand Up Comedy",
-    "date": "2026-04-19T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
-    "city": "Toronto",
-    "price": "CAD 45.00",
-    "price_val": 45.0,
-    "event_url": "https://events.sulekha.com/halwa-by-amit-tandon-stand-up-comedy-live-in-toronto_event-in_toronto-on_396955",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B779CJt.png",
-    "story_days_posted": "5,4,3",
-    "artists": [
-      {
-        "name": "Amit Tandon",
-        "handle": "amitandon17",
-        "followers": 369000
-      }
-    ],
-    "signals": {
-      "max_followers": 369000,
-      "total_followers": 369000,
-      "venue_class": "major",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Bingo Night",
-    "date": "2026-04-20T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Desi Bar & Grill",
-    "city": "Brampton",
-    "price": "CAD 12.19",
-    "price_val": 12.19,
-    "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_399317",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BYAqX4I.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood After Dark",
     "date": "2026-04-24T10:00:00-05:00",
     "time": "10:00 AM",
@@ -142,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-after-dark-april-24th_event-in_toronto-on_399617",
     "posted": true,
     "posted_image_url": "https://iili.io/BkSHM1j.png",
-    "story_days_posted": "",
+    "story_days_posted": "4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -162,7 +30,7 @@
     "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
     "posted": true,
     "posted_image_url": "https://iili.io/qiGLTt1.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [
       {
         "name": "Afusic",
@@ -198,7 +66,7 @@
     "event_url": "https://events.sulekha.com/anuv-jain-s-afterparty-bollywood-party-sufii-bangers-toronto_event-in_toronto-on_399624",
     "posted": true,
     "posted_image_url": "https://iili.io/BkSFDdJ.png",
-    "story_days_posted": "",
+    "story_days_posted": "4,3",
     "artists": [
       {
         "name": "Anuv Jain",
@@ -224,7 +92,7 @@
     "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
     "posted": true,
     "posted_image_url": "https://iili.io/BYAxKJI.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -244,7 +112,7 @@
     "event_url": "https://events.sulekha.com/desi-gaslighters-a-stand-up-comedy-show_event-in_toronto-on_399650",
     "posted": true,
     "posted_image_url": "https://iili.io/BSFnt5X.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [
       {
         "name": "Desi Gaslighters",
@@ -270,7 +138,7 @@
     "event_url": "https://events.sulekha.com/bollywood-desi-night-bollywood-indo-house-party_event-in_toronto-on_399116",
     "posted": true,
     "posted_image_url": "https://iili.io/qsYIGi7.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -290,7 +158,7 @@
     "event_url": "https://events.sulekha.com/bollywood-after-dark-toronto-bollywood-bhangra-party-april-25_event-in_toronto-on_399103",
     "posted": true,
     "posted_image_url": "https://iili.io/qsY5mHF.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -310,7 +178,7 @@
     "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
     "posted": true,
     "posted_image_url": "https://iili.io/BaL6ONe.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -330,7 +198,7 @@
     "event_url": "https://events.sulekha.com/bollywood-bliss-an-upscale-exclusive-affair-season-finale-toronto_event-in_toronto-on_399615",
     "posted": true,
     "posted_image_url": "https://iili.io/BvhC8cF.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -350,7 +218,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
     "posted": true,
     "posted_image_url": "https://iili.io/BaLDz4s.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -370,7 +238,7 @@
     "event_url": "https://events.sulekha.com/velvet-vibe-elevated-bollywood-night-shisha-indoor-heated-patio_event-in_toronto-on_399614",
     "posted": true,
     "posted_image_url": "https://iili.io/BvhIWQf.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -390,7 +258,7 @@
     "event_url": "https://events.sulekha.com/hindu-heritage-fashion-week-model-casting-call-2026_event-in_scarborough-on_399478",
     "posted": true,
     "posted_image_url": "https://iili.io/BcrEGpI.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -410,7 +278,7 @@
     "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
     "posted": true,
     "posted_image_url": "https://iili.io/BcrWeV9.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -430,7 +298,7 @@
     "event_url": "https://events.sulekha.com/kattanum-pattum-mallu-jamming-night-toronto_event-in_toronto-on_399644",
     "posted": true,
     "posted_image_url": "https://iili.io/BSFThF4.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -482,6 +350,57 @@
       "max_followers": 104000,
       "total_followers": 104000,
       "venue_class": "major",
+      "event_format": "performance"
+    }
+  },
+  {
+    "title": "Libertine After Dark Szn 2 - Bollywood Edition",
+    "date": "2026-05-01T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "The Libertine",
+    "city": "Toronto",
+    "price": "CAD 22.63",
+    "price_val": 22.63,
+    "event_url": "https://events.sulekha.com/libertine-after-dark-szn-2-bollywood-edition_event-in_toronto-on_399706",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Brjf71V.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Love Shaadi Depression | Desi Standup Comedy Show",
+    "date": "2026-05-02T20:30:00-05:00",
+    "time": "8:30 PM",
+    "venue": "Ryan-s Chai",
+    "city": "Brampton",
+    "price": "CAD 9.31",
+    "price_val": 9.31,
+    "event_url": "https://events.sulekha.com/love-shaadi-depression-desi-standup-comedy-show_event-in_brampton-on_399714",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BrjqmAX.png",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Love Shaadi Depression",
+        "handle": "shaadidiaries",
+        "followers": 6428
+      },
+      {
+        "name": "Love Shaadi",
+        "handle": "shaadi.com",
+        "followers": 249000
+      }
+    ],
+    "signals": {
+      "max_followers": 249000,
+      "total_followers": 255428,
+      "venue_class": "unknown",
       "event_format": "performance"
     }
   },
@@ -548,6 +467,26 @@
     }
   },
   {
+    "title": "Desi Singles Comedy Show & Matchmaking",
+    "date": "2026-05-09T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Desi Food Junction | Indian Restaurant | Hakka | Momos | Bar",
+    "city": "Toronto",
+    "price": "CAD 6.66",
+    "price_val": 6.66,
+    "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399715",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Toxic - Abhishek Upmanyu",
     "date": "2026-05-10T18:30:00-05:00",
     "time": "6:30 PM",
@@ -571,6 +510,26 @@
       "total_followers": 3000000,
       "venue_class": "major",
       "event_format": "performance"
+    }
+  },
+  {
+    "title": "Bollywood Trivia Night",
+    "date": "2026-05-14T19:30:00-05:00",
+    "time": "7:30 PM",
+    "venue": "Desi Bar & Grill",
+    "city": "Brampton",
+    "price": "CAD 6.85",
+    "price_val": 6.85,
+    "event_url": "https://events.sulekha.com/bollywood-trivia-night-desi-bar-grill-brampton_event-in_brampton-on_399704",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
     }
   },
   {
@@ -650,6 +609,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Speed Dating & Mixer For Punjabis (Ages 25-45)",
+    "date": "2026-06-20T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Dear Delhi | Indian Restaurant , Bar & Lounge",
+    "city": "Mississauga",
+    "price": "CAD 33.28",
+    "price_val": 33.28,
+    "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
       "event_format": "social"
     }
   }
