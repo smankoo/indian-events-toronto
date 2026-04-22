@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
     "posted": true,
     "posted_image_url": "https://iili.io/qiGLTt1.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [
       {
         "name": "Afusic",
@@ -138,7 +138,7 @@
     "event_url": "https://events.sulekha.com/bollywood-desi-night-bollywood-indo-house-party_event-in_toronto-on_399116",
     "posted": true,
     "posted_image_url": "https://iili.io/qsYIGi7.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -178,7 +178,7 @@
     "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
     "posted": true,
     "posted_image_url": "https://iili.io/BaL6ONe.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -198,7 +198,7 @@
     "event_url": "https://events.sulekha.com/bollywood-bliss-an-upscale-exclusive-affair-season-finale-toronto_event-in_toronto-on_399615",
     "posted": true,
     "posted_image_url": "https://iili.io/BvhC8cF.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -218,7 +218,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
     "posted": true,
     "posted_image_url": "https://iili.io/BaLDz4s.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -258,7 +258,7 @@
     "event_url": "https://events.sulekha.com/hindu-heritage-fashion-week-model-casting-call-2026_event-in_scarborough-on_399478",
     "posted": true,
     "posted_image_url": "https://iili.io/BcrEGpI.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -278,7 +278,7 @@
     "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
     "posted": true,
     "posted_image_url": "https://iili.io/BcrWeV9.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -298,7 +298,7 @@
     "event_url": "https://events.sulekha.com/kattanum-pattum-mallu-jamming-night-toronto_event-in_toronto-on_399644",
     "posted": true,
     "posted_image_url": "https://iili.io/BSFThF4.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -621,8 +621,8 @@
     "price": "CAD 33.28",
     "price_val": 33.28,
     "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/B4q8XNS.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
