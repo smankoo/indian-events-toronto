@@ -145,8 +145,26 @@ def scrape_detail_page(event_url: str) -> dict:
 
 def parse_listing_event(ld_event: dict) -> dict:
     """Extract basic event info from a JSON-LD event object on the listing page."""
-    location = ld_event.get("location", {})
+    # `location` may be a dict (Place) or a list (e.g. VirtualLocation entries
+    # for streamed events, sometimes mixed with a Place). Pick the first Place,
+    # else the first dict, else an empty dict — virtual-only events fall out at
+    # the GTA filter since they have no address.
+    raw_location = ld_event.get("location", {})
+    if isinstance(raw_location, list):
+        place = next(
+            (l for l in raw_location if isinstance(l, dict) and l.get("@type") == "Place"),
+            None,
+        )
+        if place is None:
+            place = next((l for l in raw_location if isinstance(l, dict)), {})
+        location = place
+    elif isinstance(raw_location, dict):
+        location = raw_location
+    else:
+        location = {}
     address_obj = location.get("address", {})
+    if not isinstance(address_obj, dict):
+        address_obj = {}
 
     # Build the detail page URL
     event_url = ld_event.get("url", "")
