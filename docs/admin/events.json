@@ -13,11 +13,6 @@
     "story_days_posted": "5",
     "artists": [
       {
-        "name": "Bollywood Classics",
-        "handle": "bollywood_classics",
-        "followers": 0
-      },
-      {
         "name": "Grand Piano",
         "handle": "ilgrandepiano",
         "followers": 15000
@@ -25,6 +20,11 @@
       {
         "name": "The Unplugged Baithak",
         "handle": null,
+        "followers": 0
+      },
+      {
+        "name": "Bollywood Classics",
+        "handle": "bollywoodclassics_",
         "followers": 0
       }
     ],
@@ -196,8 +196,8 @@
     "price": "CAD 22.90",
     "price_val": 22.9,
     "event_url": "https://events.sulekha.com/bombay-nights-victoria-long-weekend-edition_event-in_toronto-on_399900",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BZOBfjV.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -216,8 +216,8 @@
     "price": "CAD 14.11",
     "price_val": 14.11,
     "event_url": "https://events.sulekha.com/bollywood-trivia-night-at-befikre_event-in_mississauga-on_399902",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BZOBG8G.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -374,6 +374,26 @@
     }
   },
   {
+    "title": "Chai N Comedy - Urdu / Hindi Comedy Show",
+    "date": "2026-06-14T15:00:00-05:00",
+    "time": "3:00 PM",
+    "venue": "Open Mic Cafe & Cuisine",
+    "city": "Mississauga",
+    "price": "CAD 22.63",
+    "price_val": 22.63,
+    "event_url": "https://events.sulekha.com/chai-n-comedy-urdu-hindi-comedy-show_event-in_mississauga-on_399890",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Speed Dating & Mixer For Punjabis (Ages 25-45)",
     "date": "2026-06-20T19:00:00-05:00",
     "time": "7:00 PM",
@@ -390,6 +410,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Diwali Mela",
+    "date": "2026-09-05T15:00:00-05:00",
+    "time": "3:00 PM",
+    "venue": "Vic Johnston Community Centre",
+    "city": "Mississauga",
+    "price": "CAD 11.98",
+    "price_val": 11.98,
+    "event_url": "https://events.sulekha.com/diwali-mela-by-craaf-hcca_event-in_mississauga-on_399892",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   }
