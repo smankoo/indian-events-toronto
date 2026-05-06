@@ -1,410 +1,5 @@
 [
   {
-    "title": "Bollywood After Dark",
-    "date": "2026-04-24T10:00:00-05:00",
-    "time": "10:00 AM",
-    "venue": "Oria on King",
-    "city": "Toronto",
-    "price": "CAD 11.98",
-    "price_val": 11.98,
-    "event_url": "https://events.sulekha.com/bollywood-after-dark-april-24th_event-in_toronto-on_399617",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BkSHM1j.png",
-    "story_days_posted": "4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Afusic X Jani Ft. Ali Soomro",
-    "date": "2026-04-24T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "To be Announced",
-    "city": "Toronto",
-    "price": "CAD 27.96",
-    "price_val": 27.96,
-    "event_url": "https://events.sulekha.com/afusic-x-jani-ft-ali-soomro-live-in-toronto_event-in_toronto-on_398883",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qiGLTt1.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [
-      {
-        "name": "Afusic",
-        "handle": "afusic_world07",
-        "followers": 139000
-      },
-      {
-        "name": "Jani",
-        "handle": "jani_music__",
-        "followers": 2451
-      },
-      {
-        "name": "Ali Soomro",
-        "handle": "ali_soomro_official",
-        "followers": 84000
-      }
-    ],
-    "signals": {
-      "max_followers": 139000,
-      "total_followers": 225451,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Anuv Jain\u2019s Afterparty / Bollywood Party / Sufii Bangers",
-    "date": "2026-04-24T21:00:00-05:00",
-    "time": "9:00 PM",
-    "venue": "Acqua Supper Club",
-    "city": "Toronto",
-    "price": "CAD 24.76",
-    "price_val": 24.76,
-    "event_url": "https://events.sulekha.com/anuv-jain-s-afterparty-bollywood-party-sufii-bangers-toronto_event-in_toronto-on_399624",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BkSFDdJ.png",
-    "story_days_posted": "4,3",
-    "artists": [
-      {
-        "name": "Anuv Jain",
-        "handle": "anuvjain",
-        "followers": 3000000
-      }
-    ],
-    "signals": {
-      "max_followers": 3000000,
-      "total_followers": 3000000,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Fitness Dance Workshop",
-    "date": "2026-04-25T12:00:00-05:00",
-    "time": "12:00 PM",
-    "venue": "Daniels Spectrum: Regent Park arts and Cultural Centre",
-    "city": "Toronto",
-    "price": "CAD 19.53",
-    "price_val": 19.53,
-    "event_url": "https://events.sulekha.com/bollywood-fitness-dance-workshop_event-in_toronto-on_399422",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BYAxKJI.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Desi Gaslighters - A Stand Up Comedy Show",
-    "date": "2026-04-25T21:00:00-05:00",
-    "time": "9:00 PM",
-    "venue": "Chakhna | Indian & Hakka Bar",
-    "city": "Toronto",
-    "price": "CAD 9.52",
-    "price_val": 9.52,
-    "event_url": "https://events.sulekha.com/desi-gaslighters-a-stand-up-comedy-show_event-in_toronto-on_399650",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BSFnt5X.png",
-    "story_days_posted": "5",
-    "artists": [
-      {
-        "name": "Desi Gaslighters",
-        "handle": null,
-        "followers": 0
-      }
-    ],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Desi Night: Bollywood & Indo House Party",
-    "date": "2026-04-25T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Dine & Dim",
-    "city": "Toronto",
-    "price": "CAD 22.63",
-    "price_val": 22.63,
-    "event_url": "https://events.sulekha.com/bollywood-desi-night-bollywood-indo-house-party_event-in_toronto-on_399116",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qsYIGi7.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood After Dark \u2013 Bollywood & Bhangra Party",
-    "date": "2026-04-25T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Tenjin Karaoke Bar",
-    "city": "Toronto",
-    "price": "CAD 11.98",
-    "price_val": 11.98,
-    "event_url": "https://events.sulekha.com/bollywood-after-dark-toronto-bollywood-bhangra-party-april-25_event-in_toronto-on_399103",
-    "posted": true,
-    "posted_image_url": "https://iili.io/qsY5mHF.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Desi Singles Night: Bollywood X Bhangra Edition",
-    "date": "2026-04-25T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Dine & Dim",
-    "city": "Toronto",
-    "price": "CAD 11.00",
-    "price_val": 11.0,
-    "event_url": "https://events.sulekha.com/desi-singles-night-bollywood-x-bhangra-edition_event-in_toronto-on_399318",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BaL6ONe.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Bliss - An Upscale Exclusive Affair | Season Finale",
-    "date": "2026-04-25T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Nomad Nightclub",
-    "city": "Toronto",
-    "price": "CAD 19.14",
-    "price_val": 19.14,
-    "event_url": "https://events.sulekha.com/bollywood-bliss-an-upscale-exclusive-affair-season-finale-toronto_event-in_toronto-on_399615",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BvhC8cF.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bombay Nights | Canada's Longest Running Bollywood Party",
-    "date": "2026-04-25T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/bombay-nights-canada-s-longest-running-bollywood-party_event-in_toronto-on_399418",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BaLDz4s.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Velvet Vibe \u2013 Elevated Bollywood Night",
-    "date": "2026-04-25T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "Acqua Supper Club",
-    "city": "Toronto",
-    "price": "CAD 17.31",
-    "price_val": 17.31,
-    "event_url": "https://events.sulekha.com/velvet-vibe-elevated-bollywood-night-shisha-indoor-heated-patio_event-in_toronto-on_399614",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BvhIWQf.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Hindu Heritage Fashion Week - Model Casting Call 2026",
-    "date": "2026-04-26T13:00:00-05:00",
-    "time": "1:00 PM",
-    "venue": "10 Thornmount Dr",
-    "city": "Scarborough",
-    "price": "CAD 100.00",
-    "price_val": 100.0,
-    "event_url": "https://events.sulekha.com/hindu-heritage-fashion-week-model-casting-call-2026_event-in_scarborough-on_399478",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BcrEGpI.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Womens Friendship Night Social",
-    "date": "2026-04-26T15:00:00-05:00",
-    "time": "3:00 PM",
-    "venue": "FreshCo Bathurst & Nassau",
-    "city": "Toronto",
-    "price": "CAD 17.55",
-    "price_val": 17.55,
-    "event_url": "https://events.sulekha.com/bollywood-women-s-friendship-night-social_event-in_toronto-on_399423",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BcrWeV9.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Kattanum Pattum \u2013 Mallu Jamming Night",
-    "date": "2026-04-26T16:00:00-05:00",
-    "time": "4:00 PM",
-    "venue": "The Dopamine - Pub & Lounge",
-    "city": "Toronto",
-    "price": "CAD 13.54",
-    "price_val": 13.54,
-    "event_url": "https://events.sulekha.com/kattanum-pattum-mallu-jamming-night-toronto_event-in_toronto-on_399644",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BSFThF4.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Nari In Sari",
-    "date": "2026-05-01T19:30:00-05:00",
-    "time": "7:30 PM",
-    "venue": "Chef Kausar-s Autaq Banquet Hall",
-    "city": "Mississauga",
-    "price": "CAD 38.95",
-    "price_val": 38.95,
-    "event_url": "https://events.sulekha.com/nari-in-sari_event-in_mississauga-on_399122",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B0RutoJ.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Sanam North American Tour 2026",
-    "date": "2026-05-01T20:00:00-05:00",
-    "time": "8:00 PM",
-    "venue": "Meridian Hall",
-    "city": "Toronto",
-    "price": "CAD 79.00",
-    "price_val": 79.0,
-    "event_url": "https://events.sulekha.com/sanam-north-american-tour-2026-toronto-on_event-in_toronto-on_398647",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B0RYpyB.png",
-    "story_days_posted": "",
-    "artists": [
-      {
-        "name": "Sanam",
-        "handle": "sanam",
-        "followers": 104000
-      }
-    ],
-    "signals": {
-      "max_followers": 104000,
-      "total_followers": 104000,
-      "venue_class": "major",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Libertine After Dark Szn 2 - Bollywood Edition",
-    "date": "2026-05-01T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "The Libertine",
-    "city": "Toronto",
-    "price": "CAD 22.63",
-    "price_val": 22.63,
-    "event_url": "https://events.sulekha.com/libertine-after-dark-szn-2-bollywood-edition_event-in_toronto-on_399706",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Brjf71V.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Love Shaadi Depression | Desi Standup Comedy Show",
-    "date": "2026-05-02T20:30:00-05:00",
-    "time": "8:30 PM",
-    "venue": "Ryan-s Chai",
-    "city": "Brampton",
-    "price": "CAD 9.31",
-    "price_val": 9.31,
-    "event_url": "https://events.sulekha.com/love-shaadi-depression-desi-standup-comedy-show_event-in_brampton-on_399714",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BrjqmAX.png",
-    "story_days_posted": "",
-    "artists": [
-      {
-        "name": "Love Shaadi Depression",
-        "handle": "shaadidiaries",
-        "followers": 6428
-      },
-      {
-        "name": "Love Shaadi",
-        "handle": "shaadi.com",
-        "followers": 249000
-      }
-    ],
-    "signals": {
-      "max_followers": 249000,
-      "total_followers": 255428,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
     "title": "The Unplugged Baithak - A Grand Piano & Vocal Recital Of Bollywood Classics",
     "date": "2026-05-09T15:30:00-05:00",
     "time": "3:30 PM",
@@ -415,7 +10,7 @@
     "event_url": "https://events.sulekha.com/the-unplugged-baithak-a-grand-piano-vocal-recital-of-bollywood-classics_event-in_mississauga-on_399479",
     "posted": true,
     "posted_image_url": "https://iili.io/B1uHw2n.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [
       {
         "name": "Bollywood Classics",
@@ -451,7 +46,7 @@
     "event_url": "https://events.sulekha.com/toronto-hoemonal-sumuki-suresh-standup-comedy-live-2026_event-in_toronto-on_397947",
     "posted": true,
     "posted_image_url": "https://iili.io/B1u2XEB.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [
       {
         "name": "Sumukhi Suresh",
@@ -477,7 +72,7 @@
     "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399715",
     "posted": true,
     "posted_image_url": "https://iili.io/Br6UFSe.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -510,6 +105,26 @@
       "total_followers": 3000000,
       "venue_class": "major",
       "event_format": "performance"
+    }
+  },
+  {
+    "title": "Prophecy! + Once Upon A Time In Bollywood | Blockbuster 2026",
+    "date": "2026-05-13T20:00:00-05:00",
+    "time": "8:00 PM",
+    "venue": "VideoCabaret - Deanne Taylor Theatre",
+    "city": "Toronto",
+    "price": "CAD 6.66",
+    "price_val": 6.66,
+    "event_url": "https://events.sulekha.com/prophecy-once-upon-a-time-in-bollywood-blockbuster-2026_event-in_toronto-on_399901",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BZchg07.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
     }
   },
   {
@@ -553,6 +168,86 @@
     }
   },
   {
+    "title": "Bollywood Pulse - Bollywood Night",
+    "date": "2026-05-16T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "The Rec Room Square One",
+    "city": "Mississauga",
+    "price": "CAD 15.94",
+    "price_val": 15.94,
+    "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-night_event-in_mississauga-on_399898",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BZcjmQ4.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bombay Nights",
+    "date": "2026-05-16T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "The Dopamine Lounge",
+    "city": "Toronto",
+    "price": "CAD 22.90",
+    "price_val": 22.9,
+    "event_url": "https://events.sulekha.com/bombay-nights-victoria-long-weekend-edition_event-in_toronto-on_399900",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Trivia Night",
+    "date": "2026-05-19T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "Befikre | Bar + Indian Kitchen",
+    "city": "Mississauga",
+    "price": "CAD 14.11",
+    "price_val": 14.11,
+    "event_url": "https://events.sulekha.com/bollywood-trivia-night-at-befikre_event-in_mississauga-on_399902",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Penthouse \u2014 Sundowner On The Rooftop",
+    "date": "2026-05-23T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Malaparte",
+    "city": "Toronto",
+    "price": "CAD 23.68",
+    "price_val": 23.68,
+    "event_url": "https://events.sulekha.com/bollywood-penthouse-sundowner-on-the-rooftop-toronto-s-season-opener_event-in_toronto-on_399897",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "South Asian Singles Mixer (Ages 25-45)",
     "date": "2026-05-27T19:00:00-05:00",
     "time": "7:00 PM",
@@ -585,6 +280,72 @@
     "posted_image_url": "https://iili.io/BGXqFnI.png",
     "story_days_posted": "",
     "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Mashup Night: Dance, Music & Singles Night (21+)",
+    "date": "2026-05-30T20:00:00-05:00",
+    "time": "8:00 PM",
+    "venue": "Bombae Social Bar and Restaurant",
+    "city": "Concord",
+    "price": "CAD 28.25",
+    "price_val": 28.25,
+    "event_url": "https://events.sulekha.com/bollywood-mashup-night-dance-music-singles-night-21_event-in_concord-on_399899",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Empire Night",
+    "date": "2026-05-30T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Oria on King",
+    "city": "Toronto",
+    "price": "CAD 20.00",
+    "price_val": 20.0,
+    "event_url": "https://events.sulekha.com/bollywood-empire-night_event-in_toronto-on_399896",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Aura Tour After Party | Diljit Dosanjh",
+    "date": "2026-05-31T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "Story Toronto",
+    "city": "Toronto",
+    "price": "CAD 22.63",
+    "price_val": 22.63,
+    "event_url": "https://events.sulekha.com/aura-tour-after-party-diljit-dosanjh-toronto_event-in_toronto-on_399903",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Diljit Dosanjh",
+        "handle": "diljitdosanjh",
+        "followers": 0
+      }
+    ],
     "signals": {
       "max_followers": 0,
       "total_followers": 0,
