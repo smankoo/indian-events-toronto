@@ -316,8 +316,8 @@
     "price": "CAD 20.00",
     "price_val": 20.0,
     "event_url": "https://events.sulekha.com/bollywood-empire-night_event-in_toronto-on_399896",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BtnbLSs.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -336,8 +336,8 @@
     "price": "CAD 22.63",
     "price_val": 22.63,
     "event_url": "https://events.sulekha.com/aura-tour-after-party-diljit-dosanjh-toronto_event-in_toronto-on_399903",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BtnmOsS.png",
     "story_days_posted": "",
     "artists": [
       {
