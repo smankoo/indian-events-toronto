@@ -236,8 +236,8 @@
     "price": "CAD 23.68",
     "price_val": 23.68,
     "event_url": "https://events.sulekha.com/bollywood-penthouse-sundowner-on-the-rooftop-toronto-s-season-opener_event-in_toronto-on_399897",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Bt9uhuf.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -296,8 +296,8 @@
     "price": "CAD 28.25",
     "price_val": 28.25,
     "event_url": "https://events.sulekha.com/bollywood-mashup-night-dance-music-singles-night-21_event-in_concord-on_399899",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Bt9AoNf.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -385,12 +385,18 @@
     "posted": false,
     "posted_image_url": "",
     "story_days_posted": "",
-    "artists": [],
+    "artists": [
+      {
+        "name": "Chai N Comedy",
+        "handle": "chiacomedy",
+        "followers": 47000
+      }
+    ],
     "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
+      "max_followers": 47000,
+      "total_followers": 47000,
       "venue_class": "unknown",
-      "event_format": "social"
+      "event_format": "performance"
     }
   },
   {
