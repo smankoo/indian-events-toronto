@@ -382,8 +382,8 @@
     "price": "CAD 22.63",
     "price_val": 22.63,
     "event_url": "https://events.sulekha.com/chai-n-comedy-urdu-hindi-comedy-show_event-in_mississauga-on_399890",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BtGDGKN.png",
     "story_days_posted": "",
     "artists": [
       {
@@ -428,8 +428,8 @@
     "price": "CAD 11.98",
     "price_val": 11.98,
     "event_url": "https://events.sulekha.com/diwali-mela-by-craaf-hcca_event-in_mississauga-on_399892",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/BtGDpJ1.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
