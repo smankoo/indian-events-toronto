@@ -1,153 +1,5 @@
 [
   {
-    "title": "The Unplugged Baithak - A Grand Piano & Vocal Recital Of Bollywood Classics",
-    "date": "2026-05-09T15:30:00-05:00",
-    "time": "3:30 PM",
-    "venue": "Westminster United Church",
-    "city": "Mississauga",
-    "price": "CAD 12.19",
-    "price_val": 12.19,
-    "event_url": "https://events.sulekha.com/the-unplugged-baithak-a-grand-piano-vocal-recital-of-bollywood-classics_event-in_mississauga-on_399479",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B1uHw2n.png",
-    "story_days_posted": "5",
-    "artists": [
-      {
-        "name": "Grand Piano",
-        "handle": "ilgrandepiano",
-        "followers": 15000
-      },
-      {
-        "name": "The Unplugged Baithak",
-        "handle": null,
-        "followers": 0
-      },
-      {
-        "name": "Bollywood Classics",
-        "handle": "bollywoodclassics_",
-        "followers": 0
-      }
-    ],
-    "signals": {
-      "max_followers": 15000,
-      "total_followers": 15000,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Hoemonal - Sumukhi Suresh Standup Comedy Live 2026",
-    "date": "2026-05-09T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Isabel Bader Theatre",
-    "city": "Toronto",
-    "price": "CAD 40.00",
-    "price_val": 40.0,
-    "event_url": "https://events.sulekha.com/toronto-hoemonal-sumuki-suresh-standup-comedy-live-2026_event-in_toronto-on_397947",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B1u2XEB.png",
-    "story_days_posted": "5",
-    "artists": [
-      {
-        "name": "Sumukhi Suresh",
-        "handle": "sumukhisuresh",
-        "followers": 338000
-      }
-    ],
-    "signals": {
-      "max_followers": 338000,
-      "total_followers": 338000,
-      "venue_class": "mid",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Desi Singles Comedy Show & Matchmaking",
-    "date": "2026-05-09T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "Desi Food Junction | Indian Restaurant | Hakka | Momos | Bar",
-    "city": "Toronto",
-    "price": "CAD 6.66",
-    "price_val": 6.66,
-    "event_url": "https://events.sulekha.com/desi-singles-comedy-show-matchmaking_event-in_toronto-on_399715",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Br6UFSe.png",
-    "story_days_posted": "5",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Toxic - Abhishek Upmanyu",
-    "date": "2026-05-10T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
-    "city": "Toronto",
-    "price": "CAD 40.00",
-    "price_val": 40.0,
-    "event_url": "https://events.sulekha.com/toxic-abhishek-upmanyu-live-in-toronto_event-in_toronto-on_398779",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BGX3eQ1.png",
-    "story_days_posted": "",
-    "artists": [
-      {
-        "name": "Abhishek Upmanyu",
-        "handle": "aupmanyu",
-        "followers": 3000000
-      }
-    ],
-    "signals": {
-      "max_followers": 3000000,
-      "total_followers": 3000000,
-      "venue_class": "major",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Prophecy! + Once Upon A Time In Bollywood | Blockbuster 2026",
-    "date": "2026-05-13T20:00:00-05:00",
-    "time": "8:00 PM",
-    "venue": "VideoCabaret - Deanne Taylor Theatre",
-    "city": "Toronto",
-    "price": "CAD 6.66",
-    "price_val": 6.66,
-    "event_url": "https://events.sulekha.com/prophecy-once-upon-a-time-in-bollywood-blockbuster-2026_event-in_toronto-on_399901",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BZchg07.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Trivia Night",
-    "date": "2026-05-14T19:30:00-05:00",
-    "time": "7:30 PM",
-    "venue": "Desi Bar & Grill",
-    "city": "Brampton",
-    "price": "CAD 6.85",
-    "price_val": 6.85,
-    "event_url": "https://events.sulekha.com/bollywood-trivia-night-desi-bar-grill-brampton_event-in_brampton-on_399704",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Br6UpdF.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bolly Cruise Fest 2026 - Toronto\u2019s Ultimate Bollywood Party On The Water!",
     "date": "2026-05-16T18:30:00-05:00",
     "time": "6:30 PM",
@@ -416,6 +268,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Chhote Ustaad Season 2 Kids Instruments Playing Reality Show",
+    "date": "2026-06-27T18:00:00-04:00",
+    "time": "6:00 PM",
+    "venue": "Vic Johnston Community Centre",
+    "city": "Mississauga",
+    "price": "CAD 50.00",
+    "price_val": 50.0,
+    "event_url": "https://events.sulekha.com/chhote-ustaad-season-2-kids-instruments-playing-reality-show_event-in_mississauga-on_399996",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Bp3nTjS.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   },
