@@ -4,12 +4,19 @@ import re
 
 from openai import OpenAI
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-)
-
 MODEL = "google/gemini-2.5-flash-lite"
+
+_client = None
+
+
+def _get_client() -> OpenAI:
+    global _client
+    if _client is None:
+        _client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.environ["OPENROUTER_API_KEY"],
+        )
+    return _client
 
 SYSTEM_PROMPT = """You classify events for @indian.events.toronto, an Instagram account posting Indian events in the Toronto/GTA area.
 
@@ -66,7 +73,7 @@ def classify_event(title: str, description: str, categories: list[str], language
 Description: {description[:500] if description else 'N/A'}
 Organizer: {organizer or 'N/A'}"""
 
-    response = client.chat.completions.create(
+    response = _get_client().chat.completions.create(
         model=MODEL,
         max_tokens=250,
         messages=[
