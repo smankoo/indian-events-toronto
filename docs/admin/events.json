@@ -1,65 +1,5 @@
 [
   {
-    "title": "Bolly Cruise Fest 2026 - Toronto\u2019s Ultimate Bollywood Party On The Water!",
-    "date": "2026-05-16T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "The Empress of Canada",
-    "city": "Toronto",
-    "price": "CAD 48.44",
-    "price_val": 48.44,
-    "event_url": "https://events.sulekha.com/bolly-cruise-fest-2026-toronto-s-ultimate-bollywood-party-on-the-water_event-in_toronto-on_399619",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BU9Gnnf.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Pulse - Bollywood Night",
-    "date": "2026-05-16T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "The Rec Room Square One",
-    "city": "Mississauga",
-    "price": "CAD 15.94",
-    "price_val": 15.94,
-    "event_url": "https://events.sulekha.com/bollywood-pulse-bollywood-night_event-in_mississauga-on_399898",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BZcjmQ4.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bombay Nights",
-    "date": "2026-05-16T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/bombay-nights-victoria-long-weekend-edition_event-in_toronto-on_399900",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BZOBfjV.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Trivia Night",
     "date": "2026-05-19T18:30:00-05:00",
     "time": "6:30 PM",
@@ -70,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-trivia-night-at-befikre_event-in_mississauga-on_399902",
     "posted": true,
     "posted_image_url": "https://iili.io/BZOBG8G.png",
-    "story_days_posted": "",
+    "story_days_posted": "1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +30,7 @@
     "event_url": "https://events.sulekha.com/bollywood-penthouse-sundowner-on-the-rooftop-toronto-s-season-opener_event-in_toronto-on_399897",
     "posted": true,
     "posted_image_url": "https://iili.io/Bt9uhuf.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -180,6 +120,66 @@
     }
   },
   {
+    "title": "Velvet Vibe \u2013 Elevated Bollywood Night",
+    "date": "2026-05-30T22:30:00-05:00",
+    "time": "10:30 PM",
+    "venue": "Acqua Supper Club",
+    "city": "Toronto",
+    "price": "CAD 17.31",
+    "price_val": 17.31,
+    "event_url": "https://events.sulekha.com/velvet-vibe-elevated-bollywood-night-shisha-indoor-heated-patio_event-in_toronto-on_400060",
+    "posted": true,
+    "posted_image_url": "https://iili.io/By4C224.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Upscale Affair",
+    "date": "2026-05-31T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Mademoiselle Raw Bar + Grill",
+    "city": "Toronto",
+    "price": "CAD 26.00",
+    "price_val": 26.0,
+    "event_url": "https://events.sulekha.com/bollywood-upscale-affair-mademoiselle_event-in_toronto-on_400053",
+    "posted": true,
+    "posted_image_url": "https://iili.io/By4COnn.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Aura | Toronto's Most Upscale Concert Afterparty | Diljit | Bollywood",
+    "date": "2026-05-31T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "Mademoiselle Raw Bar + Grill",
+    "city": "Toronto",
+    "price": "CAD 25.00",
+    "price_val": 25.0,
+    "event_url": "https://events.sulekha.com/aura-toronto-s-most-upscale-concert-afterparty-diljit-bollywood_event-in_toronto-on_400054",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Aura Tour After Party | Diljit Dosanjh",
     "date": "2026-05-31T22:30:00-05:00",
     "time": "10:30 PM",
@@ -202,6 +202,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Soiree | Neon Bubble Rave Edition",
+    "date": "2026-06-05T22:00:00-05:00",
+    "time": "10:00 PM",
+    "venue": "The Dopamine - Pub & Lounge",
+    "city": "Toronto",
+    "price": "CAD 12.00",
+    "price_val": 12.0,
+    "event_url": "https://events.sulekha.com/bollywood-soiree-neon-bubble-rave-edition-5th-june-dopamine-toronto_event-in_toronto-on_400051",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
       "event_format": "social"
     }
   },
@@ -252,6 +272,26 @@
     }
   },
   {
+    "title": "Bollywood Karaoke Night",
+    "date": "2026-06-18T19:30:00-05:00",
+    "time": "7:30 PM",
+    "venue": "Desi Bar & Grill",
+    "city": "Brampton",
+    "price": "CAD 6.85",
+    "price_val": 6.85,
+    "event_url": "https://events.sulekha.com/bollywood-karaoke-night-desi-bar-grill-brampton_event-in_brampton-on_400059",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Speed Dating & Mixer For Punjabis (Ages 25-45)",
     "date": "2026-06-20T19:00:00-05:00",
     "time": "7:00 PM",
@@ -268,6 +308,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Sunset Bollywood Cruise",
+    "date": "2026-06-21T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "The Docks Driving Range",
+    "city": "Toronto",
+    "price": "CAD 27.96",
+    "price_val": 27.96,
+    "event_url": "https://events.sulekha.com/sunset-bollywood-cruise-toronto-boat-party_event-in_toronto-on_400058",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   },
@@ -292,6 +352,26 @@
     }
   },
   {
+    "title": "Bollywood Bingo Night",
+    "date": "2026-07-09T19:30:00-05:00",
+    "time": "7:30 PM",
+    "venue": "Desi Bar & Grill",
+    "city": "Brampton",
+    "price": "CAD 12.19",
+    "price_val": 12.19,
+    "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_400056",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Diwali Mela",
     "date": "2026-09-05T15:00:00-05:00",
     "time": "3:00 PM",
@@ -308,6 +388,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Garba Glow Up 2026",
+    "date": "2026-10-02T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "Sringeri Vidya Bharati Foundation - SVBF",
+    "city": "Etobicoke",
+    "price": "CAD 15.41",
+    "price_val": 15.41,
+    "event_url": "https://events.sulekha.com/garba-glow-up-2026_event-in_etobicoke-on_400057",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   }
