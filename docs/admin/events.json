@@ -352,6 +352,57 @@
     }
   },
   {
+    "title": "Soul & Fire \u2013 A Musical Evening With Chinmayi Sripada & Andrea Jeremiah",
+    "date": "2026-07-04T18:00:00-04:00",
+    "time": "6:00 PM",
+    "venue": "Canada Event Centre",
+    "city": "Whitby",
+    "price": "CAD 79.00",
+    "price_val": 79.0,
+    "event_url": "https://events.sulekha.com/soul-fire-a-musical-evening-with-chinmayi-sripada-andrea-jeremiah_event-in_whitby-on_400088",
+    "posted": true,
+    "posted_image_url": "https://iili.io/C9LyIsV.png",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Chinmayi Sripada",
+        "handle": "chinmayi.sripada",
+        "followers": 0
+      },
+      {
+        "name": "Andrea Jeremiah",
+        "handle": "therealandreajeremiah",
+        "followers": 4000000
+      }
+    ],
+    "signals": {
+      "max_followers": 4000000,
+      "total_followers": 4000000,
+      "venue_class": "mid",
+      "event_format": "performance"
+    }
+  },
+  {
+    "title": "Bollywood Boat Cruise Party",
+    "date": "2026-07-04T20:00:00-04:00",
+    "time": "8:00 PM",
+    "venue": "Empress of Canada ",
+    "city": "Toronto",
+    "price": "CAD 25.00",
+    "price_val": 25.0,
+    "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-by-bollevo-toronto_event-in_toronto-on_400089",
+    "posted": true,
+    "posted_image_url": "https://iili.io/C9LymrP.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Bollywood Bingo Night",
     "date": "2026-07-09T19:30:00-05:00",
     "time": "7:30 PM",
