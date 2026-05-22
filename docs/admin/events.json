@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-penthouse-sundowner-on-the-rooftop-toronto-s-season-opener_event-in_toronto-on_399897",
     "posted": true,
     "posted_image_url": "https://iili.io/Bt9uhuf.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
     "posted": true,
     "posted_image_url": "https://iili.io/BESwag2.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,6 +50,26 @@
     "event_url": "https://events.sulekha.com/bollywood-moves-grooves-with-sudipta-ghosh_event-in_mississauga-on_399288",
     "posted": true,
     "posted_image_url": "https://iili.io/BGXqFnI.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Lakeside Bollywood Party: Bhq Bombae Nights",
+    "date": "2026-05-29T23:00:00-04:00",
+    "time": "11:00 PM",
+    "venue": "Acqua Supper Club",
+    "city": "Toronto",
+    "price": "CAD 18.99",
+    "price_val": 18.99,
+    "event_url": "https://events.sulekha.com/lakeside-bollywood-party-bhq-bombae-nights-acqua-supper-club_event-in_toronto-on_400114",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CHarxZN.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
