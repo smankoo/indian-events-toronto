@@ -1,25 +1,5 @@
 [
   {
-    "title": "Bollywood Penthouse \u2014 Sundowner On The Rooftop",
-    "date": "2026-05-23T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Malaparte",
-    "city": "Toronto",
-    "price": "CAD 23.68",
-    "price_val": 23.68,
-    "event_url": "https://events.sulekha.com/bollywood-penthouse-sundowner-on-the-rooftop-toronto-s-season-opener_event-in_toronto-on_399897",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Bt9uhuf.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "South Asian Singles Mixer (Ages 25-45)",
     "date": "2026-05-27T19:00:00-05:00",
     "time": "7:00 PM",
@@ -30,7 +10,7 @@
     "event_url": "https://events.sulekha.com/south-asian-singles-mixer-toronto-ages-25-45_event-in_toronto-on_399426",
     "posted": true,
     "posted_image_url": "https://iili.io/BESwag2.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,7 +30,7 @@
     "event_url": "https://events.sulekha.com/bollywood-moves-grooves-with-sudipta-ghosh_event-in_mississauga-on_399288",
     "posted": true,
     "posted_image_url": "https://iili.io/BGXqFnI.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -70,7 +50,7 @@
     "event_url": "https://events.sulekha.com/lakeside-bollywood-party-bhq-bombae-nights-acqua-supper-club_event-in_toronto-on_400114",
     "posted": true,
     "posted_image_url": "https://iili.io/CHarxZN.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +70,7 @@
     "event_url": "https://events.sulekha.com/bollywood-mashup-night-dance-music-singles-night-21_event-in_concord-on_399899",
     "posted": true,
     "posted_image_url": "https://iili.io/Bt9AoNf.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -110,7 +90,7 @@
     "event_url": "https://events.sulekha.com/bollywood-empire-night_event-in_toronto-on_399896",
     "posted": true,
     "posted_image_url": "https://iili.io/BtnbLSs.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -130,7 +110,7 @@
     "event_url": "https://events.sulekha.com/velvet-vibe-elevated-bollywood-night-shisha-indoor-heated-patio_event-in_toronto-on_400060",
     "posted": true,
     "posted_image_url": "https://iili.io/By4C224.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -150,7 +130,7 @@
     "event_url": "https://events.sulekha.com/bollywood-upscale-affair-mademoiselle_event-in_toronto-on_400053",
     "posted": true,
     "posted_image_url": "https://iili.io/By4COnn.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -170,7 +150,7 @@
     "event_url": "https://events.sulekha.com/aura-toronto-s-most-upscale-concert-afterparty-diljit-bollywood_event-in_toronto-on_400054",
     "posted": true,
     "posted_image_url": "https://iili.io/BymhbPs.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -190,7 +170,7 @@
     "event_url": "https://events.sulekha.com/aura-tour-after-party-diljit-dosanjh-toronto_event-in_toronto-on_399903",
     "posted": true,
     "posted_image_url": "https://iili.io/BtnmOsS.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [
       {
         "name": "Diljit Dosanjh",
@@ -460,6 +440,32 @@
       "total_followers": 0,
       "venue_class": "mid",
       "event_format": "social"
+    }
+  },
+  {
+    "title": "Falguni Pathak Live \u2013 Dandiya Dhoom 2026",
+    "date": "2026-09-05T19:30:00-04:00",
+    "time": "7:30 PM",
+    "venue": "Pearson Convention Centre",
+    "city": "Brampton",
+    "price": "CAD 45.00",
+    "price_val": 45.0,
+    "event_url": "https://events.sulekha.com/falguni-pathak-live-in-toronto-dandiya-dhoom-2026_event-in_brampton-on_400142",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Cd0Deft.png",
+    "story_days_posted": "",
+    "artists": [
+      {
+        "name": "Falguni Pathak",
+        "handle": "falgunipathak12",
+        "followers": 751000
+      }
+    ],
+    "signals": {
+      "max_followers": 751000,
+      "total_followers": 751000,
+      "venue_class": "mid",
+      "event_format": "performance"
     }
   },
   {
