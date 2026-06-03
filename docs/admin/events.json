@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-soiree-neon-bubble-rave-edition-5th-june-dopamine-toronto_event-in_toronto-on_400051",
     "posted": true,
     "posted_image_url": "https://iili.io/BymjIRV.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/funny-acharya-live-telugu-stand-up-comedy-show_event-in_toronto-on_400234",
     "posted": true,
     "posted_image_url": "https://iili.io/C2Yl3n1.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [
       {
         "name": "Funny Acharya",
@@ -56,7 +56,7 @@
     "event_url": "https://events.sulekha.com/bollywood-bling-by-bollywood-pulse_event-in_toronto-on_400192",
     "posted": true,
     "posted_image_url": "https://iili.io/CdLyTx4.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -76,7 +76,7 @@
     "event_url": "https://events.sulekha.com/all-black-bollywood-affair-on-king-st-w-hosted-by-lets-nacho_event-in_toronto-on_400229",
     "posted": true,
     "posted_image_url": "https://iili.io/C2Y1V3u.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -96,7 +96,7 @@
     "event_url": "https://events.sulekha.com/lets-nacho-bollywood-bhangra-party_event-in_toronto-on_400225",
     "posted": true,
     "posted_image_url": "https://iili.io/C2WNer7.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -116,7 +116,7 @@
     "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
     "posted": true,
     "posted_image_url": "https://iili.io/BMpFfKQ.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -272,6 +272,26 @@
     }
   },
   {
+    "title": "Summer Official Bollywood Cruise | Sundowner | Boat Party",
+    "date": "2026-06-21T17:00:00-05:00",
+    "time": "5:00 PM",
+    "venue": "Ntuzuma",
+    "city": "Toronto",
+    "price": "CAD 27.96",
+    "price_val": 27.96,
+    "event_url": "https://events.sulekha.com/summer-official-bollywood-cruise-sundowner-toronto-boat-party_event-in_toronto-on_400354",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CKTH7PS.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Sunset Bollywood Cruise",
     "date": "2026-06-21T18:30:00-05:00",
     "time": "6:30 PM",
@@ -288,6 +308,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Adda",
+    "date": "2026-06-26T21:00:00-05:00",
+    "time": "9:00 PM",
+    "venue": "Adda Restaurant",
+    "city": "Brampton",
+    "price": "CAD 15.00",
+    "price_val": 15.0,
+    "event_url": "https://events.sulekha.com/bollywood-adda_event-in_brampton-on_400355",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CKTHys2.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "small",
       "event_format": "social"
     }
   },
