@@ -1,131 +1,5 @@
 [
   {
-    "title": "Bollywood Soiree | Neon Bubble Rave Edition",
-    "date": "2026-06-05T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "The Dopamine - Pub & Lounge",
-    "city": "Toronto",
-    "price": "CAD 12.00",
-    "price_val": 12.0,
-    "event_url": "https://events.sulekha.com/bollywood-soiree-neon-bubble-rave-edition-5th-june-dopamine-toronto_event-in_toronto-on_400051",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BymjIRV.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Funny Acharya Live \u2014 Telugu Stand-up Comedy Show",
-    "date": "2026-06-06T18:00:00-05:00",
-    "time": "6:00 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 14.99",
-    "price_val": 14.99,
-    "event_url": "https://events.sulekha.com/funny-acharya-live-telugu-stand-up-comedy-show_event-in_toronto-on_400234",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2Yl3n1.png",
-    "story_days_posted": "5,4,3",
-    "artists": [
-      {
-        "name": "Funny Acharya",
-        "handle": "aniruddhacharya_memes",
-        "followers": 100000
-      }
-    ],
-    "signals": {
-      "max_followers": 100000,
-      "total_followers": 100000,
-      "venue_class": "small",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Bling By Bollywood Pulse",
-    "date": "2026-06-06T22:00:00-04:00",
-    "time": "10:00 PM",
-    "venue": "Mia Toronto",
-    "city": "Toronto",
-    "price": "CAD 12.00",
-    "price_val": 12.0,
-    "event_url": "https://events.sulekha.com/bollywood-bling-by-bollywood-pulse_event-in_toronto-on_400192",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CdLyTx4.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "All Black Bollywood Affair",
-    "date": "2026-06-06T22:00:00-05:00",
-    "time": "10:00 PM",
-    "venue": "TORONTO - 220 King St W - ORIA NIGHTCLUB",
-    "city": "Toronto",
-    "price": "CAD 17.31",
-    "price_val": 17.31,
-    "event_url": "https://events.sulekha.com/all-black-bollywood-affair-on-king-st-w-hosted-by-lets-nacho_event-in_toronto-on_400229",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2Y1V3u.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Lets Nacho | Bollywood & Bhangra Party",
-    "date": "2026-06-06T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "Oria on King",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/lets-nacho-bollywood-bhangra-party_event-in_toronto-on_400225",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2WNer7.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "The Rampage Tour - Arjun Rampal - Sundowner - Outdoor Event",
-    "date": "2026-06-07T17:00:00-04:00",
-    "time": "5:00 PM",
-    "venue": "Ascott Parc Event Centre",
-    "city": "Concord",
-    "price": "CAD 51.99",
-    "price_val": 51.99,
-    "event_url": "https://events.sulekha.com/the-rampage-tour-arjun-rampal-sundowner-outdoor-event_event-in_concord-on_399433",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BMpFfKQ.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Jamming",
     "date": "2026-06-13T11:30:00-05:00",
     "time": "11:30 AM",
@@ -136,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-jamming_event-in_brampton-on_400333",
     "posted": true,
     "posted_image_url": "https://iili.io/CF8C7rg.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -591,6 +465,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Rajkumari - A Poetry & Storytelling By Nayab Midha",
+    "date": "2026-10-10T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
+    "city": "Toronto",
+    "price": "CAD 35.00",
+    "price_val": 35.0,
+    "event_url": "https://events.sulekha.com/rajkumari-a-poetry-storytelling-by-nayab-midha-live-in-toronto_event-in_toronto-on_400412",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "major",
       "event_format": "social"
     }
   },
