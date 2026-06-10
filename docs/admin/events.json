@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-jamming_event-in_brampton-on_400333",
     "posted": true,
     "posted_image_url": "https://iili.io/CF8C7rg.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/chai-n-comedy-urdu-hindi-comedy-show_event-in_mississauga-on_399890",
     "posted": true,
     "posted_image_url": "https://iili.io/BtGDGKN.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [
       {
         "name": "Chai N Comedy",
@@ -56,7 +56,7 @@
     "event_url": "https://events.sulekha.com/the-bollywood-penthouse-vol-ii-all-white-edition-rooftop-at-the-drake_event-in_toronto-on_400231",
     "posted": true,
     "posted_image_url": "https://iili.io/C2WNiBV.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -102,6 +102,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "small",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Vineeth Sreenivasan Live",
+    "date": "2026-06-20T18:00:00-05:00",
+    "time": "6:00 PM",
+    "venue": "Canada Event Centre",
+    "city": "Whitby",
+    "price": "CAD 0.00",
+    "price_val": 0.0,
+    "event_url": "https://events.sulekha.com/toronto-vineeth-sreenivasan-live_event-in_whitby-on_400440",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CBGPkut.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   },
