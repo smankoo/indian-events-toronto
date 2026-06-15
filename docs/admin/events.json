@@ -1,71 +1,5 @@
 [
   {
-    "title": "Bollywood Jamming",
-    "date": "2026-06-13T11:30:00-05:00",
-    "time": "11:30 AM",
-    "venue": "Firangi Indian Restaurant & Bar",
-    "city": "Brampton",
-    "price": "CAD 49.64",
-    "price_val": 49.64,
-    "event_url": "https://events.sulekha.com/bollywood-jamming_event-in_brampton-on_400333",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CF8C7rg.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Chai N Comedy - Urdu / Hindi Comedy Show",
-    "date": "2026-06-14T15:00:00-05:00",
-    "time": "3:00 PM",
-    "venue": "Open Mic Cafe & Cuisine",
-    "city": "Mississauga",
-    "price": "CAD 22.63",
-    "price_val": 22.63,
-    "event_url": "https://events.sulekha.com/chai-n-comedy-urdu-hindi-comedy-show_event-in_mississauga-on_399890",
-    "posted": true,
-    "posted_image_url": "https://iili.io/BtGDGKN.png",
-    "story_days_posted": "5,4",
-    "artists": [
-      {
-        "name": "Chai N Comedy",
-        "handle": "chiacomedy",
-        "followers": 47000
-      }
-    ],
-    "signals": {
-      "max_followers": 47000,
-      "total_followers": 47000,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "The Bollywood Penthouse Vol. II \u2014 All White Edition",
-    "date": "2026-06-14T17:00:00-05:00",
-    "time": "5:00 PM",
-    "venue": "The Drake Hotel - Underground",
-    "city": "Toronto",
-    "price": "CAD 23.68",
-    "price_val": 23.68,
-    "event_url": "https://events.sulekha.com/the-bollywood-penthouse-vol-ii-all-white-edition-rooftop-at-the-drake_event-in_toronto-on_400231",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2WNiBV.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood: Khan Edition Trivia",
     "date": "2026-06-16T18:30:00-05:00",
     "time": "6:30 PM",
@@ -76,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-khan-edition-trivia-at-cassette_event-in_toronto-on_400078",
     "posted": true,
     "posted_image_url": "https://iili.io/C9TKs8x.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -96,7 +30,7 @@
     "event_url": "https://events.sulekha.com/bollywood-karaoke-night-desi-bar-grill-brampton_event-in_brampton-on_400059",
     "posted": true,
     "posted_image_url": "https://iili.io/C9TfCMX.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -116,7 +50,7 @@
     "event_url": "https://events.sulekha.com/toronto-vineeth-sreenivasan-live_event-in_whitby-on_400440",
     "posted": true,
     "posted_image_url": "https://iili.io/CBGPkut.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -136,7 +70,7 @@
     "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
     "posted": true,
     "posted_image_url": "https://iili.io/B4q8XNS.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -156,7 +90,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-w-dj-upsidedown-from-new-york-city_event-in_toronto-on_400335",
     "posted": true,
     "posted_image_url": "https://iili.io/CF8nWwQ.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -266,6 +200,26 @@
     }
   },
   {
+    "title": "Ladies Only Bollywood Night",
+    "date": "2026-06-28T16:00:00-04:00",
+    "time": "4:00 PM",
+    "venue": "Grand Victorian Convention Centre",
+    "city": "Mississauga",
+    "price": "CAD 53.50",
+    "price_val": 53.5,
+    "event_url": "https://events.sulekha.com/ladies-only-bollywood-night_event-in_mississauga-on_400491",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Cnmp7aV.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Asha Bhosle - A Musical Tribute - Dum Maro Dum",
     "date": "2026-06-28T16:00:00-05:00",
     "time": "4:00 PM",
@@ -302,6 +256,46 @@
     "event_url": "https://events.sulekha.com/bollywood-night-lets-nacho-kingstw-shisha-bottle-service_event-in_toronto-on_400230",
     "posted": true,
     "posted_image_url": "https://iili.io/C2taITJ.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood On Deck \u2014 All White Party",
+    "date": "2026-07-03T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "The Empress of Canada",
+    "city": "Toronto",
+    "price": "CAD 33.28",
+    "price_val": 33.28,
+    "event_url": "https://events.sulekha.com/bollywood-on-deck-all-white-party_event-in_toronto-on_400486",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Cnp9rpS.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Boat Cruise Party",
+    "date": "2026-07-03T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Toronto-s Biggest Boat with an open air rooftop! 500+ Attendees",
+    "city": "Toronto",
+    "price": "CAD 27.84",
+    "price_val": 27.84,
+    "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-biggest-cruise-party-toronto-500-people_event-in_toronto-on_400488",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -413,6 +407,46 @@
     "event_url": "https://events.sulekha.com/canada-shibir-2026-with-pujya-deepakbhai_event-in_brampton-on_400213",
     "posted": true,
     "posted_image_url": "https://iili.io/C2HW1Zg.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Mumbaikar Ki Mehfil",
+    "date": "2026-07-18T16:00:00-04:00",
+    "time": "4:00 PM",
+    "venue": "Mumbaikar at Yonge",
+    "city": "North York",
+    "price": "CAD 12.00",
+    "price_val": 12.0,
+    "event_url": "https://events.sulekha.com/mumbaikar-ki-mehfil-in-toronto_event-in_north-york-on_400493",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Female Only Bollywood Boat Party",
+    "date": "2026-08-21T20:30:00-04:00",
+    "time": "8:30 PM",
+    "venue": "Cherry",
+    "city": "Toronto",
+    "price": "CAD 71.03",
+    "price_val": 71.03,
+    "event_url": "https://events.sulekha.com/female-only-bollywood-boat-party_event-in_toronto-on_400487",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
