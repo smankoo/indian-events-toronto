@@ -1,25 +1,5 @@
 [
   {
-    "title": "Bollywood: Khan Edition Trivia",
-    "date": "2026-06-16T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Cassette",
-    "city": "Toronto",
-    "price": "CAD 11.13",
-    "price_val": 11.13,
-    "event_url": "https://events.sulekha.com/bollywood-khan-edition-trivia-at-cassette_event-in_toronto-on_400078",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9TKs8x.png",
-    "story_days_posted": "5,4,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Karaoke Night",
     "date": "2026-06-18T19:30:00-05:00",
     "time": "7:30 PM",
@@ -30,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-karaoke-night-desi-bar-grill-brampton_event-in_brampton-on_400059",
     "posted": true,
     "posted_image_url": "https://iili.io/C9TfCMX.png",
-    "story_days_posted": "5,4,3,2",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,7 +30,7 @@
     "event_url": "https://events.sulekha.com/toronto-vineeth-sreenivasan-live_event-in_whitby-on_400440",
     "posted": true,
     "posted_image_url": "https://iili.io/CBGPkut.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -70,7 +50,7 @@
     "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
     "posted": true,
     "posted_image_url": "https://iili.io/B4q8XNS.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +70,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-w-dj-upsidedown-from-new-york-city_event-in_toronto-on_400335",
     "posted": true,
     "posted_image_url": "https://iili.io/CF8nWwQ.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -110,7 +90,7 @@
     "event_url": "https://events.sulekha.com/summer-official-bollywood-cruise-sundowner-toronto-boat-party_event-in_toronto-on_400354",
     "posted": true,
     "posted_image_url": "https://iili.io/CKTH7PS.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -130,7 +110,7 @@
     "event_url": "https://events.sulekha.com/sunset-bollywood-cruise-toronto-boat-party_event-in_toronto-on_400058",
     "posted": true,
     "posted_image_url": "https://iili.io/C9abTPe.png",
-    "story_days_posted": "5",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -445,8 +425,8 @@
     "price": "CAD 71.03",
     "price_val": 71.03,
     "event_url": "https://events.sulekha.com/female-only-bollywood-boat-party_event-in_toronto-on_400487",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CoLCpmg.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -503,6 +483,26 @@
     }
   },
   {
+    "title": "Navrang Navratri Festival Canada 2026 With Aditya Gadhvi",
+    "date": "2026-09-07T18:30:00-04:00",
+    "time": "6:30 PM",
+    "venue": "International Centre at Mississauga: Hall 5",
+    "city": "Mississauga",
+    "price": "CAD 50.00",
+    "price_val": 50.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-aditya-gadhvi-monday-7th-september-2026_event-in_mississauga-on_400551",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CoLn8Cv.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Garba Glow Up 2026",
     "date": "2026-10-02T18:30:00-05:00",
     "time": "6:30 PM",
@@ -519,6 +519,46 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Navrang Navratri Festival Canada 2026 With Raj Gadhvi",
+    "date": "2026-10-02T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "International Centre Hall 1",
+    "city": "Mississauga",
+    "price": "CAD 15.00",
+    "price_val": 15.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-raj-gadhvi-friday-2nd-october-2026_event-in_mississauga-on_400549",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Navrang Navratri Festival Canada 2026 With Nick Pandya",
+    "date": "2026-10-10T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "Brampton Soccer Centre",
+    "city": "Shelton",
+    "price": "CAD 20.00",
+    "price_val": 20.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-nick-pandya-saturday-10th-october-2026_event-in_shelton-ct_400550",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   },
