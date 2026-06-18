@@ -30,7 +30,7 @@
     "event_url": "https://events.sulekha.com/toronto-vineeth-sreenivasan-live_event-in_whitby-on_400440",
     "posted": true,
     "posted_image_url": "https://iili.io/CBGPkut.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -50,7 +50,7 @@
     "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
     "posted": true,
     "posted_image_url": "https://iili.io/B4q8XNS.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -70,7 +70,7 @@
     "event_url": "https://events.sulekha.com/bombay-nights-w-dj-upsidedown-from-new-york-city_event-in_toronto-on_400335",
     "posted": true,
     "posted_image_url": "https://iili.io/CF8nWwQ.png",
-    "story_days_posted": "5,4,3",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +90,7 @@
     "event_url": "https://events.sulekha.com/summer-official-bollywood-cruise-sundowner-toronto-boat-party_event-in_toronto-on_400354",
     "posted": true,
     "posted_image_url": "https://iili.io/CKTH7PS.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -110,7 +110,7 @@
     "event_url": "https://events.sulekha.com/sunset-bollywood-cruise-toronto-boat-party_event-in_toronto-on_400058",
     "posted": true,
     "posted_image_url": "https://iili.io/C9abTPe.png",
-    "story_days_posted": "5,4",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -437,6 +437,26 @@
     }
   },
   {
+    "title": "Navrang Navratri Festival Canada 2026 With Atul Purohit",
+    "date": "2026-09-04T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "The International Centre Hall 5",
+    "city": "Mississauga",
+    "price": "CAD 45.00",
+    "price_val": 45.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-atul-purohit-friday-4th-september-2026_event-in_mississauga-on_400571",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CxR1J5X.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Diwali Mela",
     "date": "2026-09-05T15:00:00-05:00",
     "time": "3:00 PM",
@@ -447,6 +467,26 @@
     "event_url": "https://events.sulekha.com/diwali-mela-by-craaf-hcca_event-in_mississauga-on_399892",
     "posted": true,
     "posted_image_url": "https://iili.io/BtGDpJ1.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Navrang Navratri Festival Canada 2026 With Atul Purohit",
+    "date": "2026-09-05T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "International Centre at Mississauga: Hall 5",
+    "city": "Mississauga",
+    "price": "CAD 45.00",
+    "price_val": 45.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-atul-purohit-saturday-5th-september-2026_event-in_mississauga-on_400572",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CxR16B4.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -483,6 +523,26 @@
     }
   },
   {
+    "title": "Navrang Navratri Festival Canada 2026 With Geeta Rabari",
+    "date": "2026-09-06T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "The International Centre Hall 5",
+    "city": "Mississauga",
+    "price": "CAD 40.00",
+    "price_val": 40.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-geeta-rabari-sunday-6th-september-2026_event-in_mississauga-on_400573",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Navrang Navratri Festival Canada 2026 With Aditya Gadhvi",
     "date": "2026-09-07T18:30:00-04:00",
     "time": "6:30 PM",
@@ -493,6 +553,26 @@
     "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-aditya-gadhvi-monday-7th-september-2026_event-in_mississauga-on_400551",
     "posted": true,
     "posted_image_url": "https://iili.io/CoLn8Cv.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Kirtidan Gadhvi Navratri Rass Garba 2026",
+    "date": "2026-09-07T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "Pearson Convention Centre",
+    "city": "Brampton",
+    "price": "CAD 25.00",
+    "price_val": 25.0,
+    "event_url": "https://events.sulekha.com/kirtidan-gadhvi-navratri-rass-garba-2026-in-toronto-7th-september_event-in_brampton-on_400570",
+    "posted": false,
+    "posted_image_url": "",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -599,6 +679,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Navrang Navratri Festival Canada 2026 With Kinjal Dave",
+    "date": "2026-10-24T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "Enercare Centre",
+    "city": "Toronto",
+    "price": "CAD 35.00",
+    "price_val": 35.0,
+    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-kinjal-dave-saturday-24th-october-2026_event-in_toronto-on_400574",
+    "posted": false,
+    "posted_image_url": "",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "major",
       "event_format": "social"
     }
   }
