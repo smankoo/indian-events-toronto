@@ -377,6 +377,26 @@
     }
   },
   {
+    "title": "Punjab Vibes - Celebrating Teeyan",
+    "date": "2026-07-12T11:00:00-05:00",
+    "time": "11:00 AM",
+    "venue": "Natraj Banquet Hall",
+    "city": "Mississauga",
+    "price": "CAD 45.00",
+    "price_val": 45.0,
+    "event_url": "https://events.sulekha.com/punjab-vibes-celebrating-teeyan_event-in_mississauga-on_400586",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CxMsD3N.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Canada Shibir 2026 With Pujya Deepakbhai",
     "date": "2026-07-17T19:00:00-05:00",
     "time": "7:00 PM",
@@ -531,8 +551,8 @@
     "price": "CAD 40.00",
     "price_val": 40.0,
     "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-geeta-rabari-sunday-6th-september-2026_event-in_mississauga-on_400573",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CxML8oG.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
