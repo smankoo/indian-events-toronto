@@ -1,231 +1,5 @@
 [
   {
-    "title": "Vineeth Sreenivasan Live",
-    "date": "2026-06-20T18:00:00-05:00",
-    "time": "6:00 PM",
-    "venue": "Canada Event Centre",
-    "city": "Whitby",
-    "price": "CAD 0.00",
-    "price_val": 0.0,
-    "event_url": "https://events.sulekha.com/toronto-vineeth-sreenivasan-live_event-in_whitby-on_400440",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CBGPkut.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Speed Dating & Mixer For Punjabis (Ages 25-45)",
-    "date": "2026-06-20T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Dear Delhi | Indian Restaurant , Bar & Lounge",
-    "city": "Mississauga",
-    "price": "CAD 33.28",
-    "price_val": 33.28,
-    "event_url": "https://events.sulekha.com/speed-dating-mixer-for-punjabi-s-ages-25-45_event-in_mississauga-on_399712",
-    "posted": true,
-    "posted_image_url": "https://iili.io/B4q8XNS.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bombay Nights W/ Dj Upsidedown",
-    "date": "2026-06-20T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "The Dopamine Lounge",
-    "city": "Toronto",
-    "price": "CAD 22.90",
-    "price_val": 22.9,
-    "event_url": "https://events.sulekha.com/bombay-nights-w-dj-upsidedown-from-new-york-city_event-in_toronto-on_400335",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CF8nWwQ.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Summer Official Bollywood Cruise | Sundowner | Boat Party",
-    "date": "2026-06-21T17:00:00-05:00",
-    "time": "5:00 PM",
-    "venue": "Ntuzuma",
-    "city": "Toronto",
-    "price": "CAD 27.96",
-    "price_val": 27.96,
-    "event_url": "https://events.sulekha.com/summer-official-bollywood-cruise-sundowner-toronto-boat-party_event-in_toronto-on_400354",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CKTH7PS.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Sunset Bollywood Cruise",
-    "date": "2026-06-21T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "The Docks Driving Range",
-    "city": "Toronto",
-    "price": "CAD 27.96",
-    "price_val": 27.96,
-    "event_url": "https://events.sulekha.com/sunset-bollywood-cruise-toronto-boat-party_event-in_toronto-on_400058",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9abTPe.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Adda",
-    "date": "2026-06-26T21:00:00-05:00",
-    "time": "9:00 PM",
-    "venue": "Adda Restaurant",
-    "city": "Brampton",
-    "price": "CAD 15.00",
-    "price_val": 15.0,
-    "event_url": "https://events.sulekha.com/bollywood-adda_event-in_brampton-on_400355",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CKTHys2.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Chhote Ustaad Season 2 Kids Instruments Playing Reality Show",
-    "date": "2026-06-27T18:00:00-04:00",
-    "time": "6:00 PM",
-    "venue": "Vic Johnston Community Centre",
-    "city": "Mississauga",
-    "price": "CAD 50.00",
-    "price_val": 50.0,
-    "event_url": "https://events.sulekha.com/chhote-ustaad-season-2-kids-instruments-playing-reality-show_event-in_mississauga-on_399996",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Bp3nTjS.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Canadian Vibe Bhangra Giddha Cup",
-    "date": "2026-06-28T12:00:00-05:00",
-    "time": "12:00 PM",
-    "venue": "Mississauga Convention Centre",
-    "city": "Mississauga",
-    "price": "CAD 20.00",
-    "price_val": 20.0,
-    "event_url": "https://events.sulekha.com/canadian-vibe-bhangra-giddha-cup_event-in_mississauga-on_400376",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CKSa7fV.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Ladies Only Bollywood Night",
-    "date": "2026-06-28T16:00:00-04:00",
-    "time": "4:00 PM",
-    "venue": "Grand Victorian Convention Centre",
-    "city": "Mississauga",
-    "price": "CAD 53.50",
-    "price_val": 53.5,
-    "event_url": "https://events.sulekha.com/ladies-only-bollywood-night_event-in_mississauga-on_400491",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Cnmp7aV.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Asha Bhosle - A Musical Tribute - Dum Maro Dum",
-    "date": "2026-06-28T16:00:00-05:00",
-    "time": "4:00 PM",
-    "venue": "Dante Alighieri Academy",
-    "city": "Etobicoke",
-    "price": "CAD 22.00",
-    "price_val": 22.0,
-    "event_url": "https://events.sulekha.com/asha-bhosle-a-musical-tribute-dum-maro-dum_event-in_etobicoke-on_400233",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2tYGqB.png",
-    "story_days_posted": "",
-    "artists": [
-      {
-        "name": "Asha Bhosle",
-        "handle": "asha.bhosle",
-        "followers": 829000
-      }
-    ],
-    "signals": {
-      "max_followers": 829000,
-      "total_followers": 829000,
-      "venue_class": "unknown",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Night Lets Nacho",
-    "date": "2026-06-30T22:30:00-05:00",
-    "time": "10:30 PM",
-    "venue": "TORONTO - 220 King St W - ORIA NIGHTCLUB",
-    "city": "Toronto",
-    "price": "CAD 19.96",
-    "price_val": 19.96,
-    "event_url": "https://events.sulekha.com/bollywood-night-lets-nacho-kingstw-shisha-bottle-service_event-in_toronto-on_400230",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2taITJ.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood On Deck \u2014 All White Party",
     "date": "2026-07-03T19:00:00-04:00",
     "time": "7:00 PM",
@@ -236,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-on-deck-all-white-party_event-in_toronto-on_400486",
     "posted": true,
     "posted_image_url": "https://iili.io/Cnp9rpS.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -256,7 +30,7 @@
     "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-biggest-cruise-party-toronto-500-people_event-in_toronto-on_400488",
     "posted": true,
     "posted_image_url": "https://iili.io/Co2ziKu.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -276,7 +50,7 @@
     "event_url": "https://events.sulekha.com/soul-fire-a-musical-evening-with-chinmayi-sripada-andrea-jeremiah_event-in_whitby-on_400088",
     "posted": true,
     "posted_image_url": "https://iili.io/C9LyIsV.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [
       {
         "name": "Chinmayi Sripada",
@@ -307,12 +81,32 @@
     "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-by-bollevo-toronto_event-in_toronto-on_400089",
     "posted": true,
     "posted_image_url": "https://iili.io/C9LymrP.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Vishal Mishra",
+    "date": "2026-07-04T20:00:00-04:00",
+    "time": "8:00 PM",
+    "venue": "Coca-Cola Coliseum",
+    "city": "Toronto",
+    "price": "CAD 75.00",
+    "price_val": 75.0,
+    "event_url": "https://events.sulekha.com/vishal-mishra-live-in-concert-pagalpan-tour-in-toronto_event-in_toronto-on_400723",
+    "posted": true,
+    "posted_image_url": "https://iili.io/C7UszKJ.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "major",
       "event_format": "social"
     }
   },
