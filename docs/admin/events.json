@@ -1,116 +1,5 @@
 [
   {
-    "title": "Bollywood On Deck \u2014 All White Party",
-    "date": "2026-07-03T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "The Empress of Canada",
-    "city": "Toronto",
-    "price": "CAD 33.28",
-    "price_val": 33.28,
-    "event_url": "https://events.sulekha.com/bollywood-on-deck-all-white-party_event-in_toronto-on_400486",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Cnp9rpS.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Boat Cruise Party",
-    "date": "2026-07-03T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Toronto-s Biggest Boat with an open air rooftop! 500+ Attendees",
-    "city": "Toronto",
-    "price": "CAD 27.84",
-    "price_val": 27.84,
-    "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-biggest-cruise-party-toronto-500-people_event-in_toronto-on_400488",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Co2ziKu.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Soul & Fire \u2013 A Musical Evening With Chinmayi Sripada & Andrea Jeremiah",
-    "date": "2026-07-04T18:00:00-04:00",
-    "time": "6:00 PM",
-    "venue": "Canada Event Centre",
-    "city": "Whitby",
-    "price": "CAD 79.00",
-    "price_val": 79.0,
-    "event_url": "https://events.sulekha.com/soul-fire-a-musical-evening-with-chinmayi-sripada-andrea-jeremiah_event-in_whitby-on_400088",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9LyIsV.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [
-      {
-        "name": "Chinmayi Sripada",
-        "handle": "chinmayi.sripada",
-        "followers": 0
-      },
-      {
-        "name": "Andrea Jeremiah",
-        "handle": "therealandreajeremiah",
-        "followers": 4000000
-      }
-    ],
-    "signals": {
-      "max_followers": 4000000,
-      "total_followers": 4000000,
-      "venue_class": "mid",
-      "event_format": "performance"
-    }
-  },
-  {
-    "title": "Bollywood Boat Cruise Party",
-    "date": "2026-07-04T20:00:00-04:00",
-    "time": "8:00 PM",
-    "venue": "Empress of Canada ",
-    "city": "Toronto",
-    "price": "CAD 25.00",
-    "price_val": 25.0,
-    "event_url": "https://events.sulekha.com/bollywood-boat-cruise-party-by-bollevo-toronto_event-in_toronto-on_400089",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9LymrP.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Vishal Mishra",
-    "date": "2026-07-04T20:00:00-04:00",
-    "time": "8:00 PM",
-    "venue": "Coca-Cola Coliseum",
-    "city": "Toronto",
-    "price": "CAD 75.00",
-    "price_val": 75.0,
-    "event_url": "https://events.sulekha.com/vishal-mishra-live-in-concert-pagalpan-tour-in-toronto_event-in_toronto-on_400723",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C7UszKJ.png",
-    "story_days_posted": "2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Bingo Night",
     "date": "2026-07-09T19:30:00-05:00",
     "time": "7:30 PM",
@@ -121,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_400056",
     "posted": true,
     "posted_image_url": "https://iili.io/C9abrUG.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2,1",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -141,7 +30,7 @@
     "event_url": "https://events.sulekha.com/bollywood-hum-harmony_event-in_pickering-on_400336",
     "posted": true,
     "posted_image_url": "https://iili.io/CFPlPTJ.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -161,7 +50,7 @@
     "event_url": "https://events.sulekha.com/punjab-vibes-celebrating-teeyan_event-in_mississauga-on_400586",
     "posted": true,
     "posted_image_url": "https://iili.io/CxMsD3N.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -201,6 +90,46 @@
     "event_url": "https://events.sulekha.com/mumbaikar-ki-mehfil-in-toronto_event-in_north-york-on_400493",
     "posted": true,
     "posted_image_url": "https://iili.io/Co2IAJf.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Night",
+    "date": "2026-07-18T22:00:00-04:00",
+    "time": "10:00 PM",
+    "venue": "Mia Toronto",
+    "city": "Toronto",
+    "price": "CAD 12.00",
+    "price_val": 12.0,
+    "event_url": "https://events.sulekha.com/bollywood-night-by-bollywood-pulse_event-in_toronto-on_400880",
+    "posted": true,
+    "posted_image_url": "https://iili.io/C0Yi2Re.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Summer Party",
+    "date": "2026-07-25T22:00:00-04:00",
+    "time": "10:00 PM",
+    "venue": "The Rec Room Square One",
+    "city": "Mississauga",
+    "price": "CAD 12.00",
+    "price_val": 12.0,
+    "event_url": "https://events.sulekha.com/bollywood-summer-party_event-in_mississauga-on_400881",
+    "posted": true,
+    "posted_image_url": "https://iili.io/C0Yis1V.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
