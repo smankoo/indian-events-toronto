@@ -1,125 +1,5 @@
 [
   {
-    "title": "Bollywood Bingo Night",
-    "date": "2026-07-09T19:30:00-05:00",
-    "time": "7:30 PM",
-    "venue": "Desi Bar & Grill",
-    "city": "Brampton",
-    "price": "CAD 12.19",
-    "price_val": 12.19,
-    "event_url": "https://events.sulekha.com/bollywood-bingo-night-desi-bar-grill-brampton_event-in_brampton-on_400056",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9abrUG.png",
-    "story_days_posted": "5,4,3,2,1",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "small",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood-Hum & Harmony",
-    "date": "2026-07-11T16:30:00-05:00",
-    "time": "4:30 PM",
-    "venue": "TreeHouse ClubHouse",
-    "city": "Pickering",
-    "price": "CAD 17.55",
-    "price_val": 17.55,
-    "event_url": "https://events.sulekha.com/bollywood-hum-harmony_event-in_pickering-on_400336",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CFPlPTJ.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Punjab Vibes - Celebrating Teeyan",
-    "date": "2026-07-12T11:00:00-05:00",
-    "time": "11:00 AM",
-    "venue": "Natraj Banquet Hall",
-    "city": "Mississauga",
-    "price": "CAD 45.00",
-    "price_val": 45.0,
-    "event_url": "https://events.sulekha.com/punjab-vibes-celebrating-teeyan_event-in_mississauga-on_400586",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CxMsD3N.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Canada Shibir 2026 With Pujya Deepakbhai",
-    "date": "2026-07-17T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Brampton Triveni Mandir 20 Daviselm Drive",
-    "city": "Brampton",
-    "price": "CAD 0.00",
-    "price_val": 0.0,
-    "event_url": "https://events.sulekha.com/canada-shibir-2026-with-pujya-deepakbhai_event-in_brampton-on_400213",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C2HW1Zg.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Mumbaikar Ki Mehfil",
-    "date": "2026-07-18T16:00:00-04:00",
-    "time": "4:00 PM",
-    "venue": "Mumbaikar at Yonge",
-    "city": "North York",
-    "price": "CAD 12.00",
-    "price_val": 12.0,
-    "event_url": "https://events.sulekha.com/mumbaikar-ki-mehfil-in-toronto_event-in_north-york-on_400493",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Co2IAJf.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Night",
-    "date": "2026-07-18T22:00:00-04:00",
-    "time": "10:00 PM",
-    "venue": "Mia Toronto",
-    "city": "Toronto",
-    "price": "CAD 12.00",
-    "price_val": 12.0,
-    "event_url": "https://events.sulekha.com/bollywood-night-by-bollywood-pulse_event-in_toronto-on_400880",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C0Yi2Re.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Bollywood Summer Party",
     "date": "2026-07-25T22:00:00-04:00",
     "time": "10:00 PM",
@@ -356,6 +236,26 @@
     "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-raj-gadhvi-friday-2nd-october-2026_event-in_mississauga-on_400549",
     "posted": true,
     "posted_image_url": "https://iili.io/CxHHDJV.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Rang Rag Navratri Mahotsav 2026",
+    "date": "2026-10-04T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "Brampton Soccer Centre",
+    "city": "Brampton",
+    "price": "CAD 15.00",
+    "price_val": 15.0,
+    "event_url": "https://events.sulekha.com/rang-rag-navratri-mahotsav-2026_event-in_brampton-on_400982",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CwF4ha2.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
