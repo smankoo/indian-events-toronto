@@ -10,7 +10,7 @@
     "event_url": "https://events.sulekha.com/bollywood-summer-party_event-in_mississauga-on_400881",
     "posted": true,
     "posted_image_url": "https://iili.io/C0Yis1V.png",
-    "story_days_posted": "",
+    "story_days_posted": "5",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -322,6 +322,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Monster Ft. Gurleen Pannu Standup Comedy Live 2026",
+    "date": "2026-10-18T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
+    "city": "Toronto",
+    "price": "CAD 40.00",
+    "price_val": 40.0,
+    "event_url": "https://events.sulekha.com/monster-ft-gurleen-pannu-standup-comedy-live-2026-live-in-toronto_event-in_toronto-on_401003",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CwMTD0u.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "major",
       "event_format": "social"
     }
   },
