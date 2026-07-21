@@ -28,8 +28,8 @@
     "price": "CAD 21.00",
     "price_val": 21.0,
     "event_url": "https://events.sulekha.com/standup-comedy-by-ojas-rawal-in-toronto-2026_event-in_etobicoke-on_400960",
-    "posted": false,
-    "posted_image_url": "",
+    "posted": true,
+    "posted_image_url": "https://iili.io/Cwp6LEG.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
