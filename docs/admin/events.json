@@ -1,45 +1,5 @@
 [
   {
-    "title": "Bollywood Summer Party",
-    "date": "2026-07-25T22:00:00-04:00",
-    "time": "10:00 PM",
-    "venue": "The Rec Room Square One",
-    "city": "Mississauga",
-    "price": "CAD 12.00",
-    "price_val": 12.0,
-    "event_url": "https://events.sulekha.com/bollywood-summer-party_event-in_mississauga-on_400881",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C0Yis1V.png",
-    "story_days_posted": "5",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Standup Comedy By Ojas Rawal In Toronto 2026",
-    "date": "2026-07-31T20:00:00-04:00",
-    "time": "8:00 PM",
-    "venue": "Sringeri Temple ",
-    "city": "Etobicoke",
-    "price": "CAD 21.00",
-    "price_val": 21.0,
-    "event_url": "https://events.sulekha.com/standup-comedy-by-ojas-rawal-in-toronto-2026_event-in_etobicoke-on_400960",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Cwp6LEG.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Sundowner 2026 - Canada's Biggest Outdoor Bollywood DJ Music Festival",
     "date": "2026-08-08T18:30:00-04:00",
     "time": "6:30 PM",
@@ -226,6 +186,26 @@
     }
   },
   {
+    "title": "Garba Mahotsav 2026 With Rushi Purohit",
+    "date": "2026-09-12T18:30:00-04:00",
+    "time": "6:30 PM",
+    "venue": "Pickering High School",
+    "city": "Ajax",
+    "price": "CAD 18.00",
+    "price_val": 18.0,
+    "event_url": "https://events.sulekha.com/garba-mahotsav-2026-with-rushi-purohit_event-in_ajax-on_401136",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CSGLlku.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Garba Glow Up 2026",
     "date": "2026-10-02T18:30:00-05:00",
     "time": "6:30 PM",
@@ -262,6 +242,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Bollywood Garba Fiesta 2026",
+    "date": "2026-10-03T18:30:00-05:00",
+    "time": "6:30 PM",
+    "venue": "Pickering High School",
+    "city": "Ajax",
+    "price": "CAD 10.00",
+    "price_val": 10.0,
+    "event_url": "https://events.sulekha.com/bollywood-garba-fiesta-2026_event-in_ajax-on_401139",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CSGLgBp.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
       "event_format": "social"
     }
   },
