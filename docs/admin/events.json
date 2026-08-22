@@ -1,45 +1,5 @@
 [
   {
-    "title": "Sundowner 2026 - Canada's Biggest Outdoor Bollywood DJ Music Festival",
-    "date": "2026-08-08T18:30:00-04:00",
-    "time": "6:30 PM",
-    "venue": "Toronto Island BBQ & Beer Co.",
-    "city": "Toronto",
-    "price": "CAD 25.57",
-    "price_val": 25.57,
-    "event_url": "https://events.sulekha.com/sundowner-2026-canada-s-biggest-outdoor-bollywood-dj-music-festival_event-in_toronto-on_400794",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CaJmADx.png",
-    "story_days_posted": "5,4,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Female Only Bollywood Boat Party",
-    "date": "2026-08-21T20:30:00-04:00",
-    "time": "8:30 PM",
-    "venue": "Cherry",
-    "city": "Toronto",
-    "price": "CAD 71.03",
-    "price_val": 71.03,
-    "event_url": "https://events.sulekha.com/female-only-bollywood-boat-party_event-in_toronto-on_400487",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CoLCpmg.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Navrang Navratri Festival Canada 2026 With Atul Purohit",
     "date": "2026-09-04T19:00:00-04:00",
     "time": "7:00 PM",
@@ -422,6 +382,26 @@
       "max_followers": 0,
       "total_followers": 0,
       "venue_class": "major",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Harmeet Singh Kohli Family Remote Stand-up Comedy",
+    "date": "2026-10-24T19:00:00-04:00",
+    "time": "7:00 PM",
+    "venue": "Maja Prentice Theatre",
+    "city": "Mississauga",
+    "price": "CAD 35.00",
+    "price_val": 35.0,
+    "event_url": "https://events.sulekha.com/harmeet-singh-kohli-live-family-remote-stand-up-comedy-show_event-in_mississauga-on_401456",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CZisfx2.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
       "event_format": "social"
     }
   },
