@@ -166,6 +166,26 @@
     }
   },
   {
+    "title": "Numan Haider Qawwal Live",
+    "date": "2026-09-19T20:45:00-04:00",
+    "time": "8:45 PM",
+    "venue": "Capitol Banquet Centre",
+    "city": "Mississauga",
+    "price": "CAD 55.00",
+    "price_val": 55.0,
+    "event_url": "https://events.sulekha.com/Numan-Haider-Qawwal-Live-in-Mississauga_event-in_mississauga-on_401581",
+    "posted": true,
+    "posted_image_url": "https://iili.io/CmEAbcB.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Garba Glow Up 2026",
     "date": "2026-10-02T18:30:00-05:00",
     "time": "6:30 PM",
