@@ -140,6 +140,26 @@
     }
   },
   {
+    "title": "Navratri Festival - Toronto Rhythm",
+    "date": "2026-10-10T19:00:00-05:00",
+    "time": "7:00 PM",
+    "venue": "Pearson Convention Centre",
+    "city": "Brampton",
+    "price": "CAD 15.00",
+    "price_val": 15.0,
+    "event_url": "https://events.sulekha.com/navratri-festival-toronto-rhythm_event-in_brampton-on_402063",
+    "posted": true,
+    "posted_image_url": "https://iili.io/n7ti6Sp.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
     "title": "Khelo Dandiya \u2013 Mumbai Style",
     "date": "2026-10-11T18:00:00-04:00",
     "time": "6:00 PM",
