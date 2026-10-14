@@ -1,205 +1,5 @@
 [
   {
-    "title": "Garba Glow Up 2026",
-    "date": "2026-10-02T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Sringeri Vidya Bharati Foundation - SVBF",
-    "city": "Etobicoke",
-    "price": "CAD 15.41",
-    "price_val": 15.41,
-    "event_url": "https://events.sulekha.com/garba-glow-up-2026_event-in_etobicoke-on_400057",
-    "posted": true,
-    "posted_image_url": "https://iili.io/C9gHzuI.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Navrang Navratri Festival Canada 2026 With Raj Gadhvi",
-    "date": "2026-10-02T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "International Centre Hall 1",
-    "city": "Mississauga",
-    "price": "CAD 15.00",
-    "price_val": 15.0,
-    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-raj-gadhvi-friday-2nd-october-2026_event-in_mississauga-on_400549",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CxHHDJV.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Bollywood Garba Fiesta 2026",
-    "date": "2026-10-03T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Pickering High School",
-    "city": "Ajax",
-    "price": "CAD 10.00",
-    "price_val": 10.0,
-    "event_url": "https://events.sulekha.com/bollywood-garba-fiesta-2026_event-in_ajax-on_401139",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CSGLgBp.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Rang Rag Navratri Mahotsav 2026",
-    "date": "2026-10-04T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Brampton Soccer Centre",
-    "city": "Brampton",
-    "price": "CAD 15.00",
-    "price_val": 15.0,
-    "event_url": "https://events.sulekha.com/rang-rag-navratri-mahotsav-2026_event-in_brampton-on_400982",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CwF4ha2.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Mgsoc Navratri Mela 2026",
-    "date": "2026-10-09T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "SAVE MAX SPORTS CENTRE",
-    "city": "Brampton",
-    "price": "CAD 10.00",
-    "price_val": 10.0,
-    "event_url": "https://events.sulekha.com/mgsoc-navratri-mela-2026_event-in_brampton-on_401557",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CbCFzVn.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Navrang Navratri Festival Canada 2026 With Nick Pandya",
-    "date": "2026-10-10T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Brampton Soccer Centre",
-    "city": "Shelton",
-    "price": "CAD 20.00",
-    "price_val": 20.0,
-    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-nick-pandya-saturday-10th-october-2026_event-in_shelton-ct_400550",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CxHJlI9.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Rajkumari - A Poetry & Storytelling By Nayab Midha",
-    "date": "2026-10-10T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
-    "city": "Toronto",
-    "price": "CAD 35.00",
-    "price_val": 35.0,
-    "event_url": "https://events.sulekha.com/rajkumari-a-poetry-storytelling-by-nayab-midha-live-in-toronto_event-in_toronto-on_400412",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CqjPa5X.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Navratri Festival - Toronto Rhythm",
-    "date": "2026-10-10T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Pearson Convention Centre",
-    "city": "Brampton",
-    "price": "CAD 15.00",
-    "price_val": 15.0,
-    "event_url": "https://events.sulekha.com/navratri-festival-toronto-rhythm_event-in_brampton-on_402063",
-    "posted": true,
-    "posted_image_url": "https://iili.io/n7ti6Sp.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Khelo Dandiya \u2013 Mumbai Style",
-    "date": "2026-10-11T18:00:00-04:00",
-    "time": "6:00 PM",
-    "venue": "Newmarket Seniors- Meeting Place",
-    "city": "Newmarket",
-    "price": "CAD 25.00",
-    "price_val": 25.0,
-    "event_url": "https://events.sulekha.com/khelo-dandiya-mumbai-style_event-in_newmarket-on_400971",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CrK9VPn.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Navli Navratri 2026 Featuring Suniel Patel (Gujju Rockstar)",
-    "date": "2026-10-11T18:30:00-04:00",
-    "time": "6:30 PM",
-    "venue": "Brampton Soccer Centre",
-    "city": "Brampton",
-    "price": "CAD 15.00",
-    "price_val": 15.0,
-    "event_url": "https://events.sulekha.com/navli-navratri-2026-featuring-suniel-patel-gujju-rockstar_event-in_brampton-on_401216",
-    "posted": true,
-    "posted_image_url": "https://iili.io/Cr5GcYP.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Raasa 2026 \u2013 GTA's Biggest Bollywood Garba Night",
     "date": "2026-10-16T19:00:00-05:00",
     "time": "7:00 PM",
@@ -210,7 +10,7 @@
     "event_url": "https://events.sulekha.com/raasa-2026-gta-s-biggest-bollywood-garba-night_event-in_etobicoke-on_400337",
     "posted": true,
     "posted_image_url": "https://iili.io/CFP0zjj.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -230,7 +30,7 @@
     "event_url": "https://events.sulekha.com/monster-ft-gurleen-pannu-standup-comedy-live-2026-live-in-toronto_event-in_toronto-on_401003",
     "posted": true,
     "posted_image_url": "https://iili.io/CwMTD0u.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -330,6 +130,26 @@
     "event_url": "https://events.sulekha.com/getting-there-by-rohan-joshi-live-2026-in-toronto_event-in_toronto-on_401091",
     "posted": true,
     "posted_image_url": "https://iili.io/Ce7MzHx.png",
+    "story_days_posted": "",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Halki Halki Fati! By Vikas Kush Sharma",
+    "date": "2026-12-06T18:30:00-04:00",
+    "time": "6:30 PM",
+    "venue": "The Terminal Theatre",
+    "city": "Toronto",
+    "price": "CAD 35.00",
+    "price_val": 35.0,
+    "event_url": "https://events.sulekha.com/halki-halki-fati-by-vikas-kush-sharma_event-in_toronto-on_402337",
+    "posted": true,
+    "posted_image_url": "https://iili.io/nhB30H7.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
