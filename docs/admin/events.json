@@ -1,45 +1,5 @@
 [
   {
-    "title": "Raasa 2026 \u2013 GTA's Biggest Bollywood Garba Night",
-    "date": "2026-10-16T19:00:00-05:00",
-    "time": "7:00 PM",
-    "venue": "Royal King Event Centre",
-    "city": "Etobicoke",
-    "price": "CAD 28.23",
-    "price_val": 28.23,
-    "event_url": "https://events.sulekha.com/raasa-2026-gta-s-biggest-bollywood-garba-night_event-in_etobicoke-on_400337",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CFP0zjj.png",
-    "story_days_posted": "5,4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Monster Ft. Gurleen Pannu Standup Comedy Live 2026",
-    "date": "2026-10-18T18:30:00-05:00",
-    "time": "6:30 PM",
-    "venue": "Metro Toronto Convention Centre - John Bassett Theatre",
-    "city": "Toronto",
-    "price": "CAD 40.00",
-    "price_val": 40.0,
-    "event_url": "https://events.sulekha.com/monster-ft-gurleen-pannu-standup-comedy-live-2026-live-in-toronto_event-in_toronto-on_401003",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CwMTD0u.png",
-    "story_days_posted": "5,4",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Diwali Festival Of Lights",
     "date": "2026-10-24T12:00:00-04:00",
     "time": "12:00 PM",
@@ -50,6 +10,26 @@
     "event_url": "https://events.sulekha.com/diwali-festival-of-lights_event-in_toronto-on_401967",
     "posted": true,
     "posted_image_url": "https://iili.io/nAbgR0Q.png",
+    "story_days_posted": "4,3,2",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "unknown",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Diwali Dhamaka Season 5",
+    "date": "2026-10-24T12:00:00-05:00",
+    "time": "12:00 PM",
+    "venue": "Courtyard by Marriott Brampton",
+    "city": "Brampton",
+    "price": "CAD 0.00",
+    "price_val": 0.0,
+    "event_url": "https://events.sulekha.com/diwali-dhamaka-season-5-is-coming-to-brampton_event-in_brampton-on_402468",
+    "posted": true,
+    "posted_image_url": "https://iili.io/ne2N4QS.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
@@ -70,7 +50,7 @@
     "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-kinjal-dave-saturday-24th-october-2026_event-in_toronto-on_400574",
     "posted": true,
     "posted_image_url": "https://iili.io/CxDZnbn.png",
-    "story_days_posted": "",
+    "story_days_posted": "4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -90,7 +70,7 @@
     "event_url": "https://events.sulekha.com/harmeet-singh-kohli-live-family-remote-stand-up-comedy-show_event-in_mississauga-on_401456",
     "posted": true,
     "posted_image_url": "https://iili.io/CZisfx2.png",
-    "story_days_posted": "",
+    "story_days_posted": "4,3,2",
     "artists": [],
     "signals": {
       "max_followers": 0,
@@ -110,7 +90,7 @@
     "event_url": "https://events.sulekha.com/diwali-festival-of-lights_event-in_toronto-on_401968",
     "posted": true,
     "posted_image_url": "https://iili.io/nAbgmEx.png",
-    "story_days_posted": "",
+    "story_days_posted": "5,4,3",
     "artists": [],
     "signals": {
       "max_followers": 0,
