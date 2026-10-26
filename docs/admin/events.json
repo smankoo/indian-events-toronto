@@ -1,101 +1,21 @@
 [
   {
-    "title": "Diwali Festival Of Lights",
-    "date": "2026-10-24T12:00:00-04:00",
-    "time": "12:00 PM",
-    "venue": "Nathan Phillips Square",
-    "city": "Toronto",
-    "price": "CAD 0.00",
-    "price_val": 0.0,
-    "event_url": "https://events.sulekha.com/diwali-festival-of-lights_event-in_toronto-on_401967",
-    "posted": true,
-    "posted_image_url": "https://iili.io/nAbgR0Q.png",
-    "story_days_posted": "4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Diwali Dhamaka Season 5",
-    "date": "2026-10-24T12:00:00-05:00",
-    "time": "12:00 PM",
-    "venue": "Courtyard by Marriott Brampton",
+    "title": "Diwali Gala Event \u2013 Light It Up",
+    "date": "2026-10-30T18:30:00-04:00",
+    "time": "6:30 PM",
+    "venue": "Dreams Convention Centre",
     "city": "Brampton",
-    "price": "CAD 0.00",
-    "price_val": 0.0,
-    "event_url": "https://events.sulekha.com/diwali-dhamaka-season-5-is-coming-to-brampton_event-in_brampton-on_402468",
+    "price": "CAD 45.00",
+    "price_val": 45.0,
+    "event_url": "https://events.sulekha.com/diwali-gala-event-light-it-up_event-in_brampton-on_402511",
     "posted": true,
-    "posted_image_url": "https://iili.io/ne2N4QS.png",
+    "posted_image_url": "https://iili.io/nvfzXSI.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
       "max_followers": 0,
       "total_followers": 0,
-      "venue_class": "unknown",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Navrang Navratri Festival Canada 2026 With Kinjal Dave",
-    "date": "2026-10-24T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Enercare Centre",
-    "city": "Toronto",
-    "price": "CAD 35.00",
-    "price_val": 35.0,
-    "event_url": "https://events.sulekha.com/navrang-navratri-festival-canada-2026-with-kinjal-dave-saturday-24th-october-2026_event-in_toronto-on_400574",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CxDZnbn.png",
-    "story_days_posted": "4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "major",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Harmeet Singh Kohli Family Remote Stand-up Comedy",
-    "date": "2026-10-24T19:00:00-04:00",
-    "time": "7:00 PM",
-    "venue": "Maja Prentice Theatre",
-    "city": "Mississauga",
-    "price": "CAD 35.00",
-    "price_val": 35.0,
-    "event_url": "https://events.sulekha.com/harmeet-singh-kohli-live-family-remote-stand-up-comedy-show_event-in_mississauga-on_401456",
-    "posted": true,
-    "posted_image_url": "https://iili.io/CZisfx2.png",
-    "story_days_posted": "4,3,2",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
       "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
-    "title": "Diwali Festival Of Lights",
-    "date": "2026-10-25T12:00:00-04:00",
-    "time": "12:00 PM",
-    "venue": "Nathan Phillips Square",
-    "city": "Toronto",
-    "price": "CAD 0.00",
-    "price_val": 0.0,
-    "event_url": "https://events.sulekha.com/diwali-festival-of-lights_event-in_toronto-on_401968",
-    "posted": true,
-    "posted_image_url": "https://iili.io/nAbgmEx.png",
-    "story_days_posted": "5,4,3",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "unknown",
       "event_format": "social"
     }
   },
