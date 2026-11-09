@@ -81,7 +81,7 @@ All rendering is Pillow-based. Fonts (OFL) live in `fonts/`: Anton (headlines), 
 
 ## Database
 
-SQLite at `data/events.db` with WAL mode, committed to git by the workflows. **Don't commit it from feature branches** — the bots commit it to `main` several times a day and a binary DB can't be merged; schema changes auto-migrate at runtime instead.
+SQLite at `data/events.db` with WAL mode, committed to git by the workflows. **Don't commit it from feature branches** — the bots commit it to `main` several times a day and a binary DB can't be merged; schema changes auto-migrate at runtime instead. For local experiments, point `EVENTS_DB` at a copy (`cp data/events.db /tmp/dev.db; EVENTS_DB=/tmp/dev.db uv run python main.py ...`).
 - `processed_events` — PK: `(source, source_id)`, tracks classification, profile (`profile_json`), tier/score (`score_json` breakdown), posting/coverage, story status
 - `instagram_handles` — PK: `artist_name`, 30-day TTL cache for handle lookups
 - `artist_stats` — per-artist popularity signals (30-day TTL)

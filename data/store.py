@@ -1,3 +1,4 @@
+import os
 import re
 import sqlite3
 from datetime import datetime
@@ -6,7 +7,9 @@ from pathlib import Path
 
 from models import Event
 
-DB_PATH = Path(__file__).parent / "events.db"
+# EVENTS_DB lets local experiments use a copy, so the committed DB (owned by the
+# workflows on main) stays untouched on feature branches.
+DB_PATH = Path(os.environ.get("EVENTS_DB") or Path(__file__).parent / "events.db")
 
 
 def get_connection() -> sqlite3.Connection:
