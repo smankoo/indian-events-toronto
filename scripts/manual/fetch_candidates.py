@@ -134,12 +134,19 @@ def main():
     print(f"{len(unique)} new; skipped {skipped}")
 
     def classify(e):
-        return e, classify_event(title=e.title, description=e.description,
-                                 categories=e.categories, languages=e.languages, organizer=e.organizer)
+        try:
+            return e, classify_event(title=e.title, description=e.description,
+                                     categories=e.categories, languages=e.languages, organizer=e.organizer)
+        except Exception as ex:  # one bad call must not sink the batch; unsaved events retry next run
+            return e, None
 
     n_ind = 0
     with cf.ThreadPoolExecutor(6) as ex:
-        for e, (is_ind, reason, cleaned) in ex.map(classify, unique):
+        for e, res in ex.map(classify, unique):
+            if res is None:
+                print(f"  ERR   {e.title[:60]}")
+                continue
+            is_ind, reason, cleaned = res
             e.title = cleaned or e.title
             save_event(e, is_ind, reason)
             n_ind += bool(is_ind)

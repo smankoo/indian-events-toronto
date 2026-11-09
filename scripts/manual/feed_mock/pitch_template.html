@@ -1,0 +1,366 @@
+<title>Desi Toronto Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a product pitch. Desktop = sticky phone (the feed) left, brief right. Phone = feed first, brief below.
+   Colors are the account's own pillar codes: saffron = book now, paper = this weekend, indigo = coming up. */
+:root {
+  --bg: #f3ede2; --surface: #fffaf2; --fg: #16110c; --muted: #6d6156; --line: #e2d8c8;
+  --saffron: #ff7a1a; --saffron-ink: #b2510a; --indigo: #141033; --magenta: #c2185b; --teal: #0d7a6f;
+  --phone: #0e0c10; --phone-fg: #f5f1ea; --phone-muted: #a39b93; --phone-line: #2a2530;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --accent-serif: "Playfair Display", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15120f; --surface: #1d1915; --fg: #f3ede4; --muted: #a99d91; --line: #322a23;
+    --saffron: #ff8a33; --saffron-ink: #ffa45c; --indigo: #8f86e8; --magenta: #f0629a; --teal: #3dbfae;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15120f; --surface: #1d1915; --fg: #f3ede4; --muted: #a99d91; --line: #322a23;
+  --saffron: #ff8a33; --saffron-ink: #ffa45c; --indigo: #8f86e8; --magenta: #f0629a; --teal: #3dbfae;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+header.hero { padding-block: 40px 28px; }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--saffron-ink); }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(48px, 9vw, 104px); line-height: .9; margin: 10px 0 14px; letter-spacing: .005em; text-wrap: balance; }
+h1 em { font-family: var(--accent-serif); font-style: italic; font-weight: 700; color: var(--saffron-ink); letter-spacing: 0; font-size: .62em; vertical-align: .12em; }
+.promise { font-size: clamp(18px, 2.2vw, 22px); max-width: 58ch; margin: 0; color: var(--fg); }
+.promise b { font-weight: 700; }
+.meta { margin-top: 14px; font-size: 13.5px; color: var(--muted); max-width: 80ch; }
+
+.layout { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 48px; align-items: start; padding-block: 8px 80px; }
+.phone-col { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); }
+.phone { width: 100%; max-width: 400px; background: var(--phone); color: var(--phone-fg); border-radius: 34px; padding: 14px 0 0; box-shadow: 0 30px 60px -30px rgba(20,10,0,.45); overflow: hidden; border: 1px solid #000; position: relative; }
+.ig-top { display: flex; align-items: center; justify-content: space-between; padding: 6px 18px 10px; font-weight: 700; font-size: 15px; }
+.ig-top span:last-child { color: var(--phone-muted); font-weight: 500; font-size: 13px; }
+.ig-head { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding: 4px 18px 10px; align-items: center; }
+.avatar { width: 76px; height: 76px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffb36b, var(--saffron) 55%, #b2510a); display: grid; place-items: center; font-family: var(--display); font-size: 28px; color: #16110c; box-shadow: 0 0 0 3px var(--phone), 0 0 0 5px var(--saffron); }
+.stats { display: flex; gap: 16px; font-size: 12.5px; color: var(--phone-muted); }
+.stats b { display: block; color: var(--phone-fg); font-size: 15px; }
+.bio { padding: 0 18px 12px; font-size: 13.5px; line-height: 1.45; }
+.bio b { display: block; font-size: 14px; }
+.bio a { color: #a7c7ff; text-decoration: none; }
+.highlights { display: flex; gap: 12px; overflow-x: auto; padding: 4px 18px 14px; scrollbar-width: none; }
+.hl { flex: none; width: 62px; text-align: center; font-size: 11px; color: var(--phone-fg); background: none; border: 0; padding: 0; font-family: var(--body); cursor: default; }
+.hl i { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 5px; border-radius: 50%; border: 2px solid var(--phone-line); font-style: normal; font-family: var(--display); font-size: 15px; letter-spacing: .02em; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--phone-line); font-size: 12px; text-align: center; color: var(--phone-muted); }
+.tabs span { padding: 9px 0; }
+.tabs span:first-child { color: var(--phone-fg); border-bottom: 1.5px solid var(--phone-fg); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.tile { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border: 0; padding: 0; cursor: pointer; background: #222; }
+.tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile .multi { position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; border-radius: 3px; border: 2px solid #fff; box-shadow: 3px -3px 0 -1px #fff; opacity: .9; }
+.tile:focus-visible { outline: 3px solid var(--saffron); outline-offset: -3px; }
+
+.viewer { position: absolute; inset: 0; background: var(--phone); display: flex; flex-direction: column; z-index: 3; }
+.viewer[hidden] { display: none; }
+.v-top { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px; }
+.v-top .mini { width: 30px; height: 30px; border-radius: 50%; background: var(--saffron); }
+.v-top .who { font-weight: 700; font-size: 13.5px; line-height: 1.2; }
+.v-top .who span { display: block; font-weight: 500; color: var(--phone-muted); font-size: 11.5px; }
+.v-close { margin-left: auto; background: none; border: 0; color: var(--phone-fg); font: 600 13px var(--body); padding: 6px 8px; cursor: pointer; border-radius: 8px; }
+.v-close:focus-visible, .v-nav button:focus-visible { outline: 2px solid var(--saffron); }
+.v-stage { position: relative; aspect-ratio: 4 / 5; background: #000; flex: none; }
+.v-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.v-nav { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 6px; pointer-events: none; }
+.v-nav button { pointer-events: auto; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255,255,255,.85); color: #111; font: 700 16px var(--body); cursor: pointer; }
+.v-nav button[hidden] { visibility: hidden; display: block; }
+.dots { display: flex; justify-content: center; gap: 5px; padding: 9px 0 4px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--phone-line); }
+.dots i.on { background: #4aa3ff; }
+.v-cap { padding: 6px 16px 18px; font-size: 13px; line-height: 1.5; overflow-y: auto; white-space: pre-wrap; }
+.v-cap b { font-weight: 700; }
+.pm-note { margin: 0 16px 16px; padding: 10px 12px; border-radius: 10px; background: #1d1922; color: var(--phone-fg); font-size: 12.5px; border-left: 3px solid var(--saffron); }
+.pm-note b { color: var(--saffron); font-weight: 700; letter-spacing: .04em; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+.phone-caption { font-size: 13px; color: var(--muted); margin: 12px 4px 0; }
+
+.brief { min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+.brief section { display: flex; flex-direction: column; gap: 14px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 4vw, 44px); line-height: 1; margin: 0; letter-spacing: .01em; text-transform: uppercase; }
+h2 small { display: block; font-family: var(--body); font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--saffron-ink); margin-bottom: 8px; }
+.brief p { margin: 0; max-width: 66ch; }
+.lead { font-size: 18px; }
+
+.pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pillar { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pillar .code { height: 8px; border-radius: 4px; width: 56px; }
+.pillar h3 { font-size: 17px; margin: 4px 0 0; }
+.pillar .why { font-family: var(--accent-serif); font-style: italic; font-size: 16px; color: var(--muted); }
+.pillar dl { margin: 6px 0 0; display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 10px; font-size: 13.5px; }
+.pillar dt { font-weight: 700; color: var(--muted); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding-top: 2px; }
+.pillar dd { margin: 0; }
+
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.day { padding: 12px 10px; border-right: 1px solid var(--line); min-height: 132px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; }
+.day:last-child { border-right: 0; }
+.day b { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+.chip { display: block; padding: 4px 6px; border-radius: 6px; font-weight: 600; font-size: 12px; line-height: 1.3; }
+.c-alert { background: color-mix(in srgb, var(--saffron) 22%, transparent); }
+.c-week { background: color-mix(in srgb, var(--fg) 9%, transparent); }
+.c-guide { background: color-mix(in srgb, var(--magenta) 18%, transparent); }
+.c-up { background: color-mix(in srgb, var(--indigo) 22%, transparent); }
+.c-story { border: 1px dashed var(--line); font-weight: 500; }
+.legend-note { font-size: 13px; color: var(--muted); }
+
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rules ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+.rules h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.voice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.voice .box p { font-size: 14.5px; }
+.voice .no { text-decoration: line-through; text-decoration-color: var(--magenta); color: var(--muted); }
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; counter-reset: s; }
+.flow .box { font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+.flow .box b { font-size: 15px; }
+.flow .box span { color: var(--muted); }
+.metrics { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.metrics th, .metrics td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.metrics th { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+.phases { display: flex; flex-direction: column; gap: 10px; }
+.phase { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.phase .when { font-family: var(--display); font-size: 22px; line-height: 1.05; }
+.phase .when span { display: block; font-family: var(--body); font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .04em; }
+.phase.now { border-color: var(--saffron); box-shadow: inset 4px 0 0 var(--saffron); }
+.phase p { font-size: 14.5px; }
+.asks { display: flex; flex-direction: column; gap: 10px; counter-reset: ask; }
+.asks li { list-style: none; padding: 14px 16px 14px 52px; position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-size: 15px; }
+.asks li::before { counter-increment: ask; content: counter(ask); position: absolute; left: 16px; top: 12px; font-family: var(--display); font-size: 22px; color: var(--saffron-ink); }
+.asks { padding: 0; margin: 0; }
+.fine { font-size: 13px; color: var(--muted); }
+.fine a { color: inherit; }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .phone-col { position: static; display: flex; flex-direction: column; align-items: center; }
+  .week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .day { border-bottom: 1px solid var(--line); min-height: 0; }
+  .flow { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .pillars, .rules, .voice, .flow { grid-template-columns: minmax(0, 1fr); }
+  .phase { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+</style>
+
+<header class="hero gut">
+  <div class="wrap">
+    <div class="eyebrow">Product proposal · @indian.events.toronto</div>
+    <h1>The desi guide to Toronto <em>in one follow</em></h1>
+    <p class="promise">Never miss a big show. Know what's on this weekend. Every festival in one place. <b>We post fewer, better things, and we're first when it matters.</b></p>
+    <p class="meta">Everything in the phone is a real upcoming or recent GTA event, rendered with the actual pipeline. Tap any post to see its slides and caption, plus a note on why it exists. Nothing here has been posted.</p>
+  </div>
+</header>
+
+<div class="layout wrap gut">
+  <div class="phone-col">
+    <div class="phone" id="phone">
+      <div class="ig-top"><span>indian.events.toronto</span><span>Thu Nov 12</span></div>
+      <div class="ig-head">
+        <div class="avatar" aria-hidden="true">IET</div>
+        <div class="stats"><span><b>12</b>posts</span><span><b>—</b>followers</span><span><b>—</b>following</span></div>
+      </div>
+      <div class="bio">
+        <b>Indian Events Toronto</b>
+        The desi guide to the GTA 🪔<br>
+        Big shows the day they drop · Your weekend every Thursday · Every festival, one post<br>
+        <a>🔗 tickets & full calendar</a>
+      </div>
+      <div class="highlights" aria-label="Story highlights" id="highlights"></div>
+      <div class="tabs" aria-hidden="true"><span>Posts</span><span>Reels</span></div>
+      <div class="grid" id="grid"></div>
+      <div class="viewer" id="viewer" hidden role="dialog" aria-label="Post">
+        <div class="v-top"><span class="mini"></span><span class="who">indian.events.toronto<span id="v-kind"></span></span><button type="button" class="v-close" id="v-close">Close ✕</button></div>
+        <div class="v-stage"><img id="v-img" alt=""><div class="v-nav"><button type="button" id="v-prev" aria-label="Previous slide">‹</button><button type="button" id="v-next" aria-label="Next slide">›</button></div></div>
+        <div class="dots" id="v-dots"></div>
+        <div class="pm-note" id="v-note"></div>
+        <div class="v-cap" id="v-cap"></div>
+      </div>
+    </div>
+    <p class="phone-caption">The grid, as of Thursday Nov 12. Newest first. Follower counts left blank on purpose.</p>
+  </div>
+
+  <article class="brief">
+    <section>
+      <h2><small>01 · The problem</small>A feed of flyers nobody needed</h2>
+      <p class="lead">Today the account posts one generic image for nearly every listing it finds on one website. A Falguni Pathak concert looks the same as a trivia night, big announcements arrive late or not at all, and there's no reason to follow rather than check Sulekha yourself.</p>
+      <p>The accounts that repost every flyer stay small; the ones people follow do the choosing for them. In Toronto, the desi scene is all promoters posting their own nights. Nobody is curating it. That's the gap.</p>
+    </section>
+
+    <section>
+      <h2><small>02 · Who it's for</small>Four kinds of follower</h2>
+      <div class="pillars">
+        <div class="pillar"><h3>The fan</h3><span class="why">"Tell me the second Diljit announces."</span><p>Follows artists. Wants alerts, on-sale dates and a heads-up before things sell out.</p></div>
+        <div class="pillar"><h3>The weekend planner</h3><span class="why">"What are we doing Saturday?"</span><p>Twenties and thirties, downtown and the 905. Bollywood nights, comedy, qawwali, the good parties.</p></div>
+        <div class="pillar"><h3>The family organiser</h3><span class="why">"Where do we take Mom and the kids for Diwali?"</span><p>Festivals, melas, classical and devotional evenings, things that start before 9 PM.</p></div>
+        <div class="pillar"><h3>The community regular</h3><span class="why">"Is there garba near me this week?"</span><p>Garba people, Punjabi music, Tamil stand-up, ghazal nights. Wants their niche, complete.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><small>03 · What we post</small>Five formats, each with a job</h2>
+      <p>Each format answers one reason to follow and has its own look, so the grid explains itself: orange band means book now, paper means this weekend, colour means save this.</p>
+      <div class="pillars">
+        <div class="pillar"><span class="code" style="background:var(--saffron)"></span><h3>Alerts</h3><span class="why">Never miss a big show</span>
+          <dl><dt>When</dt><dd>Within a day of an announcement, at on-sale, when a second show is added</dd><dt>Format</dt><dd>Single post with the artist's photo, plus a story</dd><dt>Volume</dt><dd>As they happen, usually 1–3 a month</dd></dl></div>
+        <div class="pillar"><span class="code" style="background:#e9dfcf;border:1px solid var(--line)"></span><h3>This weekend</h3><span class="why">What's on, and what's worth it</span>
+          <dl><dt>When</dt><dd>Every Thursday</dd><dt>Format</dt><dd>Carousel: cover with our 3 picks, then 6–10 events with a one-line reason to go</dd><dt>Volume</dt><dd>Weekly. This is the flagship</dd></dl></div>
+        <div class="pillar"><span class="code" style="background:var(--indigo)"></span><h3>Coming up</h3><span class="why">Plan ahead, book early</span>
+          <dl><dt>When</dt><dd>First Sunday of the month</dd><dt>Format</dt><dd>Carousel of the big shows in the next 1–3 months</dd><dt>Volume</dt><dd>Monthly</dd></dl></div>
+        <div class="pillar"><span class="code" style="background:var(--magenta)"></span><h3>Guides</h3><span class="why">Every festival or niche in one post</span>
+          <dl><dt>When</dt><dd>3–4 weeks before Navratri, Diwali, Lohri, Holi, Vaisakhi, NYE; niche guides (comedy, classical) between festivals</dd><dt>Format</dt><dd>Save-worthy carousel + a link-in-bio page</dd><dt>Volume</dt><dd>About 2 a month</dd></dl></div>
+        <div class="pillar"><span class="code" style="background:#2a2530"></span><h3>Features</h3><span class="why">The few shows that deserve a spotlight</span>
+          <dl><dt>When</dt><dd>2–4 weeks before a headliner's show</dd><dt>Format</dt><dd>Full-bleed artist poster, then countdown stories</dd><dt>Volume</dt><dd>2–4 a month</dd></dl></div>
+        <div class="pillar"><span class="code" style="background:var(--teal)"></span><h3>Stories</h3><span class="why">Countdowns, tonight's picks, show news</span>
+          <dl><dt>When</dt><dd>Daily when there's something to say</dd><dt>Format</dt><dd>Countdown, "tonight", sold out / new date / cancelled</dd><dt>Volume</dt><dd>Kept in highlights by niche: Alerts, Weekend, Comedy, Garba, Concerts, Festivals, Family</dd></dl></div>
+      </div>
+      <p class="legend-note">Recaps (Reels of last night's show) come later; they need clips from promoters and fans, which is a partnership, not code.</p>
+    </section>
+
+    <section>
+      <h2><small>04 · The rhythm</small>A typical week</h2>
+      <div class="week">
+        <div class="day"><b>MON</b><span class="chip c-alert">Alert, if something big dropped over the weekend</span></div>
+        <div class="day"><b>TUE</b><span class="chip c-story">Story: tonight</span></div>
+        <div class="day"><b>WED</b><span class="chip c-alert">Feature (2–4 a month)</span><span class="chip c-story">Countdown stories</span></div>
+        <div class="day"><b>THU</b><span class="chip c-week">This weekend carousel</span></div>
+        <div class="day"><b>FRI</b><span class="chip c-story">Story: tonight's picks</span></div>
+        <div class="day"><b>SAT</b><span class="chip c-story">Story: tonight's picks</span></div>
+        <div class="day"><b>SUN</b><span class="chip c-guide">Guide (about 2 a month)</span><span class="chip c-up">Coming up (1st Sunday)</span></div>
+      </div>
+      <p class="legend-note">About 3–5 feed posts a week. Alerts jump the queue any day.</p>
+    </section>
+
+    <section>
+      <h2><small>05 · Editorial line</small>What we leave out is the brand</h2>
+      <div class="rules">
+        <div class="box"><h3>We post</h3><ul>
+          <li>Desi events in and around the GTA that we'd tell a friend about</li>
+          <li>Big names the moment they're announced</li>
+          <li>Every festival celebration, big and small, in one guide</li>
+          <li>Community nights inside the roundups and guides</li></ul></div>
+        <div class="box"><h3>We don't</h3><ul>
+          <li>Repost every flyer as its own post</li>
+          <li>Singles mixers, networking nights, deal hunting</li>
+          <li>Promoter superlatives we can't check ("Canada's biggest…")</li>
+          <li>Invented faces. AI only cleans up a real photo of the real artist</li>
+          <li>Paid placement without a clear "Sponsored" label</li></ul></div>
+      </div>
+      <div class="voice">
+        <div class="box"><h3 style="margin:0 0 8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase">Voice: yes</h3><p>"Live qawwali and dinner at Matka Biryani House"</p><p>"$10 Tamil stand-up at a Mississauga physio clinic"</p><p>"His first Toronto show since 2022"</p></div>
+        <div class="box"><h3 style="margin:0 0 8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase">Voice: no</h3><p class="no">"🔥🔥 THE BIGGEST BOLLYWOOD PARTY OF THE YEAR!!! 🔥🔥"</p><p class="no">"Don't miss this unforgettable night of epic vibes"</p><p class="fine">Specific, warm, plain, a little wry. Facts from the listing only.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><small>06 · How it runs</small>The machine drafts, you decide in 10 minutes</h2>
+      <div class="flow">
+        <div class="box"><b>Find</b><span>Sulekha, Eventbrite, AllEvents and Ticketmaster, twice a day, plus a promoter submission form later</span></div>
+        <div class="box"><b>Understand</b><span>Who's headlining, what kind of night, which community, how big, which festival</span></div>
+        <div class="box"><b>Draft</b><span>Proposed posts with images, captions and "why go" lines, ready to approve</span></div>
+        <div class="box"><b>You decide</b><span>One tap per post on your phone. Alerts same day; the weekly batch takes about 10 minutes</span></div>
+      </div>
+      <p>Every correction you make is remembered: similar events come with your past call attached, repeated corrections become rules you confirm once, and the "how big is this" scoring is retuned to your actual choices. Formats we consistently agree on can eventually be handled automatically, with a sample still sent for review.</p>
+      <p class="fine">Example from building this page: the drafts called a party "Canada's longest running Bollywood party" and placed a comedy night in Scarborough. Both took seconds to fix, and that's exactly the job of the review.</p>
+    </section>
+
+    <section>
+      <h2><small>07 · How we'll know it works</small>Measures</h2>
+      <div class="table-wrap"><table class="metrics">
+        <tr><th>Measure</th><th>Why it matters</th><th>Aim (first 3 months)</th></tr>
+        <tr><td>Saves and shares per post</td><td>Saves mean "useful"; shares mean "my group chat needs this"</td><td>Guides and roundups beat single posts by 2× or more</td></tr>
+        <tr><td>Link-in-bio taps per week</td><td>People acting on what we post</td><td>Rising week on week</td></tr>
+        <tr><td>Follower growth</td><td>The promise is landing</td><td>Steady growth with no paid ads</td></tr>
+        <tr><td>Alert speed</td><td>Being first is the reason to follow</td><td>Big announcements posted within 24 hours</td></tr>
+        <tr><td>Your review time</td><td>Keeps it sustainable for one person</td><td>Under 15 minutes a week</td></tr>
+        <tr><td>Agreement with your calls</td><td>Shows the system is learning</td><td>Rising every month</td></tr>
+      </table></div>
+    </section>
+
+    <section>
+      <h2><small>08 · Getting there</small>Run it by hand first, then automate</h2>
+      <div class="phases">
+        <div class="phase now"><div class="when">Weeks 1–2<span>Now</span></div><p>Run this exact format by hand: I draft each post, you approve, we publish. Starts with this weekend's roundup and the Jubin Nautiyal alert. Needs Instagram/Facebook access.</p></div>
+        <div class="phase"><div class="when">Weeks 3–6</div><p>Automate the drafting for weekends, features and guides; a phone-friendly review queue with one-tap decisions; link-in-bio becomes a filterable calendar.</p></div>
+        <div class="phase"><div class="when">Weeks 6–10</div><p>Ticketmaster and change tracking for alerts (announced, on sale, second show, sold out); a promoter submission form; a festival calendar so guides go out on time.</p></div>
+        <div class="phase"><div class="when">Later</div><p>A weekly email or WhatsApp channel people can own; recap Reels with promoters; clearly labelled sponsored slots if and when it's worth it.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><small>09 · Decisions for you</small>What I need from you</h2>
+      <ol class="asks">
+        <li><b>Yes or no on this direction.</b> Especially: fewer posts, Thursday roundup as the flagship, alerts as the reason to follow.</li>
+        <li><b>The name and bio.</b> Keep "Indian Events Toronto", or lean into "desi"? The handle can stay either way.</li>
+        <li><b>Instagram and Facebook access for this session,</b> so we can publish the first real posts by hand and read your existing insights.</li>
+        <li><b>Your audience notes.</b> Which of the four followers above are really yours, and who's missing?</li>
+      </ol>
+      <p class="fine">Sources for the three big shows in the mock: Jubin Nautiyal, Nov 29 (<a href="https://www.eventworld.com/jubin-nautiyal-toronto-bilety-11-29-2026/event/537872" target="_blank" rel="noopener">eventworld</a>, <a href="https://casino.hardrock.com/atlantic-city/event-calendar/jubin-nautiyal" target="_blank" rel="noopener">tour stop Nov 28</a>); Prateek Kuhad, Nov 16 (<a href="https://concerts50.com/artists/prateek-kuhad-tour-dates" target="_blank" rel="noopener">concerts50</a>; some of his US dates were cancelled, so confirm before posting); Vir Das, Jan 16 (<a href="https://www.livenation.com/artist/K8vZ917fZtf/vir-das-events" target="_blank" rel="noopener">Live Nation</a>). Prateek and Vir Das use the photo-less alert style because I couldn't get a licensed photo yet. Everything else comes from Sulekha, Eventbrite and AllEvents listings.</p>
+    </section>
+  </article>
+</div>
+
+<script>
+const FEED = __FEED__;
+const HL = [["ALERTS", "#ff7a1a"], ["WEEK­END", "#e9dfcf"], ["COM­EDY", "#ffd400"], ["GARBA", "#c2185b"], ["SHOWS", "#c4401a"], ["FEST", "#ffb627"], ["FAMILY", "#1b5e45"]];
+const NOTES = {
+  "weekend-nov13": "The flagship. Our 3 picks on the cover, then everything worth knowing about. Mixers and the out-of-town events were left out on purpose.",
+  "alert-prateek": "A reminder alert, 5 days out. No licensed photo yet, so it uses the photo-less alert style; the orange band still says book now.",
+  "alert-jubin": "This is the reason to follow. A major Bollywood voice the old pipeline missed completely because it was only listed on AllEvents.",
+  "guide-comedy": "A niche guide for comedy people: the touring names plus the regular rooms where they can go any month.",
+  "coming-up": "The monthly plan-ahead post. Six shows to book, one line each, made to be saved.",
+  "alert-virdas": "On-sale alert, posted when tickets opened. Shows how alerts look for a comedian.",
+  "feature-karunesh": "A feature: a full-bleed poster with an AI-cleaned version of the artist's real photo, then countdown stories closer to the date.",
+  "weekend-oct24": "Diwali weekend roundup: one headliner, one garba star, one family show, one free festival.",
+  "feature-malaika": "The old pipeline didn't know this festival had a celebrity headliner; it was only on the flyer. The profile step reads flyers now.",
+  "guide-diwali": "Festival guide, posted 3 weeks ahead. Everything from the free City Hall festival to the after-parties.",
+  "feature-falguni": "A headliner feature for the biggest garba night of the season.",
+  "guide-garba": "Seventeen garba nights in one save-able post, from Falguni Pathak to $10 community nights."
+};
+const img = n => FEED.images[n];
+document.getElementById("highlights").innerHTML = HL.map(([t, c]) => `<span class="hl"><i style="border-color:${c};color:${c}">${t.split("­")[0].slice(0, 6)}</i>${t.replace("­", "").toLowerCase().replace(/^./, s => s.toUpperCase())}</span>`).join("");
+document.getElementById("grid").innerHTML = FEED.posts.map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-label="${p.kind} post, ${p.posted}"><img src="${img(p.slides[0])}" alt="" loading="lazy">${p.slides.length > 1 ? '<span class="multi"></span>' : ""}</button>`).join("");
+
+const viewer = document.getElementById("viewer");
+let cur = null, slide = 0, lastTile = null;
+function show() {
+  const p = FEED.posts[cur];
+  document.getElementById("v-img").src = img(p.slides[slide]);
+  document.getElementById("v-img").alt = `${p.kind}, slide ${slide + 1} of ${p.slides.length}`;
+  document.getElementById("v-kind").textContent = `${p.kind} · ${p.posted}`;
+  document.getElementById("v-dots").innerHTML = p.slides.length > 1 ? p.slides.map((_, i) => `<i class="${i === slide ? "on" : ""}"></i>`).join("") : "";
+  document.getElementById("v-prev").hidden = slide === 0;
+  document.getElementById("v-next").hidden = slide >= p.slides.length - 1;
+  document.getElementById("v-note").innerHTML = `<b>Why this post</b>${NOTES[p.id] || ""}`;
+  document.getElementById("v-cap").innerHTML = `<b>indian.events.toronto</b> ` + p.caption.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+}
+function open(i, tile) { cur = i; slide = 0; lastTile = tile; viewer.hidden = false; show(); document.getElementById("v-close").focus(); }
+function close() { viewer.hidden = true; if (lastTile) lastTile.focus(); }
+document.getElementById("grid").addEventListener("click", e => { const t = e.target.closest(".tile"); if (t) open(+t.dataset.i, t); });
+document.getElementById("v-close").addEventListener("click", close);
+document.getElementById("v-prev").addEventListener("click", () => { if (slide > 0) { slide--; show(); } });
+document.getElementById("v-next").addEventListener("click", () => { if (slide < FEED.posts[cur].slides.length - 1) { slide++; show(); } });
+document.addEventListener("keydown", e => {
+  if (viewer.hidden) return;
+  if (e.key === "Escape") close();
+  if (e.key === "ArrowRight") document.getElementById("v-next").click();
+  if (e.key === "ArrowLeft") document.getElementById("v-prev").click();
+});
+let sx = null;
+document.querySelector(".v-stage").addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+document.querySelector(".v-stage").addEventListener("touchend", e => {
+  if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+  if (dx < -40) document.getElementById("v-next").click(); else if (dx > 40) document.getElementById("v-prev").click();
+});
+</script>
