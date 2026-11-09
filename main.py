@@ -233,6 +233,20 @@ def _identity(event) -> tuple:
     return base, heads
 
 
+def _awaiting_data(event) -> bool:
+    """A likely-big event scored as notable while a popularity source was unavailable
+    (rate limit, missing key) might really be a headliner. Hold it back while there's time;
+    the next ingest re-scores it once the data arrives."""
+    from datetime import datetime
+    from data.store import get_score_breakdown
+    if event.tier != "notable" or (event.profile or {}).get("prominence", 0) < 4:
+        return False
+    if (event.date.replace(tzinfo=None) - datetime.now()).days < 7:
+        return False
+    artists = get_score_breakdown(event.source, event.source_id).get("artists", [])
+    return any("wikipedia" not in a.get("available", []) for a in artists)
+
+
 def select_for_posting(limit: int) -> list:
     """Headliner then notable events, soonest first, skipping repeats of an already-posted show."""
     from data.store import query_events, mark_covered
@@ -253,6 +267,9 @@ def select_for_posting(limit: int) -> list:
     rank = {"headliner": 0, "notable": 1}
     chosen = []
     for e in sorted(candidates, key=lambda e: (rank[e.tier], e.date)):
+        if _awaiting_data(e):
+            print(f"  Hold (popularity data incomplete, may be a headliner): {e.title[:60]}")
+            continue
         twin = seen.get(_identity(e))
         if twin and abs((twin.date - e.date).days) <= 45:
             if twin.posted_image_url:  # a real post exists — record the coverage permanently
@@ -559,7 +576,12 @@ def profile_events(include_past: bool = False, refresh: bool = False, workers: i
 
 
 def score_events(include_past: bool = False, refresh: bool = False):
-    """Score profiled events into headliner / notable / listing tiers (scoring/score.py)."""
+    """Score profiled events into headliner / notable / listing tiers (scoring/score.py).
+
+    Unposted upcoming events are re-scored on every run, so a tier improves once a
+    platform that was unavailable (rate limit, missing key) answers. Artist stats are
+    cached, so this is cheap. Posted events keep their tier unless refresh=True.
+    """
     from data.store import query_events, save_score
     from scoring.score import score_event
 
@@ -567,7 +589,7 @@ def score_events(include_past: bool = False, refresh: bool = False):
     if not include_past:
         where += " AND date >= date('now')"
     if not refresh:
-        where += " AND (tier IS NULL OR tier = '')"
+        where += " AND (tier IS NULL OR tier = '' OR posted = 0)"
     events = query_events(where)
     print(f"\n=== Scoring {len(events)} event(s) ===")
     for event in events:
