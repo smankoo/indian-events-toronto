@@ -36,6 +36,8 @@ jobs:
       SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
       FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
       FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+      # Headliner posters: production uses the Pro image model (dev default is Flash)
+      IMAGE_MODEL: google/gemini-3-pro-image
 
     steps:
       - uses: actions/checkout@v4

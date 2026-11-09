@@ -4,7 +4,6 @@ import html
 from datetime import datetime
 from pathlib import Path
 
-from data.store import get_posted_events
 
 DOCS_DIR = Path(__file__).parent.parent / "docs"
 SITE_TITLE = "Indian Events Toronto"
@@ -12,12 +11,13 @@ HANDLE = "@indian.events.toronto"
 
 
 def generate_linkinbio():
-    """Generate a static link-in-bio page from posted events."""
-    events = get_posted_events()
-    now = datetime.now()
-    # Only show upcoming events, most recent post first
-    upcoming = [e for e in events if e.date.date() >= now.date()]
-    upcoming.reverse()
+    """Generate a static link-in-bio page listing every upcoming Indian event.
+
+    Includes listing-tier events that only appear in the weekly roundup (whose caption
+    points here). Events with a feed post show the poster; the rest get a text card.
+    """
+    from data.store import query_events
+    upcoming = query_events("date >= date('now')")
 
     DOCS_DIR.mkdir(exist_ok=True)
     html_content = _build_page(upcoming)

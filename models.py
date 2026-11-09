@@ -21,3 +21,7 @@ class Event:
     organizer: str = ""
     posted_image_url: str = ""
     image_urls: list[str] = field(default_factory=list)
+    # Filled by classifier/profile.py and scoring/ (empty until those stages run)
+    profile: dict = field(default_factory=dict)
+    tier: str = ""
+    score: int = 0

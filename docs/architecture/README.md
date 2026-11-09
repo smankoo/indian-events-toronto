@@ -3,6 +3,8 @@
 > arc42 + C4 documentation for the automated Indian event discovery and social media publishing pipeline.
 >
 > **Last updated:** March 2026
+>
+> ⚠️ **Partly outdated (Nov 2026):** posting is now tier-driven (profile → score → headliner poster / card / weekend roundup), and `create_post.py`, `ai_enhance.py` and `styles.py` were replaced by `image_generator/poster.py`, `design.py` and `hero_plate.py`. See `CLAUDE.md` for the current pipeline.
 
 ---
 

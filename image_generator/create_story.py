@@ -13,7 +13,8 @@ import requests
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 from models import Event
-from image_generator.create_post import FONTS_DIR, OUTPUT_DIR
+FONTS_DIR = Path(__file__).parent.parent / "fonts"
+OUTPUT_DIR = Path(__file__).parent.parent / "output"
 
 STORY_W = 1080
 STORY_H = 1920

@@ -125,7 +125,7 @@ All candidates are verified via Instagram's **Business Discovery API** (account 
 
 ```
 .
-+-- main.py                        # Pipeline orchestrator (--ingest / --post)
++-- main.py                        # Pipeline orchestrator (--ingest / --post / --roundup / ...)
 +-- models.py                      # Event dataclass
 +-- requirements.txt               # Python dependencies
 |
@@ -134,14 +134,19 @@ All candidates are verified via Instagram's **Business Discovery API** (account 
 |
 +-- classifier/
 |   +-- indian_classifier.py       # LLM classification + title cleanup
+|   +-- profile.py                 # Headliners / category / series from text + flyer
+|
++-- scoring/
+|   +-- popularity.py              # IG / YouTube / Spotify / Wikipedia signals
+|   +-- score.py                   # Score → headliner / notable / listing tier
 |
 +-- image_generator/
-|   +-- create_post.py             # Image sourcing + Playwright post renderer
+|   +-- poster.py                  # Headliner poster, typographic card, roundup slides
+|   +-- design.py                  # Category palettes, fonts, text fitting
+|   +-- hero_plate.py              # AI artist portrait from a real photo (headliners)
 |   +-- create_story.py            # Instagram Stories countdown images
-|   +-- ai_enhance.py              # Gemini-powered image enhancement
-|   +-- image_search.py            # Multi-source web image search
+|   +-- image_search.py            # Performer-type fallback classifier
 |   +-- artist_image_sources.py    # Wikipedia/Wikidata/Spotify/MusicBrainz
-|   +-- styles.py                  # HTML/CSS post templates
 |
 +-- publisher/
 |   +-- instagram.py               # Instagram Graph API (posts + stories)
@@ -310,8 +315,9 @@ The [Developer Guide](docs/architecture/README.md#14-developer-guide--where-to-m
 |------|-------|
 | Pipeline orchestration | `main.py` (`--ingest` and `--post` entry points) |
 | Classification rules | `classifier/indian_classifier.py` (SYSTEM_PROMPT) |
-| AI enhancement prompts | `image_generator/ai_enhance.py` |
-| Post visual design | `image_generator/styles.py` |
+| Tier scoring weights / thresholds | `scoring/score.py` |
+| AI artist-portrait prompt | `image_generator/hero_plate.py` |
+| Post visual design | `image_generator/poster.py`, `image_generator/design.py` |
 | Story visual design | `image_generator/create_story.py` |
 | Instagram API | `publisher/instagram.py` |
 | Artist handle lookup | `publisher/instagram_handle.py` |

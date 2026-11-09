@@ -124,6 +124,65 @@ def publish_post(image_path: Path, caption: str, instagram_handle: str | None = 
     return media_id, image_url
 
 
+def _wait_ready(container_id: str, access_token: str, timeout_s: int = 60):
+    for _ in range(timeout_s // 2):
+        resp = requests.get(
+            f"{GRAPH_API}/{container_id}",
+            params={"fields": "status_code", "access_token": access_token},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        status = resp.json().get("status_code")
+        if status == "FINISHED":
+            return
+        if status == "ERROR":
+            raise RuntimeError(f"Container {container_id} failed: {resp.json()}")
+        time.sleep(2)
+    raise RuntimeError(f"Container {container_id} not ready after {timeout_s}s")
+
+
+def publish_carousel(image_paths: list[Path], caption: str,
+                     alt_key: str | None = None) -> tuple[str, list[str]]:
+    """Publish a multi-image carousel post (2-10 images). Returns (media_id, public_image_urls)."""
+    if not 2 <= len(image_paths) <= 10:
+        raise ValueError(f"Carousel needs 2-10 images, got {len(image_paths)}")
+    access_token = _get_env("INSTAGRAM_ACCESS_TOKEN")
+    ig_user_id = _get_env("INSTAGRAM_USER_ID")
+
+    urls, children = [], []
+    for path in image_paths:
+        url = upload_image(path)
+        urls.append(url)
+        data = {"image_url": url, "is_carousel_item": "true", "access_token": access_token}
+        if alt_key:
+            data["alt_text"] = f"iet::{alt_key}"
+        resp = requests.post(f"{GRAPH_API}/{ig_user_id}/media", data=data, timeout=30)
+        resp.raise_for_status()
+        children.append(resp.json()["id"])
+        print(f"    Carousel item {len(children)}/{len(image_paths)}: {children[-1]}")
+    for cid in children:
+        _wait_ready(cid, access_token)
+
+    resp = requests.post(
+        f"{GRAPH_API}/{ig_user_id}/media",
+        data={"media_type": "CAROUSEL", "children": ",".join(children),
+              "caption": caption, "access_token": access_token},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    parent = resp.json()["id"]
+    _wait_ready(parent, access_token)
+    resp = requests.post(
+        f"{GRAPH_API}/{ig_user_id}/media_publish",
+        data={"creation_id": parent, "access_token": access_token},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    media_id = resp.json()["id"]
+    print(f"    Carousel published! Media ID: {media_id}")
+    return media_id, urls
+
+
 def publish_story(image_path: Path) -> tuple[str, str]:
     """
     Publish a single image to Instagram Stories.

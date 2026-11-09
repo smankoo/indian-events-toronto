@@ -47,6 +47,33 @@ def get_connection() -> sqlite3.Connection:
         conn.execute("ALTER TABLE processed_events ADD COLUMN story_days_posted TEXT DEFAULT ''")
     if "image_urls" not in cols:
         conn.execute("ALTER TABLE processed_events ADD COLUMN image_urls TEXT DEFAULT ''")
+    # Profile + scoring (see classifier/profile.py and scoring/)
+    for col, ddl in [
+        ("profile_json", "TEXT DEFAULT ''"),     # LLM-extracted headliners/category/series
+        ("profiled_at", "TEXT DEFAULT ''"),
+        ("tier", "TEXT DEFAULT ''"),             # headliner | notable | listing
+        ("score", "INTEGER DEFAULT 0"),
+        ("score_json", "TEXT DEFAULT ''"),       # signal breakdown, for reports/admin
+        ("scored_at", "TEXT DEFAULT ''"),
+        ("covered_by", "TEXT DEFAULT ''"),       # source_id of a posted sibling (same series + headliners)
+    ]:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE processed_events ADD COLUMN {col} {ddl}")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS artist_stats (
+            artist_name TEXT PRIMARY KEY,
+            stats_json TEXT,
+            looked_up_at TEXT
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS roundups (
+            week_key TEXT PRIMARY KEY,
+            posted_at TEXT,
+            media_id TEXT,
+            event_keys TEXT
+        )
+    """)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS instagram_handles (
             artist_name TEXT PRIMARY KEY,
@@ -193,6 +220,9 @@ def get_posted_events() -> list[Event]:
 def get_story_candidates(max_days: int = 4) -> list[tuple[Event, int]]:
     """Return posted events that are 1-N days away and haven't had a story for that day count.
 
+    Countdown stories are reserved for headliner-tier events (plus legacy events posted
+    before tiers existed).
+
     Returns list of (event, days_left) tuples, sorted by days_left ascending.
     """
     from datetime import date as date_type
@@ -204,6 +234,7 @@ def get_story_candidates(max_days: int = 4) -> list[tuple[Event, int]]:
                   organizer, posted_image_url, story_days_posted
            FROM processed_events
            WHERE is_indian = 1 AND posted = 1
+             AND (tier = 'headliner' OR tier IS NULL OR tier = '')
            ORDER BY date ASC"""
     ).fetchall()
     conn.close()
@@ -318,6 +349,147 @@ def save_handle_cache(artist_name: str, performer_type: str, handle: str | None,
            (artist_name, performer_type, instagram_handle, source, followers_count, looked_up_at)
            VALUES (?, ?, ?, ?, ?, ?)""",
         (artist_name, performer_type, handle, source, followers_count, datetime.now().isoformat()),
+    )
+    conn.commit()
+    conn.close()
+
+
+# ── Profile / scoring / roundup helpers ─────────────────────────────────────
+
+_EVENT_COLS = """source, source_id, title, date, time_str, venue, address, city,
+                 price, description, image_url, event_url, categories, languages,
+                 organizer, posted_image_url, image_urls, profile_json, tier, score"""
+
+
+def _row_to_event(r) -> Event:
+    import json
+    return Event(
+        source=r[0], source_id=r[1], title=r[2],
+        date=datetime.fromisoformat(r[3]), time_str=r[4],
+        venue=r[5] or "", address=r[6] or "", city=r[7] or "", price=r[8] or "",
+        description=r[9] or "", image_url=r[10] or "", event_url=r[11] or "",
+        categories=r[12].split(",") if r[12] else [],
+        languages=r[13].split(",") if r[13] else [],
+        organizer=r[14] or "",
+        posted_image_url=r[15] or "",
+        image_urls=r[16].split(",") if r[16] else [],
+        profile=json.loads(r[17]) if r[17] else {},
+        tier=r[18] or "",
+        score=r[19] or 0,
+    )
+
+
+def query_events(where: str, params: tuple = (), order: str = "date ASC") -> list[Event]:
+    """Fetch Indian events matching a WHERE clause (is_indian = 1 is always applied)."""
+    conn = get_connection()
+    rows = conn.execute(
+        f"SELECT {_EVENT_COLS} FROM processed_events "
+        f"WHERE is_indian = 1 AND ({where}) ORDER BY {order}",
+        params,
+    ).fetchall()
+    conn.close()
+    return [_row_to_event(r) for r in rows]
+
+
+def save_profile(source: str, source_id: str, profile: dict):
+    import json
+    conn = get_connection()
+    conn.execute(
+        "UPDATE processed_events SET profile_json = ?, profiled_at = ? WHERE source = ? AND source_id = ?",
+        (json.dumps(profile, ensure_ascii=False), datetime.now().isoformat(), source, source_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+def save_score(source: str, source_id: str, tier: str, score: int, breakdown: dict):
+    import json
+    conn = get_connection()
+    conn.execute(
+        "UPDATE processed_events SET tier = ?, score = ?, score_json = ?, scored_at = ? "
+        "WHERE source = ? AND source_id = ?",
+        (tier, score, json.dumps(breakdown, ensure_ascii=False), datetime.now().isoformat(),
+         source, source_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_score_breakdown(source: str, source_id: str) -> dict:
+    import json
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT score_json FROM processed_events WHERE source = ? AND source_id = ?",
+        (source, source_id),
+    ).fetchone()
+    conn.close()
+    return json.loads(row[0]) if row and row[0] else {}
+
+
+def mark_covered(source: str, source_id: str, covered_by: str):
+    """Record that this event is represented by an already-posted sibling, so it isn't posted again."""
+    conn = get_connection()
+    conn.execute(
+        "UPDATE processed_events SET covered_by = ? WHERE source = ? AND source_id = ?",
+        (covered_by, source, source_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_artist_stats(artist_name: str, max_age_days: int = 30) -> dict | None:
+    """Cached popularity stats for an artist, or None if missing/stale."""
+    import json
+    from datetime import timedelta
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT stats_json, looked_up_at FROM artist_stats WHERE artist_name = ?",
+        (artist_name.lower().strip(),),
+    ).fetchone()
+    conn.close()
+    if not row or not row[1]:
+        return None
+    if datetime.now() - datetime.fromisoformat(row[1]) > timedelta(days=max_age_days):
+        return None
+    return json.loads(row[0])
+
+
+def save_artist_stats(artist_name: str, stats: dict):
+    import json
+    conn = get_connection()
+    conn.execute(
+        "INSERT OR REPLACE INTO artist_stats (artist_name, stats_json, looked_up_at) VALUES (?, ?, ?)",
+        (artist_name.lower().strip(), json.dumps(stats, ensure_ascii=False), datetime.now().isoformat()),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_cached_instagram(artist_name: str) -> tuple[str | None, int, str]:
+    """(handle, followers, source) from the IG handle cache; (None, 0, '') if unknown."""
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT instagram_handle, followers_count, source FROM instagram_handles WHERE lower(artist_name) = ?",
+        (artist_name.lower().strip(),),
+    ).fetchone()
+    conn.close()
+    if not row:
+        return None, 0, ""
+    return row[0], row[1] or 0, row[2] or ""
+
+
+def roundup_exists(week_key: str) -> bool:
+    conn = get_connection()
+    row = conn.execute("SELECT 1 FROM roundups WHERE week_key = ?", (week_key,)).fetchone()
+    conn.close()
+    return row is not None
+
+
+def save_roundup(week_key: str, media_id: str, event_keys: list[str]):
+    conn = get_connection()
+    conn.execute(
+        "INSERT OR REPLACE INTO roundups (week_key, posted_at, media_id, event_keys) VALUES (?, ?, ?, ?)",
+        (week_key, datetime.now().isoformat(), media_id, ",".join(event_keys)),
     )
     conn.commit()
     conn.close()

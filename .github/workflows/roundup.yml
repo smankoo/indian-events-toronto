@@ -1,0 +1,98 @@
+name: Weekend Roundup
+
+on:
+  schedule:
+    # Thursdays ~6:20pm EDT (22:20 UTC): "This weekend in the GTA" carousel
+    - cron: "23 22 * * 4"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (render slides and print caption without publishing)"
+        type: boolean
+        default: false
+      force:
+        description: "Publish even if this weekend's roundup was already posted"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  roundup:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: instagram-posts
+      cancel-in-progress: false
+
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+      FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Refresh Instagram token
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo "Refreshing Instagram access token..."
+          RESPONSE=$(curl -s "https://graph.instagram.com/v21.0/refresh_access_token?grant_type=ig_refresh_token&access_token=$INSTAGRAM_ACCESS_TOKEN")
+          NEW_TOKEN=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])" 2>/dev/null)
+          if [ -n "$NEW_TOKEN" ]; then
+            EXPIRES=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('expires_in','?'))" 2>/dev/null)
+            echo "Token refreshed (expires in ${EXPIRES}s)"
+            echo "INSTAGRAM_ACCESS_TOKEN=$NEW_TOKEN" >> "$GITHUB_ENV"
+            echo "$NEW_TOKEN" | gh secret set INSTAGRAM_ACCESS_TOKEN
+            echo "Secret updated for future runs"
+          else
+            echo "::warning::Token refresh failed: $RESPONSE (continuing with current token)"
+          fi
+
+      - name: Render and publish roundup
+        run: |
+          ARGS="--roundup"
+          [ "${{ inputs.dry_run }}" = "true" ] && ARGS="$ARGS --dry-run"
+          [ "${{ inputs.force }}" = "true" ] && ARGS="$ARGS --force"
+          .venv/bin/python main.py $ARGS
+
+      - name: Upload slides
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: roundup-slides
+          path: output/roundup_*.png
+          if-no-files-found: ignore
+
+      - name: Commit updated database
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+          git add data/events.db
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update events database (roundup) [skip ci]"
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), pulling and recommitting..."
+            git pull --rebase --strategy-option=theirs origin main
+            .venv/bin/python -c "import sqlite3; c=sqlite3.connect('data/events.db'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()"
+            git add data/events.db
+            git diff --cached --quiet || git commit -m "Update events database (roundup) [skip ci]"
+          done

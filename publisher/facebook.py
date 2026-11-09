@@ -67,3 +67,25 @@ def publish_to_facebook(image_url: str, caption: str) -> str:
     resp.raise_for_status()
     post_id = resp.json().get("post_id") or resp.json().get("id")
     return post_id
+
+
+def publish_album_to_facebook(image_urls: list[str], caption: str) -> str:
+    """Publish several already-public images as one multi-photo Page post. Returns the post ID."""
+    import json
+    page_id = _get_env("FACEBOOK_PAGE_ID")
+    page_token = _get_env("FACEBOOK_PAGE_ACCESS_TOKEN")
+    media = []
+    for url in image_urls:
+        resp = requests.post(
+            f"{FB_GRAPH_API}/{page_id}/photos",
+            data={"url": url, "published": "false", "access_token": page_token},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        media.append({"media_fbid": resp.json()["id"]})
+    data = {"message": caption, "access_token": page_token}
+    for i, m in enumerate(media):
+        data[f"attached_media[{i}]"] = json.dumps(m)
+    resp = requests.post(f"{FB_GRAPH_API}/{page_id}/feed", data=data, timeout=30)
+    resp.raise_for_status()
+    return resp.json().get("id")

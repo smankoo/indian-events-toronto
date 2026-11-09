@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from scraper.sulekha import scrape_events
-from data.store import is_new, find_similar_event, save_event, mark_posted, get_unposted_events, get_story_candidates, mark_story_posted, _normalize_title
+from data.store import is_new, find_similar_event, save_event, mark_posted, get_story_candidates, mark_story_posted, _normalize_title
 from classifier.indian_classifier import classify_event
 
 from difflib import SequenceMatcher
@@ -92,15 +92,17 @@ def publish_stories():
 
 
 def ingest(classify_limit: int = 10, enrich: bool = True):
-    """Ingest pipeline: scrape → filter → classify → enrich.
+    """Ingest pipeline: scrape → filter → classify → profile → enrich → score.
 
-    Scraping discovers new events and saves them to the DB.
-    Enrichment (handle lookups) runs on ALL future Indian events,
-    not just newly scraped ones, to keep data fresh.
+    Scraping discovers new events and saves them to the DB. Profiling, enrichment (handle
+    lookups) and scoring run on ALL future Indian events that still need them, so a failed
+    step is retried on the next run. Each step can also be run on its own (--profile, --score).
     """
     _scrape(classify_limit)
+    profile_events()
     if enrich:
         _enrich()
+    score_events()
     print("\nIngestion complete. Run --post to generate images and publish.")
 
 
@@ -173,29 +175,20 @@ def _enrich():
     Runs on every event, not just new ones — the handle cache ensures
     already-looked-up artists/venues are instant (no API calls).
     """
-    from image_generator.image_search import classify_event as classify_performer
     from publisher.instagram_handle import lookup_instagram_handle
     from publisher.venue_handle import lookup_venue_handle
-    from data.store import get_connection
+    from data.store import query_events
 
-    conn = get_connection()
-    rows = conn.execute(
-        """SELECT title, description, venue, city FROM processed_events
-           WHERE is_indian = 1 AND date >= date('now')
-           ORDER BY date ASC"""
-    ).fetchall()
-    conn.close()
-
-    print(f"\n=== Enriching {len(rows)} future Indian events ===")
+    events = query_events("date >= date('now')")
+    print(f"\n=== Enriching {len(events)} future Indian events ===")
     enriched = 0
     venues_enriched = 0
-    for title, description, venue, city in rows:
+    for event in events:
+        title, venue, city = event.title, event.venue, event.city
         try:
-            info = classify_performer(title, description or "")
-            artists = info.get("artist_names", [])
-            for artist_name in artists:
+            for artist_name, performer_type in _headliners(event):
                 try:
-                    lookup_instagram_handle(artist_name, info["type"])
+                    lookup_instagram_handle(artist_name, performer_type)
                     enriched += 1
                 except Exception as e:
                     print(f"    Handle lookup error for '{artist_name}': {e}")
@@ -213,62 +206,117 @@ def _enrich():
     print(f"  Enrichment done ({enriched} artist lookups, {venues_enriched} venue lookups)")
 
 
-def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
-    """Generate images and publish unposted events to IG + FB + link-in-bio."""
-    from image_generator.create_post import create_post_image
+# Profile roles → performer types used by the IG handle lookup
+_ROLE_TO_TYPE = {"singer": "musician", "band": "musician", "musician": "musician",
+                 "comedian": "comedian", "dj": "dj"}
+
+
+def _headliners(event) -> list[tuple[str, str]]:
+    """(name, performer_type) for each billed artist. Uses the profile; falls back to the
+    older title-based classifier for events that haven't been profiled yet."""
+    heads = (event.profile or {}).get("headliners")
+    if heads is not None and event.profile:
+        return [(h["name"], _ROLE_TO_TYPE.get(h.get("role", ""), "other")) for h in heads]
     from image_generator.image_search import classify_event as classify_performer
+    info = classify_performer(event.title, event.description or "")
+    return [(n, info["type"]) for n in info.get("artist_names", [])]
+
+
+def _identity(event) -> tuple:
+    """Two events with the same identity are the same show on different dates
+    (e.g. the same series + headliners). Only one of them gets a feed post."""
+    from data.store import _normalize_title
+    from scoring.popularity import norm
+    prof = event.profile or {}
+    base = norm(prof.get("series") or "") or _normalize_title(event.title)
+    heads = frozenset(norm(h["name"]) for h in prof.get("headliners") or [])
+    return base, heads
+
+
+def select_for_posting(limit: int) -> list:
+    """Headliner then notable events, soonest first, skipping repeats of an already-posted show."""
+    from data.store import query_events, mark_covered
+
+    future = "date >= date('now')"
+    unscored = query_events(f"posted = 0 AND {future} AND (tier IS NULL OR tier = '')")
+    if unscored:
+        print(f"  {len(unscored)} unposted event(s) not scored yet — they'll be considered after --score")
+    candidates = query_events(
+        f"posted = 0 AND {future} AND tier IN ('headliner', 'notable') "
+        "AND (covered_by IS NULL OR covered_by = '')"
+    )
+    posted = query_events("posted = 1 AND date >= date('now', '-45 days')")
+    seen = {}
+    for e in posted:
+        seen.setdefault(_identity(e), e)
+
+    rank = {"headliner": 0, "notable": 1}
+    chosen = []
+    for e in sorted(candidates, key=lambda e: (rank[e.tier], e.date)):
+        twin = seen.get(_identity(e))
+        if twin and abs((twin.date - e.date).days) <= 45:
+            if twin.posted_image_url:  # a real post exists — record the coverage permanently
+                mark_covered(e.source, e.source_id, twin.source_id)
+            print(f"  Skip (same show already posted): {e.title[:60]}")
+            continue
+        seen[_identity(e)] = e
+        chosen.append(e)
+        if len(chosen) >= limit:
+            break
+    return chosen
+
+
+def render_post_image(event):
+    """Headliners get the AI artist poster; notable events (and headliners with no real
+    photo of the artist) get a typographic card."""
+    from image_generator.poster import render_card, render_headliner
+    if event.tier == "headliner":
+        from image_generator.hero_plate import make_hero_plate
+        plate = make_hero_plate(event)
+        if plate is not None:
+            return render_headliner(event, plate)
+    return render_card(event)
+
+
+def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
+    """Render and publish the next headliner/notable events to IG + FB + link-in-bio."""
     from publisher.instagram import publish_post, build_caption
     from publisher.instagram_handle import lookup_instagram_handle
     from publisher.venue_handle import lookup_venue_handle
     from publisher.facebook import publish_to_facebook, build_fb_caption
     from publisher.linkinbio import generate_linkinbio
 
-    # Get unposted events, filtering out those with a similar already-posted event
-    all_unposted = get_unposted_events()
-    unposted = []
-    for e in all_unposted:
-        similar = find_similar_event(e)
-        if similar and similar["posted"]:
-            continue  # a similar event was already posted (e.g. different showtime)
-        unposted.append(e)
-
-    if not unposted:
-        print("No unposted events found.")
-        # Still update link-in-bio in case events expired
+    to_post = select_for_posting(post_limit)
+    if not to_post:
+        print("No events to post.")
         print("\n=== Updating link-in-bio page ===")
         generate_linkinbio()
         return
 
-    to_post = unposted[:post_limit]
     mode = "DRY RUN" if dry_run else "Publishing"
     print(f"\n=== {mode}: {len(to_post)} event(s) to Instagram + Facebook ===")
 
     posted = 0
     for i, event in enumerate(to_post):
-        print(f"\n  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}{event.title[:60]}...")
+        print(f"\n  [{i+1}/{len(to_post)}] {'[DRY RUN] ' if dry_run else ''}"
+              f"[{event.tier} {event.score}] {event.title[:60]}...")
 
-        # Generate image
         try:
-            path = create_post_image(event, style="B")
+            path = render_post_image(event)
+            print(f"    -> Image: {path.name}")
         except Exception as e:
             print(f"    -> IMAGE ERROR: {e}")
             continue
 
-        # Look up Instagram handles for all artists
         ig_handles = []
-        try:
-            info = classify_performer(event.title, event.description)
-            for artist_name in info.get("artist_names", []):
-                try:
-                    h = lookup_instagram_handle(artist_name, info["type"])
-                    if h:
-                        ig_handles.append(h)
-                except Exception as e:
-                    print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
-        except Exception as e:
-            print(f"    -> Classification error (continuing): {e}")
+        for artist_name, performer_type in _headliners(event):
+            try:
+                h = lookup_instagram_handle(artist_name, performer_type)
+                if h:
+                    ig_handles.append(h)
+            except Exception as e:
+                print(f"    -> Handle lookup error for '{artist_name}' (continuing): {e}")
 
-        # Look up Instagram handle for venue
         venue_handle = None
         try:
             venue_handle = lookup_venue_handle(event.venue, event.city)
@@ -278,64 +326,131 @@ def post(post_limit: int = 2, dry_run: bool = False, stories: bool = True):
         caption = build_caption(event, instagram_handles=ig_handles, venue_handle=venue_handle)
 
         if dry_run:
-            if ig_handles:
-                print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles)}")
-            else:
-                print(f"    -> Artist tags: none")
+            print(f"    -> Artist tags: {', '.join(f'@{h}' for h in ig_handles) or 'none'}")
             print(f"    -> Venue tag: {'@' + venue_handle if venue_handle else 'none'}")
             print(f"    -> Caption preview:")
             for line in caption.split('\n')[:6]:
                 print(f"       {line}")
             print(f"       ...")
             print(f"    -> [DRY RUN] Would publish to Instagram + Facebook")
-        else:
+            continue
+
+        try:
+            event_key = f"{event.source}::{event.source_id}"
+            media_id, posted_image_url = publish_post(
+                path, caption, instagram_handles=ig_handles,
+                venue_handle=venue_handle, event_key=event_key,
+            )
+            mark_posted(event.source, event.source_id, posted_image_url)
+            posted += 1
+            print(f"    -> Instagram published (media_id: {media_id})")
             try:
-                event_key = f"{event.source}::{event.source_id}"
-                media_id, posted_image_url = publish_post(
-                    path, caption, instagram_handles=ig_handles,
-                    venue_handle=venue_handle, event_key=event_key,
-                )
-                mark_posted(event.source, event.source_id, posted_image_url)
-                posted += 1
-                print(f"    -> Instagram published (media_id: {media_id})")
-
-                # Cross-post to Facebook using the same uploaded image
-                try:
-                    fb_caption = build_fb_caption(event, instagram_handles=ig_handles,
-                                                  venue_handle=venue_handle)
-                    fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
-                    print(f"    -> Facebook published (post_id: {fb_post_id})")
-                except Exception as e:
-                    print(f"    -> Facebook publish error: {e}")
+                fb_caption = build_fb_caption(event, instagram_handles=ig_handles,
+                                              venue_handle=venue_handle)
+                fb_post_id = publish_to_facebook(posted_image_url, fb_caption)
+                print(f"    -> Facebook published (post_id: {fb_post_id})")
             except Exception as e:
-                print(f"    -> PUBLISH ERROR: {e}")
+                print(f"    -> Facebook publish error: {e}")
+        except Exception as e:
+            print(f"    -> PUBLISH ERROR: {e}")
 
-    if dry_run:
-        print(f"\nDry run complete!")
-    else:
-        print(f"\n{posted} event(s) published.")
+    print("\nDry run complete!" if dry_run else f"\n{posted} event(s) published.")
 
-    # Publish countdown stories
     if stories and not dry_run:
         print(f"\n=== Publishing countdown stories ===")
         publish_stories()
     elif stories and dry_run:
         print(f"\n=== [DRY RUN] Countdown stories ===")
         candidates = get_story_candidates(max_days=5)
-        if candidates:
-            for event, days_left in candidates:
-                print(f"  [{days_left}d to go] {event.title[:60]} — would publish story")
-        else:
+        for event, days_left in candidates:
+            print(f"  [{days_left}d to go] {event.title[:60]} — would publish story")
+        if not candidates:
             print("  No story candidates found.")
 
-    # Update link-in-bio page
     print("\n=== Updating link-in-bio page ===")
     generate_linkinbio()
 
-    # Export admin dashboard data
     print("\n=== Updating admin dashboard ===")
     from publisher.admin_export import export_admin_json
     export_admin_json()
+
+
+def weekend_window(today=None):
+    """(friday, sunday) of the upcoming weekend; the current one if run Fri–Sun."""
+    from datetime import date, timedelta
+    today = today or date.today()
+    wd = today.weekday()  # Mon=0 … Sun=6
+    friday = today + timedelta(days=4 - wd) if wd <= 4 else today - timedelta(days=wd - 4)
+    return friday, friday + timedelta(days=2)
+
+
+def _range_label(start, end) -> str:
+    if start.month == end.month:
+        return f"{start:%b} {start.day}–{end.day}".upper()
+    return f"{start:%b} {start.day}–{end:%b} {end.day}".upper()
+
+
+def roundup(dry_run: bool = False, force: bool = False, max_events: int = 12):
+    """Publish the weekly "This weekend in the GTA" carousel covering every tier."""
+    from datetime import date
+    from data.store import query_events, roundup_exists, save_roundup
+    from image_generator.poster import render_roundup
+
+    friday, sunday = weekend_window()
+    week_key = friday.isoformat()
+    if roundup_exists(week_key) and not force and not dry_run:
+        print(f"Roundup for weekend of {week_key} already published.")
+        return
+
+    start = max(friday, date.today())
+    events = query_events("date >= ? AND date < date(?, '+1 day')", (start.isoformat(), sunday.isoformat()))
+    # One entry per show (a series running Fri+Sat appears once, on its first date)
+    seen, unique = set(), []
+    for e in events:
+        if _identity(e) in seen:
+            continue
+        seen.add(_identity(e))
+        unique.append(e)
+    rank = {"headliner": 0, "notable": 1, "listing": 2}
+    unique.sort(key=lambda e: (rank.get(e.tier, 3), -e.score, e.date))
+    picks = unique[:max_events]
+    print(f"\n=== Weekend roundup {_range_label(friday, sunday)}: {len(picks)} event(s) ===")
+    for e in picks:
+        print(f"  [{e.tier or '?':9}] {e.date:%a %d} {e.title[:60]}")
+    if len(picks) < 2:
+        print("  Fewer than 2 events — skipping roundup this week.")
+        return
+
+    names = [(e.profile or {}).get("display_name") or e.title for e in picks]
+    blurb = "Featuring " + (", ".join(names[:2]) + (f" and {len(picks) - 2} more." if len(picks) > 2 else "."))
+    heading = _range_label(friday, sunday)
+    paths = render_roundup(picks, heading, blurb, out_prefix=f"roundup_{week_key}")
+    print(f"  Rendered {len(paths)} slide(s): {', '.join(p.name for p in paths)}")
+
+    lines = [f"This weekend in the GTA ✨ {heading}", ""]
+    for e in picks:
+        prof = e.profile or {}
+        name = prof.get("display_name") or e.title
+        sub = prof.get("subtitle") or ""
+        label = f"{name} · {sub}" if sub and sub.lower() not in name.lower() else name
+        lines.append(f"• {e.date:%a %-d %b} — {label} @ {e.venue}")
+    lines += ["", "🔗 Tickets & details: link in bio", "",
+              "#toronto #torontoevents #indianevents #desi #bollywood #weekendplans #indianeventstoronto #gta #brampton #mississauga"]
+    caption = "\n".join(lines)
+
+    if dry_run:
+        print("  [DRY RUN] Caption:\n" + "\n".join("    " + l for l in caption.split("\n")))
+        return
+
+    from publisher.instagram import publish_carousel
+    from publisher.facebook import publish_album_to_facebook
+    media_id, urls = publish_carousel(paths, caption, alt_key=f"roundup::{week_key}")
+    save_roundup(week_key, media_id, [f"{e.source}::{e.source_id}" for e in picks])
+    try:
+        fb_id = publish_album_to_facebook(urls, caption)
+        print(f"  Facebook published (post_id: {fb_id})")
+    except Exception as e:
+        print(f"  Facebook publish error: {e}")
 
 
 def reconcile(dry_run: bool = False):
@@ -417,6 +532,56 @@ def reconcile(dry_run: bool = False):
     conn.close()
 
 
+def profile_events(include_past: bool = False, refresh: bool = False, workers: int = 6):
+    """Extract headliners / category / series / prominence for Indian events (classifier/profile.py).
+
+    Only events without a profile are processed unless refresh=True.
+    """
+    import concurrent.futures as cf
+    from classifier.profile import profile_event
+    from data.store import query_events, save_profile
+
+    where = "1" if include_past else "date >= date('now')"
+    if not refresh:
+        where += " AND (profile_json IS NULL OR profile_json = '')"
+    events = query_events(where)
+    print(f"\n=== Profiling {len(events)} event(s) ===")
+    done = 0
+    with cf.ThreadPoolExecutor(workers) as ex:
+        for event, profile in zip(events, ex.map(profile_event, events)):
+            if not profile:
+                continue
+            save_profile(event.source, event.source_id, profile)
+            done += 1
+            heads = ", ".join(h["name"] for h in profile["headliners"]) or "—"
+            print(f"  {event.title[:55]:55}  {profile['category']:9} p{profile['prominence']}  {heads}")
+    print(f"  Profiled {done}/{len(events)}")
+
+
+def score_events(include_past: bool = False, refresh: bool = False):
+    """Score profiled events into headliner / notable / listing tiers (scoring/score.py)."""
+    from data.store import query_events, save_score
+    from scoring.score import score_event
+
+    where = "profile_json != ''"
+    if not include_past:
+        where += " AND date >= date('now')"
+    if not refresh:
+        where += " AND (tier IS NULL OR tier = '')"
+    events = query_events(where)
+    print(f"\n=== Scoring {len(events)} event(s) ===")
+    for event in events:
+        try:
+            tier, score, breakdown = score_event(event)
+        except Exception as e:
+            print(f"  Score failed for {event.title[:50]!r}: {e}")
+            continue
+        save_score(event.source, event.source_id, tier, score, breakdown)
+        p = breakdown["points"]
+        print(f"  {score:3d} {tier:9}  {event.title[:52]:52}  "
+              f"reach {p['reach']:4.1f} prom {p['prominence']:4.1f} venue {p['venue']:4.1f} price {p['price']:4.1f}")
+
+
 def backfill_handles():
     """Alias for _enrich() — look up IG handles for all future Indian events."""
     _enrich()
@@ -435,9 +600,21 @@ if __name__ == "__main__":
     parser.add_argument("--stories-only", action="store_true", help="Only publish countdown stories")
     parser.add_argument("--backfill-handles", action="store_true", help="Look up IG handles for all future Indian events missing them")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be posted without publishing")
+    parser.add_argument("--profile", action="store_true", help="Extract headliners/category/series for unprofiled events")
+    parser.add_argument("--score", action="store_true", help="Score profiled events into headliner/notable/listing tiers")
+    parser.add_argument("--roundup", action="store_true", help="Publish the weekly weekend-roundup carousel")
+    parser.add_argument("--force", action="store_true", help="With --roundup: publish even if this weekend's roundup exists")
+    parser.add_argument("--include-past", action="store_true", help="With --profile/--score: also process past events")
+    parser.add_argument("--refresh", action="store_true", help="With --profile/--score: redo events that already have results")
     args = parser.parse_args()
 
-    if args.backfill_handles:
+    if args.profile:
+        profile_events(include_past=args.include_past, refresh=args.refresh)
+    elif args.score:
+        score_events(include_past=args.include_past, refresh=args.refresh)
+    elif args.roundup:
+        roundup(dry_run=args.dry_run, force=args.force)
+    elif args.backfill_handles:
         backfill_handles()
     elif args.reconcile:
         reconcile(dry_run=args.dry_run)

@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 
 from data.store import get_connection
-from publisher.event_profile import MAJOR_VENUES
+from scoring.score import MAJOR_VENUES
 from models import Event
 
 ADMIN_DIR = Path(__file__).parent.parent / "docs" / "admin"
@@ -47,7 +47,8 @@ def export_admin_json():
     rows = conn.execute(
         """SELECT source, source_id, title, date, time_str, venue, address, city,
                   price, description, image_url, event_url, categories, languages,
-                  organizer, posted_image_url, posted, story_days_posted
+                  organizer, posted_image_url, posted, story_days_posted,
+                  tier, score, score_json, profile_json
            FROM processed_events
            WHERE is_indian = 1 AND date >= date('now')
            ORDER BY date ASC"""
@@ -108,6 +109,10 @@ def export_admin_json():
             "posted_image_url": r[15] or "",
             "story_days_posted": r[17] or "",
             "artists": artist_data,
+            "tier": r[18] or "",
+            "score": r[19] or 0,
+            "score_breakdown": json.loads(r[20]) if r[20] else {},
+            "profile": json.loads(r[21]) if r[21] else {},
             "signals": {
                 "max_followers": max_followers,
                 "total_followers": total_followers,
