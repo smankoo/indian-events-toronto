@@ -111,7 +111,7 @@ def main():
               lambda title, description, categories=None, languages=None, organizer="":
               (True, "Validation stub", title)),
         patch("classifier.profile.profile_event", fake_profile),
-        patch("scoring.popularity.artist_stats", lambda name, refresh=False: FAKE_STATS.get(name, {})),
+        patch("scoring.popularity.artist_stats", lambda name, refresh=False, role="": FAKE_STATS.get(name, {})),
         patch("image_generator.hero_plate.make_hero_plate", fake_plate),
         patch("image_generator.hero_plate._cache_path", lambda e: tmp / "no-plate.jpg"),
         patch("image_generator.poster._thumb_source", lambda e: None),

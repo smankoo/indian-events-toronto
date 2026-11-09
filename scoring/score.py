@@ -83,7 +83,7 @@ def score_event(event: Event, refresh_stats: bool = False) -> tuple[str, int, di
     profile = event.profile or {}
     artists = []
     for h in (profile.get("headliners") or [])[:4]:
-        stats = artist_stats(h["name"], refresh=refresh_stats)
+        stats = artist_stats(h["name"], refresh=refresh_stats, role=h.get("role", ""))
         artists.append({"name": h["name"], **reach(stats)})
     top = max(artists, key=lambda a: a["reach"], default=None)
     reach_v = top["reach"] if top else 0.0

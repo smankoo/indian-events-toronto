@@ -35,6 +35,49 @@ ENTERTAINER_WORDS = re.compile(
     re.IGNORECASE,
 )
 
+SOUTH_ASIAN = re.compile(
+    r"india|pakistan|bollywood|punjab|gujarat|tamil|telugu|malayal|hindi|urdu|bengal|bangla|"
+    r"marath|kannad|sindh|nepal|sufi|qawwal|desi|south asian|canad", re.IGNORECASE)
+OTHER_NATIONALITY = re.compile(
+    r"korean|japanese|chinese|italian|american|british|french|german|spanish|mexican|brazil|"
+    r"australian|nigerian|russian|turkish|irish|swedish|dutch|filipin|argentin|colombian|"
+    r"jamaican|ghanaian|puerto ric|polish|greek|portuguese", re.IGNORECASE)
+# Profile role → words a matching Wikidata description should contain (one-word names only)
+ROLE_WORDS = {
+    "singer": r"singer|vocalist|musician|composer|band|qawwal",
+    "band": r"band|group|musician|singer",
+    "musician": r"musician|singer|composer|instrument|band|player",
+    "comedian": r"comedian|comic|stand-up|standup",
+    "dj": r"\bdj\b|disc jockey|producer",
+    "actor": r"actor|actress",
+    "dancer": r"dancer|choreograph|actress|actor",
+    "poet": r"poet|writer|lyricist|storyteller",
+}
+
+
+def accept_description(desc: str, artist: str, role: str = "") -> bool:
+    """Is this Wikidata entity plausibly the artist performing in the GTA Indian scene?
+
+    The name alone isn't enough: "Exo" (a Toronto DJ) also names a K-pop band with 68
+    Wikipedias. The entity must be a performer and not explicitly another nationality.
+    One-word names (stage names, common first names) must also be South Asian or Canadian
+    and match the role the event bills them in.
+    """
+    desc = desc or ""
+    if not ENTERTAINER_WORDS.search(desc):
+        return False
+    south_asian = bool(SOUTH_ASIAN.search(desc))
+    if OTHER_NATIONALITY.search(desc) and not south_asian:
+        return False
+    if len(norm(artist).split()) == 1:
+        if not south_asian:
+            return False
+        words = ROLE_WORDS.get(role)
+        if words and not re.search(words, desc, re.IGNORECASE):
+            return False
+    return True
+
+
 # log-scale ranges: (value that scores 0, value that scores 1)
 RANGES = {
     "instagram": (1_000, 5_000_000),
@@ -124,7 +167,7 @@ def _pageviews(enwiki_title: str) -> int | None:
     return sum(i.get("views", 0) for i in r.json().get("items", []))
 
 
-def wikipedia_stats(artist: str) -> dict:
+def wikipedia_stats(artist: str, role: str = "") -> dict:
     """Encyclopedic notability via Wikidata: is there an entertainer entity with this name,
     in how many language Wikipedias, and (when Wikimedia allows) its English pageviews."""
     r = _get("https://www.wikidata.org/w/api.php", params={
@@ -135,7 +178,7 @@ def wikipedia_stats(artist: str) -> dict:
         return {"status": "unavailable", "reason": f"wikidata HTTP {getattr(r, 'status_code', 'error')}"}
     ids = [c["id"] for c in r.json().get("search", [])
            if names_match(c.get("label", ""), artist)
-           and ENTERTAINER_WORDS.search(c.get("description", "") or "")]
+           and accept_description(c.get("description", ""), artist, role)]
     if not ids:
         return {"status": "none"}
     r = _get("https://www.wikidata.org/w/api.php", params={
@@ -242,7 +285,7 @@ PLATFORMS = {
 }
 
 
-def artist_stats(artist: str, refresh: bool = False) -> dict:
+def artist_stats(artist: str, refresh: bool = False, role: str = "") -> dict:
     """Return {platform: stats} for an artist, using the cache when fresh.
 
     Platforms that were unavailable last time are retried, since a key may have been added.
@@ -255,8 +298,13 @@ def artist_stats(artist: str, refresh: bool = False) -> dict:
         # Instagram comes from the handle cache (cheap, updated by ingest) — always re-read it.
         if name != "instagram" and prev and prev.get("status") != "unavailable":
             continue
-        stats[name] = fn(artist)
+        stats[name] = fn(artist, role) if name == "wikipedia" else fn(artist)
         changed = changed or stats[name] != prev
+    # Re-check a cached Wikidata match against the current acceptance rule.
+    wiki = stats.get("wikipedia") or {}
+    if wiki.get("status") == "ok" and not accept_description(wiki.get("description", ""), artist, role):
+        stats["wikipedia"] = {"status": "none", "reason": f"rejected match: {wiki.get('description', '')}"}
+        changed = True
     if changed or cached is None:
         save_artist_stats(artist, stats)
     return stats
