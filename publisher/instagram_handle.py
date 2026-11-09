@@ -312,7 +312,7 @@ def _lookup_llm(artist_name: str, performer_type: str) -> str | None:
 
     try:
         resp = client.chat.completions.create(
-            model="google/gemini-2.0-flash-lite-001",
+            model="google/gemini-3.5-flash-lite",
             messages=[{
                 "role": "user",
                 "content": (

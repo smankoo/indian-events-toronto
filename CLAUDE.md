@@ -30,7 +30,7 @@ Stages communicate **only through SQLite** — they run on independent schedules
 ### Stage 1: Ingestion (`--ingest`)
 1. **Scrape** — `scraper/sulekha.py` fetches JSON-LD structured data + detail pages
 2. **Filter** — GTA geography check (`main.py:is_gta_event`), dedup by date+title similarity
-3. **Classify** — `classifier/indian_classifier.py` uses Gemini 2.5 Flash Lite via OpenRouter. Lazy evaluation: stops after `classify_limit` Indian events found
+3. **Classify** — `classifier/indian_classifier.py` uses Gemini 3.5 Flash Lite via OpenRouter. Lazy evaluation: stops after `classify_limit` Indian events found
 4. **Profile** — `classifier/profile.py` sends title, description *and flyer images* to an LLM (`PROFILE_MODEL`) → headliners (and which flyer pictures them), display name, subtitle, category, series, prominence 1-5. The flyer matters: headliners are often only on it.
 5. **Enrich** — `publisher/instagram_handle.py` waterfall lookup for headliners' IG handles (manual → Wikidata → DuckDuckGo → LLM → Business Discovery API verification)
 6. **Score** — `scoring/` → tier. Score = artist reach 45 (strongest headliner across Instagram, YouTube, Spotify, Wikipedia pageviews, cross-checked so a single unverified match is discounted) + LLM prominence 25 + venue size 15 + price 15. `headliner` ≥ 55, `notable` ≥ 30, else `listing`. Stats cached per artist in `artist_stats` (30 days).

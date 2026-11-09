@@ -122,7 +122,7 @@ No markdown, no explanation."""
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
             json={
-                "model": "google/gemini-2.0-flash-lite-001",
+                "model": "google/gemini-3.5-flash-lite",
                 "messages": [{"role": "user", "content": prompt}],
                 "max_tokens": 200,
                 "response_format": {"type": "json_object"},

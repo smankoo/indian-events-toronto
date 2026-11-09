@@ -4,7 +4,7 @@ import re
 
 from openai import OpenAI
 
-MODEL = "google/gemini-2.5-flash-lite"
+MODEL = "google/gemini-3.5-flash-lite"
 
 _client = None
 
