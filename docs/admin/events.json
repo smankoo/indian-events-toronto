@@ -1,25 +1,5 @@
 [
   {
-    "title": "Diwali Gala Event \u2013 Light It Up",
-    "date": "2026-10-30T18:30:00-04:00",
-    "time": "6:30 PM",
-    "venue": "Dreams Convention Centre",
-    "city": "Brampton",
-    "price": "CAD 45.00",
-    "price_val": 45.0,
-    "event_url": "https://events.sulekha.com/diwali-gala-event-light-it-up_event-in_brampton-on_402511",
-    "posted": true,
-    "posted_image_url": "https://iili.io/nvfzXSI.png",
-    "story_days_posted": "",
-    "artists": [],
-    "signals": {
-      "max_followers": 0,
-      "total_followers": 0,
-      "venue_class": "mid",
-      "event_format": "social"
-    }
-  },
-  {
     "title": "Getting There By Rohan Joshi Live 2026",
     "date": "2026-11-29T19:00:00-05:00",
     "time": "7:00 PM",
@@ -30,6 +10,26 @@
     "event_url": "https://events.sulekha.com/getting-there-by-rohan-joshi-live-2026-in-toronto_event-in_toronto-on_401091",
     "posted": true,
     "posted_image_url": "https://iili.io/Ce7MzHx.png",
+    "story_days_posted": "5,4",
+    "artists": [],
+    "signals": {
+      "max_followers": 0,
+      "total_followers": 0,
+      "venue_class": "mid",
+      "event_format": "social"
+    }
+  },
+  {
+    "title": "Sai Bhajan Sandhya \u2013 Live Hindi Devotional Bhajans",
+    "date": "2026-12-06T17:00:00-05:00",
+    "time": "5:00 PM",
+    "venue": "Sringeri Banquet Hall",
+    "city": "Etobicoke",
+    "price": "CAD 25.00",
+    "price_val": 25.0,
+    "event_url": "https://events.sulekha.com/Sai-Bhajan-Sandhya-Live-Hindi-Devotional-Bhajans_event-in_etobicoke-on_403021",
+    "posted": true,
+    "posted_image_url": "https://iili.io/oqfhhdl.png",
     "story_days_posted": "",
     "artists": [],
     "signals": {
